@@ -16,6 +16,8 @@ tmp/
 .project
 /.idea
 .classpath
+build.properties
+build.xml
 
 # Toast/GradleRIO
 run/
@@ -38,4 +40,3 @@ Thumbs.db
 
 # directory for XML generated after running junit tests through ant
 junit/
-
