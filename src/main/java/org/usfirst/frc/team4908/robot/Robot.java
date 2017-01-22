@@ -13,7 +13,6 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         controller1 = new VictorSP(0);
-
         input = new Joystick(0);
     }
 
