@@ -6,5 +6,9 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * *
  * Actions:
  */
-public class Drive {
+public class Drive extends SubSystem {
+
+    public Drive() {
+        super();
+    }
 }
