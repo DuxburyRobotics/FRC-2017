@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4908.robot.TeleOperation;
+package org.usfirst.frc.team4908.robot.Teleoperation.Subsystems;
 
 /**
  * Created by kyleknobloch on 1/24/17,
@@ -6,12 +6,12 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * *
  * Actions:
  */
-public class Climb implements ISubSystem {
+public class Drive implements ISubsystem
+{
 
-    public Climb(){
+    public Drive() {
 
     }
-
 
     public void calculate() {
 
@@ -20,6 +20,4 @@ public class Climb implements ISubSystem {
     public void disable() {
 
     }
-
-
 }

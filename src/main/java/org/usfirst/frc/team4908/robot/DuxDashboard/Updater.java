@@ -1,7 +1,5 @@
 package org.usfirst.frc.team4908.robot.DuxDashboard;
 
-import org.usfirst.frc.team4908.robot.DuxDashboard.*;
-
 /**
  * Created by kyleknobloch on 1/24/17,
  * For
@@ -13,12 +11,4 @@ public class Updater {
     public Updater() {
 
     }
-
-
-
-
-
-
-
-
 }

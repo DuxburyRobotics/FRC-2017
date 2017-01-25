@@ -20,9 +20,10 @@ import org.usfirst.frc.team4908.robot.DuxDashboard.*;
  * |       ||
  *
  */
-public class DahsboardPush {
+public class DashboardPush
+{
 
-    public DahsboardPush() {
+    public DashboardPush() {
 
         SmartDashboard.putNumber("Key", (double) 100.004);
 
