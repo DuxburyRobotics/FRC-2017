@@ -6,10 +6,19 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * *
  * Actions:
  */
-public class Intake  extends SubSystem {
+public class Intake implements ISubSystem {
 
     public Intake() {
-        super();
+
     }
 
+
+    public void calculate() {
+
+    }
+
+    public void dissable() {
+
+    }
 }
+

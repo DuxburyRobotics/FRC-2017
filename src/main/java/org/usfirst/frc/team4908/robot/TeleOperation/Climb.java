@@ -6,11 +6,18 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * *
  * Actions:
  */
-public class Climb extends SubSystem {
+public class Climb implements ISubSystem {
 
     public Climb(){
         super();
     }
 
 
+    public void calculate() {
+
+    }
+
+    public void dissable() {
+
+    }
 }

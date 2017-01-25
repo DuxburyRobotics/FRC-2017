@@ -6,10 +6,9 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * *
  * Actions:
  */
-public abstract class SubSystem {
+public interface  ISubSystem {
 
-    public SubSystem() {
+    void calculate();
 
-    }
-
+    void dissable();
 }

@@ -6,9 +6,9 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * *
  * Actions:
  */
-public class Drive implements ISubSystem {
+public class Shooter implements ISubSystem {
 
-    public Drive() {
+    public Shooter() {
 
     }
 
