@@ -16,7 +16,7 @@ public class Drive implements ISubSystem {
 
     }
 
-    public void dissable() {
+    public void disable() {
 
     }
 }

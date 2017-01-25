@@ -17,7 +17,7 @@ public class Intake implements ISubSystem {
 
     }
 
-    public void dissable() {
+    public void disable() {
 
     }
 }

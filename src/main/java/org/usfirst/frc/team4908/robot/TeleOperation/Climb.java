@@ -9,7 +9,7 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
 public class Climb implements ISubSystem {
 
     public Climb(){
-        super();
+
     }
 
 

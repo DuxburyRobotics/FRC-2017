@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.DuxDashboard;
 
+import org.usfirst.frc.team4908.robot.DuxDashboard.*;
+
 /**
  * Created by kyleknobloch on 1/24/17,
  * For
@@ -12,11 +14,15 @@ package org.usfirst.frc.team4908.robot.DuxDashboard;
  * |       || Shooting mode
  * |       || Intake active
  * |       || Climber on?
- * |       ||
+ * |       || Battery Break Point
  * |       ||
  *
  */
 public class DahsboardPush {
+
+    public DahsboardPush() {
+
+    }
 
 
 }

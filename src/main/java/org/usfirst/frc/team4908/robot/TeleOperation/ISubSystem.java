@@ -10,5 +10,5 @@ public interface  ISubSystem {
 
     void calculate();
 
-    void dissable();
+    void disable();
 }

@@ -16,7 +16,7 @@ public class Shooter implements ISubSystem {
 
     }
 
-    public void dissable() {
+    public void disable() {
 
     }
 }

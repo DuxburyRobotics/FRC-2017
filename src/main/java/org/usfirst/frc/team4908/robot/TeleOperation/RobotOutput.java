@@ -7,4 +7,8 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  * Actions:
  */
 public class RobotOutput {
+
+    public RobotOutput() {
+
+    }
 }
