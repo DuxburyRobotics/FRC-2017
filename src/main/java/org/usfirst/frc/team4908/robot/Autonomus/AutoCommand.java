@@ -12,4 +12,14 @@ public class AutoCommand {
 
     }
 
+    public void run() {
+
+    }
+
+    public void periodic() {
+
+
+    }
+
+
 }

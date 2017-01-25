@@ -1,6 +1,6 @@
-package org.usfirst.frc.team4908.robot.Teleoperation;
+package org.usfirst.frc.team4908.robot.TeleOperation;
 
-import org.usfirst.frc.team4908.robot.Teleoperation.Subsystems.*;
+import org.usfirst.frc.team4908.robot.TeleOperation.Subsystems.*;
 import java.util.ArrayList;
 
 /**
@@ -9,11 +9,11 @@ import java.util.ArrayList;
  */
 public class TeleopComponents
 {
-    ArrayList<ISubsystem> subsystems;
+    private ArrayList<ISubsystem> subsystems;
 
     public TeleopComponents()
     {
-        subsystems = new ArrayList<>();
+        subsystems = new ArrayList<ISubsystem>();
 
         subsystems.add(new Drive());
         subsystems.add(new Climb());
@@ -23,11 +23,19 @@ public class TeleopComponents
 
     public void update()
     {
-        subsystems.forEach(ISubsystem::calculate);
+
+        for(int i = 0; i < subsystems.size(); i++)
+            subsystems.get(i).calculate();
+
     }
 
     public void disable()
     {
-        subsystems.forEach(ISubsystem::disable);
+        for(int i = 0; i < subsystems.size(); i++)
+            subsystems.get(i).disable();
+
+
     }
+
+
 }

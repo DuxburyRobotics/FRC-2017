@@ -2,11 +2,13 @@
 package org.usfirst.frc.team4908.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import org.usfirst.frc.team4908.robot.Teleoperation.TeleopComponents;
+import org.usfirst.frc.team4908.robot.Autonomus.AutoCommand;
+import org.usfirst.frc.team4908.robot.TeleOperation.TeleopComponents;
 
 public class Robot extends IterativeRobot
 {
     private TeleopComponents teleopComponents;
+    private AutoCommand autoCommand;
 
     public void robotInit()
     {
@@ -15,11 +17,15 @@ public class Robot extends IterativeRobot
 
     public void autonomousInit()
     {
+        autoCommand.run();
+
 
     }
 
     public void autonomousPeriodic()
     {
+
+        autoCommand.periodic();
 
     }
 

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4908.robot.Teleoperation;
+package org.usfirst.frc.team4908.robot.TeleOperation;
 
 /**
  * Created by kyleknobloch on 1/24/17,
