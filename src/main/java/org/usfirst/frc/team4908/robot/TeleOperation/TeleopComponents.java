@@ -24,15 +24,15 @@ public class TeleopComponents
     public void update()
     {
 
-        for(int i = 0; i < subsystems.size(); i++)
-            subsystems.get(i).calculate();
+        for (ISubsystem system:subsystems)
+            system.calculate();
 
     }
 
     public void disable()
     {
-        for(int i = 0; i < subsystems.size(); i++)
-            subsystems.get(i).disable();
+        for(ISubsystem system:subsystems)
+            system.disable();
 
 
     }
