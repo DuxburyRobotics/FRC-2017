@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.DuxDashboard;
 
+import edu.wpi.first.wpilibj.Sendable;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.usfirst.frc.team4908.robot.DuxDashboard.*;
 
 /**
@@ -8,7 +10,7 @@ import org.usfirst.frc.team4908.robot.DuxDashboard.*;
  * *
  * Actions:
  *
- *
+ * Plan:
  *
  * |camera || Drive mode
  * |       || Shooting mode
@@ -21,6 +23,11 @@ import org.usfirst.frc.team4908.robot.DuxDashboard.*;
 public class DahsboardPush {
 
     public DahsboardPush() {
+
+        SmartDashboard.putNumber("Key", (double) 100.004);
+
+
+
 
     }
 
