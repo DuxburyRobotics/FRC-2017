@@ -17,7 +17,9 @@ public class Climb implements ISubSystem {
 
     }
 
-    public void dissable() {
+    public void disable() {
 
     }
+
+
 }
