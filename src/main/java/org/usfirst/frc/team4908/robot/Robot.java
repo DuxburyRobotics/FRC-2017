@@ -1,16 +1,24 @@
 
 package org.usfirst.frc.team4908.robot;
 
-import edu.wpi.first.wpilibj.IterativeRobot;
-import org.usfirst.frc.team4908.robot.Teleoperation.TeleopComponents;
+import edu.wpi.first.wpilibj.*;
 
 public class Robot extends IterativeRobot
 {
-    private TeleopComponents teleopComponents;
+    Joystick xBox;
+
+    double shooter;
+
+    SpeedController one;
+    SpeedController two;
 
     public void robotInit()
     {
-        teleopComponents = new TeleopComponents();
+        xBox = new Joystick(0);
+        shooter = 0.0;
+
+        one = new Spark(0);
+        two = new Spark(1);
     }
 
     public void autonomousInit()
@@ -25,7 +33,19 @@ public class Robot extends IterativeRobot
 
     public void teleopPeriodic()
     {
-        teleopComponents.update();
+        one.set(shooter);
+        two.set(shooter);
+
+        if(xBox.getRawButton(0))
+        {
+            shooter += .05;
+        }
+
+        if(xBox.getRawButton(0))
+        {
+            shooter -= .05;
+        }
+
     }
 
     public void testPeriodic()
@@ -35,7 +55,7 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
-        teleopComponents.disable();
+
     }
     
 }
