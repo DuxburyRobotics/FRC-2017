@@ -13,11 +13,19 @@ public class Drive implements ISubsystem
 
     }
 
+    // TELEOPS
     public void calculate() {
 
     }
 
     public void disable() {
+
+    }
+
+
+    // COMMANDS
+    public void driveToDistance()
+    {
 
     }
 }

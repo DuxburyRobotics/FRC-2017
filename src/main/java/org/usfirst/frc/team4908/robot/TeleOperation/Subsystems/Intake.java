@@ -21,5 +21,15 @@ public class Intake implements ISubsystem
     public void disable() {
 
     }
+
+
+    public void activateIntake() {
+
+    }
+
+    public void dissableIntake() {
+
+    }
+
 }
 

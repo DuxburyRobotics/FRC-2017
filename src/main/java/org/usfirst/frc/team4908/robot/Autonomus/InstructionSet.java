@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.Autonomus;
 
+import org.usfirst.frc.team4908.robot.Autonomus.Commands.ICommand;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Scanner;
@@ -9,7 +11,7 @@ import java.util.Scanner;
  */
 public class InstructionSet {
 
-    private ArrayList<Command> instructionsList;
+    private ArrayList<ICommand> instructionsList;
     private boolean isRunnable;
 
 
@@ -55,7 +57,8 @@ public class InstructionSet {
 
             while (scanner.hasNextLine()) {     //for each line the while loop runs
                 String working = scanner.nextLine(); //gets the next line
-                Command cmd = new Command();
+                ICommand cmd = null;
+                //cmd = new ICommand(0, "");
 
                 //TODO: Dissect the String to a code!
 
@@ -70,7 +73,7 @@ public class InstructionSet {
     /**
      * This class will add a command to the instruction array list!
      */
-    public void addInstruction(Command command) {
+    public void addInstruction(ICommand command) {
 
         instructionsList.add(command);
 
@@ -86,7 +89,7 @@ public class InstructionSet {
 
         //TODO: Dissect the string into a command!
 
-        instructionsList.add(new Command());
+        //instructionsList.add(new ICommand(0, ""));
 
         if (!isRunnable)    //we now know that a instruction was added and we can do more on in life!
             isRunnable = true;
@@ -101,7 +104,7 @@ public class InstructionSet {
         instructionsList.get(index).execute();
     }
 
-    public Command getCommand(int index) {
+    public ICommand getCommand(int index) {
         return instructionsList.get(index);
     }
 
