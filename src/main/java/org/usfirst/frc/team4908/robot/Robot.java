@@ -18,6 +18,6 @@ public class Robot extends IterativeRobot
 
     public void teleopPeriodic()
     {
-        controller1.set(input.getRawAxis(0));
+        controller1.set(input.getRawAxis(2));
     }
 }
