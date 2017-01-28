@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.TeleOperation;
 
+import edu.wpi.first.wpilibj.SpeedController;
+
 /**
  * Created by kyleknobloch on 1/24/17,
  * For
@@ -8,8 +10,21 @@ package org.usfirst.frc.team4908.robot.TeleOperation;
  */
 public class RobotOutput
 {
+    private SpeedController shooterOne;
+    private SpeedController shooterTwo;
+    private SpeedController shooterThree;
+    private SpeedController shooterFour;
+
     public RobotOutput()
     {
 
+    }
+
+    public void setShooter(double val)
+    {
+        shooterOne.set(val);
+        shooterTwo.set(val);
+        shooterThree.set(val);
+        shooterFour.set(val);
     }
 }
