@@ -1,7 +1,6 @@
-package org.usfirst.frc.team4908.robot.TeleOperation.Subsystems;
+package org.usfirst.frc.team4908.robot.Subsystems;
 
-import org.usfirst.frc.team4908.robot.Input.DriverInput;
-import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.*;
 import org.usfirst.frc.team4908.robot.TeleOperation.RobotOutput;
 import org.usfirst.frc.team4908.robot.Util.DuxPID;
 
@@ -11,10 +10,10 @@ import org.usfirst.frc.team4908.robot.Util.DuxPID;
 public class Shooter implements ISubsystem
 {
     private double targetRPM;
-    DriverInput di;
-    RobotOutput ro;
-    SensorInput si;
-    DuxPID PID;
+    public DriverInput di;
+    public RobotOutput ro;
+    public SensorInput si;
+    public DuxPID PID;
 
     private double setValue;
 
@@ -28,8 +27,8 @@ public class Shooter implements ISubsystem
 
     public void calculate()
     {
-        // get value from vision tracking
-        targetRPM = 4908;
+
+        targetRPM = 4908; // get value from vision tracking
 
         if(di.getShooterButton())
         {
@@ -46,17 +45,22 @@ public class Shooter implements ISubsystem
     }
 
     public void disable() {
+        ro.setShooter(0);
+    }
+
+    /** AUTO CODE BELOW **/
+
+    /**
+     * Used for auto, will turn on the shooter at the target RPM.
+     * @param targetRPM
+     */
+    public void activate(int targetRPM) {
+        PID.reset();
+        PID.setSetPoint(targetRPM);
+        ro.setShooter(PID.calculate(si.getShooterSpeed()));
 
     }
 
-
-    public void activateShooter() {
-
-    }
-
-    public void dissableShooter() {
-
-    }
 
 
 }

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4908.robot;
+package org.usfirst.frc.team4908.robot.Util;
 
 /**
  * This file is used for things that will never change or if they do change they will be universal across the robot.

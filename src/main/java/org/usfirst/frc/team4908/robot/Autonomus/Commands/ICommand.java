@@ -7,16 +7,26 @@ public abstract class ICommand {
 
     private double waitTime;
     private String type;
+    private boolean hasExicuted;
 
 
     public ICommand(int waitTime, String type){
         this.waitTime = waitTime;
         this.type = type;
+        this.hasExicuted = false;
 
     }
 
 
-    public abstract void execute();
+    public void execute() {
+        if (!isHasExicuted()) {
+            HasExicuted();
+            //code here
+
+
+
+        }
+    }
 
 
     //region Set & Get
@@ -33,6 +43,14 @@ public abstract class ICommand {
 
     public String getType() {
         return type;
+    }
+
+    public boolean isHasExicuted() {
+        return hasExicuted;
+    }
+
+    public void HasExicuted() {
+        this.hasExicuted = true;
     }
 
     //endregion

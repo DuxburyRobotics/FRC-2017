@@ -22,3 +22,14 @@ Shoot,disable,3
 #
 # Need more commands? Yell at Kyle and he will think about adding them.
 #
+
+
+Shoot,enable,
+
+
+start,update,finish
+
+shooter,
+start: vision
+update: set RPM, checking vision value
+finish, move to next command

@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.Autonomus;
 
+import org.usfirst.frc.team4908.robot.Subsystems.RobotComponents;
+
 import java.util.ArrayList;
 
 /**
@@ -11,6 +13,8 @@ import java.util.ArrayList;
 public class AutoCommand {
 
     private int instruction;
+    private RobotComponents robotComponents;
+    private int commandNumber;
     private long lastTime;
     private boolean firstRun;
     private ArrayList<InstructionSet> autoInstructionList;
@@ -22,8 +26,22 @@ public class AutoCommand {
 
     public AutoCommand() {
         this.instruction = 0;
+        this.commandNumber = 0;
         this.firstRun = true;
 
+    }
+
+    public AutoCommand(RobotComponents robotComponents) {
+        this.instruction = 0;
+        this.commandNumber = 0;
+        this.firstRun = true;
+        this.robotComponents = robotComponents;
+    }
+
+    public AutoCommand(int instruction) {
+        this.instruction = instruction;
+        this.commandNumber = 0;
+        this.firstRun = true;
     }
 
     public void init() {
@@ -35,11 +53,13 @@ public class AutoCommand {
     public void periodic() {
         if (firstRun) {
             lastTime = System.nanoTime();
+            theSet = autoInstructionList.get(instruction);
+            commandNumber = 0;
             firstRun = false;
         }
 
-        theSet.runCommand(instruction);
-        incrementTime(theSet.getCommand(instruction).getWaitTime());
+        theSet.runCommand(commandNumber);
+        incrementTime(theSet.getCommand(commandNumber).getWaitTime());
 
 
     }
@@ -52,11 +72,16 @@ public class AutoCommand {
     private void incrementTime(double secondsToWait) {
         if ((System.nanoTime() - lastTime) >= (secondsToWait * 1000000000)) {
             lastTime = System.nanoTime();
-            instruction++;
+            commandNumber++;
         }
         
     }
 
 
-
+    /**
+     * This must be called before we start autonomus.
+     */
+    public void setInstruction(int instruction) {
+        this.instruction = instruction;
+    }
 }

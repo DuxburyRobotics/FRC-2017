@@ -4,7 +4,7 @@ package org.usfirst.frc.team4908.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.usfirst.frc.team4908.robot.Autonomus.AutoCommand;
 import org.usfirst.frc.team4908.robot.DuxDashboard.DuxDash;
-import org.usfirst.frc.team4908.robot.TeleOperation.TeleopComponents;
+import org.usfirst.frc.team4908.robot.Subsystems.RobotComponents;
 
 
 /**
@@ -17,7 +17,7 @@ import org.usfirst.frc.team4908.robot.TeleOperation.TeleopComponents;
 
 public class Robot extends IterativeRobot
 {
-    private TeleopComponents teleopComponents;
+    private RobotComponents robotComponents;
     private AutoCommand autoCommand;
     private DuxDash duxDash;
 
@@ -31,7 +31,7 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        teleopComponents = new TeleopComponents();
+        robotComponents = new RobotComponents();
         autoCommand = new AutoCommand();
         duxDash = new DuxDash();
 
@@ -80,7 +80,7 @@ public class Robot extends IterativeRobot
     @Override
     public void teleopPeriodic()
     {
-        teleopComponents.update();
+        robotComponents.update();
     }
 
     //endregion
@@ -111,7 +111,7 @@ public class Robot extends IterativeRobot
 
     public void disabledInit()
     {
-        teleopComponents.disable();
+        robotComponents.disable();
     }
 
 

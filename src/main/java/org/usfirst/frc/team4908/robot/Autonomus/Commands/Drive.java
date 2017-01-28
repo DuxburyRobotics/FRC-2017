@@ -17,7 +17,13 @@ public class Drive extends ICommand {
     }
 
     public void execute() {
+        if (!super.isHasExicuted()) {
+            super.HasExicuted();
+            //code here
 
+
+
+        }
     }
 
 
