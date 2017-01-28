@@ -84,4 +84,9 @@ public class AutoCommand {
     public void setInstruction(int instruction) {
         this.instruction = instruction;
     }
+
+    public RobotComponents getRobotComponents() {
+        return robotComponents;
+    }
+
 }
