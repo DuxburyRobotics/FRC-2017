@@ -52,6 +52,10 @@ public class DuxPID
         return PIDsum;
     }
 
+    public double convertMotors(double value) {
+        return 0.0;
+    }
+
     public void setSetPoint(double setPoint)
     {
         this.setPoint = setPoint;
