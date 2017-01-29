@@ -72,12 +72,4 @@ public class RobotComponents
         subsystems.get(3).disable();
     }
 
-    public void activateShooter(int targetRPM) {
-        Shooter shooter = (Shooter) subsystems.get(3);
-        shooter.activate(targetRPM);
-
-    }
-
-
-
 }

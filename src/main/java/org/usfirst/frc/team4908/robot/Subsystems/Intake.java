@@ -23,5 +23,14 @@ public class Intake implements ISubsystem
 
     }
 
+
+    public void activateIntake() {
+
+    }
+
+    public void dissableIntake() {
+
+    }
+
 }
 

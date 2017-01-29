@@ -12,5 +12,4 @@ public interface ISubsystem
     void calculate();
 
     void disable();
-
 }
