@@ -24,9 +24,4 @@ public class Drive implements ISubsystem
     }
 
 
-    // COMMANDS
-    public void driveToDistance()
-    {
-
-    }
 }
