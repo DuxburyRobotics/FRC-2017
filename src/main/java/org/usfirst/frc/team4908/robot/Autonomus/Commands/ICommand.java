@@ -5,52 +5,60 @@ package org.usfirst.frc.team4908.robot.Autonomus.Commands;
  */
 public abstract class ICommand {
 
-    private double waitTime;
     private String type;
-    private boolean hasExicuted;
+    private boolean isFinished;
+    private boolean isFirstRun;
 
 
-    public ICommand(int waitTime, String type){
-        this.waitTime = waitTime;
+    public ICommand(String type){
         this.type = type;
-        this.hasExicuted = false;
+        this.isFinished = false;
+        this.isFinished = true;
 
     }
 
 
-    public void execute() {
-        if (!isHasExicuted()) {
-            HasExicuted();
-            //code here
+    //region Auto Code
 
+    public void start() {
 
-
-        }
     }
+
+    public void update() {
+
+    }
+
+    public boolean finish() {
+        return isFinished;
+    }
+
+    //endregion
 
 
     //region Set & Get
     /**
      * SETTERS AND GETTER BOI
      */
-    public void setWaitTime(int waitTime) {
-        this.waitTime = waitTime;
-    }
-
-    public double getWaitTime() {
-        return waitTime;
-    }
 
     public String getType() {
         return type;
     }
 
-    public boolean isHasExicuted() {
-        return hasExicuted;
+    public boolean isFinished() {
+        return isFinished;
     }
 
-    public void HasExicuted() {
-        this.hasExicuted = true;
+    public void hasFinished() {
+        this.isFinished = true;
+    }
+
+    public boolean isFirstRun() {
+        return isFirstRun;
+    }
+
+    public void firstRun() {
+        isFirstRun = false;
+        start();
     }
 
     //endregion

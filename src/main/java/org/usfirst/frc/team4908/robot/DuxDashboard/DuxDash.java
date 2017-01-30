@@ -22,14 +22,7 @@ import org.usfirst.frc.team4908.robot.DuxDashboard.*;
  */
 public class DuxDash
 {
-
-    public DuxDash() {
-
-
-
-
-
+    public DuxDash()
+    {
     }
-
-
 }

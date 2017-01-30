@@ -32,13 +32,13 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         robotComponents = new RobotComponents();
-        autoCommand = new AutoCommand();
+        autoCommand = new AutoCommand(robotComponents);
         duxDash = new DuxDash();
 
     }
 
 
-    //region Autonomus
+    //region Autonomous
     /**
      * This function is called to start the autonomous code
      */
@@ -115,5 +115,11 @@ public class Robot extends IterativeRobot
     }
 
 
-    
+    /**
+     * This function gets the RobotComponents class that controls the robot.
+     * @return RobotComonents
+     */
+    public RobotComponents getRobotComponents() {
+        return robotComponents;
+    }
 }

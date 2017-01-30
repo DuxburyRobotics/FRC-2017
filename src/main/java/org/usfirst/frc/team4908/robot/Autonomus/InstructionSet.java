@@ -83,25 +83,35 @@ public class InstructionSet {
 
 
     /**
-     * This class will add a command to the instruction array list!
+     * This class will add a command to the instruction array list based off a string
+     *
+     * String format: type, (TBD)
      */
     public void addInstruction(String str_command) {
-
         //TODO: Dissect the string into a command!
 
         //instructionsList.add(new ICommand(0, ""));
 
         if (!isRunnable)    //we now know that a instruction was added and we can do more on in life!
             isRunnable = true;
+
     }
 
     //endregion
 
     //region Execution
-    //So after the instructionList is populated now we need to run each command.
+
 
     public void runCommand(int index) {
-        instructionsList.get(index).execute();
+        instructionsList.get(index).start();
+    }
+
+    public void updateCommand(int index) {
+        instructionsList.get(index).update();
+    }
+
+    public void finished(int index) {
+        instructionsList.get(index).finish();
     }
 
     public ICommand getCommand(int index) {

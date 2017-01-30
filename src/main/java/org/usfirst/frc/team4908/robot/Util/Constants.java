@@ -25,10 +25,10 @@ public class Constants {
 
 
         /**
-         * PLease not the public static final. Also note the all caps! This is important! Use this when creating
+         * Please note the public static final. Also note the all caps! This is important! Use this when creating
          * these constant variables or else!
          */
-        public static final int THIS_IS_A_EXAMPLE = 10;
+        public static final int THIS_IS_A_EXAMPLE = 4908; // the bestest team ever
 
 
     }

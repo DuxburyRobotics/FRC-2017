@@ -25,15 +25,15 @@ public class DuxPID
 
     public DuxPID(double p, double i, double d, double e)
     {
-        kP = p;
-        kI = i;
-        kD = d;
-        kEpsilon = e;
+        this.kP = p;
+        this.kI = i;
+        this.kD = d;
+        this.kEpsilon = e;
 
-        setPoint = 0.0;
-        error = 0.0;
-        errorSum = 0.0;
-        lastError = 0.0;
+        this.setPoint = 0.0;
+        this.error = 0.0;
+        this.errorSum = 0.0;
+        this.lastError = 0.0;
     }
 
     public double calculate(double position)

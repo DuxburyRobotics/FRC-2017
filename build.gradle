@@ -15,4 +15,7 @@ repositories {
 dependencies {
     compile name: "NetworkTables"
     compile name: "WPILib"
+    compile name: "opencv"
+    compile name: "CTRLib"
+    compile name: "cscore"
 }

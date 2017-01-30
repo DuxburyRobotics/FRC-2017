@@ -4,7 +4,8 @@ import java.util.ArrayList;
 
 /**
  * @author Bill
- *         $ Contains array of all subsystems, calcultes output values for each every update
+ *         $ Contains array of all subsystems, calcultes output values for each every update. Make sure you only have
+ *         $ one of these in the robot or else it might get a little confused.
  */
 public class RobotComponents
 {
