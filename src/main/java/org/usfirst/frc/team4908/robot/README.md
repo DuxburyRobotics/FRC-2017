@@ -5,6 +5,8 @@ Classes:
   - This holds all the values that are univeral across the robot.
 
 Packages:
-- Autonomus 
+- Autonomous 
 - DuxDashboard
-- TeleOperation
+- Input
+- SubSystems
+- Util

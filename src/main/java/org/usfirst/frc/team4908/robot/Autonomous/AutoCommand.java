@@ -98,7 +98,7 @@ public class AutoCommand {
 
         InstructionSet default0 = new InstructionSet(rc);
 
-        default0.addInstruction(new ICommand("do_Nothing") {
+        default0.addInstruction(new ICommand("do_Nothing", rc) {
             @Override
             public void firstRun() {
                 //do nothing
