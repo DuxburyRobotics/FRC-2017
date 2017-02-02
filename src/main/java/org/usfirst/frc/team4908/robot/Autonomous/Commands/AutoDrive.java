@@ -1,4 +1,6 @@
-package org.usfirst.frc.team4908.robot.Autonomus.Commands;
+package org.usfirst.frc.team4908.robot.Autonomous.Commands;
+
+import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
 /**
  * Created by kyleknobloch on 1/26/17,
@@ -8,9 +10,8 @@ package org.usfirst.frc.team4908.robot.Autonomus.Commands;
  */
 public class AutoDrive extends ICommand {
 
-    public AutoDrive(String type) {
-        super(type);
-
+    public AutoDrive(String type, RobotComponents rc) {
+        super(type, rc);
     }
 
     //region Auto Code

@@ -1,4 +1,6 @@
-package org.usfirst.frc.team4908.robot.Autonomus.Commands;
+package org.usfirst.frc.team4908.robot.Autonomous.Commands;
+
+import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
 /**
  *
@@ -6,11 +8,13 @@ package org.usfirst.frc.team4908.robot.Autonomus.Commands;
 public abstract class ICommand {
 
     private String type;
+    private RobotComponents rc;
     private boolean isFinished;
     private boolean isFirstRun;
 
 
-    public ICommand(String type){
+    public ICommand(String type, RobotComponents rc){
+        this.rc = rc;
         this.type = type;
         this.isFinished = false;
         this.isFinished = true;
@@ -59,6 +63,10 @@ public abstract class ICommand {
     public void firstRun() {
         isFirstRun = false;
         start();
+    }
+
+    public RobotComponents getRc() {
+        return rc;
     }
 
     //endregion

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4908.robot.Subsystems;
+package org.usfirst.frc.team4908.robot.SubSystems;
 
 
 /**
@@ -7,10 +7,12 @@ package org.usfirst.frc.team4908.robot.Subsystems;
  * *
  * Actions:
  */
-public class Intake implements ISubsystem
+public class Intake implements ISubSystem
 {
+    private RobotOutput ro;
 
-    public Intake() {
+    public Intake(RobotOutput ro) {
+        this.ro = ro;
 
     }
 

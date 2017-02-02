@@ -1,6 +1,7 @@
-package org.usfirst.frc.team4908.robot.Autonomus;
+package org.usfirst.frc.team4908.robot.Autonomous;
 
-import org.usfirst.frc.team4908.robot.Autonomus.Commands.ICommand;
+import org.usfirst.frc.team4908.robot.Autonomous.Commands.ICommand;
+import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -13,12 +14,14 @@ public class InstructionSet {
 
     private ArrayList<ICommand> instructionsList;
     private boolean isRunnable;
+    private RobotComponents rc;
 
 
     /**
      * This construction will use a file to get the instructions
      */
-    public InstructionSet(File file) {
+    public InstructionSet(File file, RobotComponents rc) {
+        this.rc = rc;
         importFile(file);
 
     }
@@ -27,7 +30,8 @@ public class InstructionSet {
      * This constructor will be the default one and will wait until you add a commnad to make runnable
      */
 
-    public InstructionSet() {
+    public InstructionSet(RobotComponents rc) {
+        this.rc = rc;
         isRunnable = false;
 
     }

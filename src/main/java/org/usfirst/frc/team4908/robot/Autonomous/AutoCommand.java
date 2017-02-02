@@ -1,7 +1,7 @@
-package org.usfirst.frc.team4908.robot.Autonomus;
+package org.usfirst.frc.team4908.robot.Autonomous;
 
-import org.usfirst.frc.team4908.robot.Autonomus.Commands.ICommand;
-import org.usfirst.frc.team4908.robot.Subsystems.RobotComponents;
+import org.usfirst.frc.team4908.robot.Autonomous.Commands.ICommand;
+import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
 import java.util.ArrayList;
 
@@ -11,9 +11,8 @@ import java.util.ArrayList;
 public class AutoCommand {
 
     private int instructionSet;
-    private RobotComponents robotComponents;
+    private RobotComponents rc;
     private int commandNumber;
-    private long lastTime;
     private boolean firstRun;
     private ArrayList<InstructionSet> autoInstructionList;
     private InstructionSet theSet;
@@ -24,35 +23,17 @@ public class AutoCommand {
     //region Constructors
 
     /**
-     * You must ALWAYS pass in the robotComponents or else nothing will move. Make sure it's the one from the Robot class
+     * You must ALWAYS pass in the rc or else nothing will move. Make sure it's the one from the Robot class
      * so that you don't anciently have two in the Robot (because that would be weird).
-     * @param robotComponents the Class that controls the robot.
+     * @param rc the Class that controls the robot.
      */
-    public AutoCommand(RobotComponents robotComponents) {
+    public AutoCommand(RobotComponents rc) {
         this.instructionSet = 0;
         this.commandNumber = 0;
         this.firstRun = true;
-        this.robotComponents = robotComponents;
+        this.rc = rc;
         this.autoInstructionList = new ArrayList<InstructionSet>();
         generateDefaultAuto();
-    }
-
-    public AutoCommand(RobotComponents robotComponents, int instruction) {
-        this.robotComponents = robotComponents;
-        this.instructionSet = instruction;
-        this.commandNumber = 0;
-        this.firstRun = true;
-        this.autoInstructionList = new ArrayList<InstructionSet>();
-        generateDefaultAuto();
-    }
-
-    public AutoCommand(RobotComponents robotComponents, ArrayList<InstructionSet> instructionSets, int instructionSet) {
-        this.robotComponents = robotComponents;
-        this.instructionSet = instructionSet;
-        this.commandNumber = 0;
-        this.firstRun = true;
-        this.autoInstructionList = instructionSets;
-        //generateDefaultAuto(); //We don't need to call this because a instructionSet was given to us.
     }
 
     //endregion
@@ -73,19 +54,22 @@ public class AutoCommand {
 
         if(firstRun) {
             firstRun = false;
+
             if (theSet == null && instructionSet >= 0) //if theSet was empty and there is a instructionSet we want to use
                 theSet = autoInstructionList.get(instructionSet);
+
             else {
                 theSet = autoInstructionList.get(0); //just get the default one that does nothing since there was nothing set to use
                                                      //This means that Auto did not know what to run and is using default one.
                 System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
-                        "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)");
-            }
-        }
+                        "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n");
 
-        if(theSet.getCommand(commandNumber).isFirstRun()) {
+            } //else
+        } //if
+
+        if(theSet.getCommand(commandNumber).isFirstRun())
             theSet.getCommand(commandNumber).firstRun(); //set command firstRun to false and run Start
-        }
+
 
         //now run update
         theSet.getCommand(commandNumber).update();
@@ -112,7 +96,7 @@ public class AutoCommand {
          * None.
          */
 
-        InstructionSet default0 = new InstructionSet();
+        InstructionSet default0 = new InstructionSet(rc);
 
         default0.addInstruction(new ICommand("do_Nothing") {
             @Override
@@ -124,7 +108,7 @@ public class AutoCommand {
 
 
     /**
-     * This must be called before we start autonomus.
+     * This must be called before we start auto.
      */
     public void setInstructionSet(int instructionSet) {
         this.instructionSet = instructionSet;
@@ -137,8 +121,8 @@ public class AutoCommand {
 
     }
 
-    public RobotComponents getRobotComponents() {
-        return robotComponents;
+    public RobotComponents getRc() {
+        return rc;
     }
 
 

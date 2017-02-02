@@ -1,13 +1,12 @@
-package org.usfirst.frc.team4908.robot.Subsystems;
+package org.usfirst.frc.team4908.robot.SubSystems;
 
 import org.usfirst.frc.team4908.robot.Input.*;
-import org.usfirst.frc.team4908.robot.TeleOperation.RobotOutput;
 import org.usfirst.frc.team4908.robot.Util.DuxPID;
 
 /**
  *
  */
-public class Shooter implements ISubsystem
+public class Shooter implements ISubSystem
 {
     private double targetRPM;
     public DriverInput di;
@@ -17,8 +16,9 @@ public class Shooter implements ISubsystem
 
     private double setValue;
 
-    public Shooter()
+    public Shooter(RobotOutput ro)
     {
+        this.ro = ro;
         di = new DriverInput();
         si = new SensorInput();
         PID = new DuxPID(0.0, 0.0, 0.0, 0.02);

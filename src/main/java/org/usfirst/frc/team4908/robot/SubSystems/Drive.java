@@ -1,9 +1,8 @@
-package org.usfirst.frc.team4908.robot.Subsystems;
+package org.usfirst.frc.team4908.robot.SubSystems;
 
 
 import org.usfirst.frc.team4908.robot.Input.DriverInput;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
-import org.usfirst.frc.team4908.robot.TeleOperation.RobotOutput;
 
 /**
  * Created by kyleknobloch on 1/24/17,
@@ -11,7 +10,7 @@ import org.usfirst.frc.team4908.robot.TeleOperation.RobotOutput;
  * *
  * Actions:
  */
-public class Drive implements ISubsystem
+public class Drive implements ISubSystem
 {
 
     private DriverInput di;
@@ -22,11 +21,11 @@ public class Drive implements ISubsystem
 
     private RobotOutput ro;
 
-    public Drive()
+    public Drive(RobotOutput ro)
     {
         di = new DriverInput();
         si = new SensorInput();
-        ro = new RobotOutput();
+        this.ro = ro;
 
         driveX = 0.0;
         driveRot = 0.0;
