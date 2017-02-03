@@ -1,12 +1,10 @@
-package org.usfirst.frc.team4908.robot.TeleOperation;
+package org.usfirst.frc.team4908.robot.SubSystems;
 
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.*;
 
 /**
- * Created by kyleknobloch on 1/24/17,
- * For
- * *
+ * NOTE: This is only found in robotComponents and should NOT be made an object of anywhere else!!!
  * Actions: Contains all objects and setters of every motor controller/solenoid
  */
 public class RobotOutput
@@ -71,4 +69,5 @@ public class RobotOutput
         shooterThree.set(val);
         shooterFour.set(val);
     }
+
 }

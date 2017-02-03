@@ -1,4 +1,4 @@
-package org.usfirst.frc.team4908.robot.Subsystems;
+package org.usfirst.frc.team4908.robot.SubSystems;
 
 import java.util.ArrayList;
 
@@ -9,19 +9,22 @@ import java.util.ArrayList;
  */
 public class RobotComponents
 {
-    private ArrayList<ISubsystem> subsystems;
+    private ArrayList<ISubSystem> subsystems;
+    private RobotOutput ro;
 
     public RobotComponents()
     {
-        subsystems = new ArrayList<ISubsystem>();
+        subsystems = new ArrayList<ISubSystem>();
+
+        ro = new RobotOutput();
 
         /**
          * DO NOT CHANGE THIS ORDER
          */
-        subsystems.add(new Drive());
-        subsystems.add(new Climb());
-        subsystems.add(new Intake());
-        subsystems.add(new Shooter());
+        subsystems.add(new Drive(ro));
+        subsystems.add(new Climb(ro));
+        subsystems.add(new Intake(ro));
+        subsystems.add(new Shooter(ro));
         /**
          * DO NOT CHANGE THIS ORDER
          */
@@ -30,14 +33,14 @@ public class RobotComponents
     public void update()
     {
 
-        for (ISubsystem system:subsystems)
+        for (ISubSystem system:subsystems)
             system.calculate();
 
     }
 
     public void disable()
     {
-        for(ISubsystem system:subsystems)
+        for(ISubSystem system:subsystems)
             system.disable();
 
 
@@ -73,4 +76,12 @@ public class RobotComponents
         subsystems.get(3).disable();
     }
 
+    public Drive getDrive() { return (Drive) subsystems.get(0); }
+    public Climb getClimb() { return (Climb) subsystems.get(1); }
+    public Intake getIntake() { return (Intake) subsystems.get(2); }
+    public Shooter getShooter() { return (Shooter) subsystems.get(3); }
+
+    public RobotOutput getRo() {
+        return ro;
+    }
 }

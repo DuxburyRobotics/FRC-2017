@@ -1,6 +1,6 @@
-package org.usfirst.frc.team4908.robot.Autonomus.Commands;
+package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
-import java.security.InvalidKeyException;
+import org.usfirst.frc.team4908.robot.SubSystems.*;
 
 /**
  * Created by kyleknobloch on 1/26/17,
@@ -11,8 +11,8 @@ import java.security.InvalidKeyException;
 public class AutoIntake extends ICommand{
 
 
-    public AutoIntake(String type) {
-        super(type);
+    public AutoIntake(String type, RobotComponents rc) {
+        super(type, rc);
     }
 
     //region Auto Code

@@ -2,9 +2,9 @@
 package org.usfirst.frc.team4908.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import org.usfirst.frc.team4908.robot.Autonomus.AutoCommand;
+import org.usfirst.frc.team4908.robot.Autonomous.AutoCommand;
 import org.usfirst.frc.team4908.robot.DuxDashboard.DuxDash;
-import org.usfirst.frc.team4908.robot.Subsystems.RobotComponents;
+import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
 
 /**
@@ -45,6 +45,7 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         autoCommand.init();
+
 
 
     }

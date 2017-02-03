@@ -1,19 +1,16 @@
-package org.usfirst.frc.team4908.robot.Autonomus.Commands;
+package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
-import org.usfirst.frc.team4908.robot.Subsystems.Shooter;
+import org.usfirst.frc.team4908.robot.SubSystems.*;
 
 /**
- * Created by kyleknobloch on 1/26/17,
- * For
- * *
- * Actions:
+ *
  */
 public class AutoShooter extends ICommand {
 
     private Shooter shooter;
 
-    public AutoShooter() {
-        super("Shooter");
+    public AutoShooter(RobotComponents rc) {
+        super("Shooter", rc);
 
     }
 
@@ -22,7 +19,7 @@ public class AutoShooter extends ICommand {
 
     @Override
     public void start() {
-        shooter = new Shooter();
+        shooter = getRc().getShooter();
         //TODO: Vision code will go here
     }
 

@@ -1,0 +1,11 @@
+Classes:
+- ISubSystem
+  - The following classes all use the ISubsystem interface. This means they all have a calculate() and a disable() command inside of them. 
+    - Climb
+    - Drive
+    - Intake
+    - Shooter
+- RobotComponents
+  - This class holds the ISubSystems and will make any calls to the SubSystems. 
+- RobotOutput
+  - Takes the Subsystem's output and sends it to the motors/components. 
