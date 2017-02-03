@@ -10,7 +10,7 @@ public class DriverInput
 {
     private Joystick driverLeftStick = new Joystick(0);
     private Joystick driverRightStick = new Joystick(1);
-    private Joystick operatorJoystick = new Joystick(2);
+    //private Joystick operatorJoystick = new Joystick(2);
 
 
 
@@ -25,11 +25,11 @@ public class DriverInput
         return driverRightStick.getRawAxis(0);
     }
 
-    public boolean getShifterButton() {return driverLeftStick.getRawButton(0); }
+    public boolean getShifterButton() {return driverLeftStick.getRawButton(1); }
 
     // operator input
     public boolean getShooterButton()
     {
-        return operatorJoystick.getRawButton(1);
+        return false; //operatorJoystick.getRawButton(1);
     }
 }

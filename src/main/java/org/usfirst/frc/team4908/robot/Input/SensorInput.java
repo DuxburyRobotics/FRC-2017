@@ -14,12 +14,12 @@ public class SensorInput
 
     public SensorInput()
     {
-        shooterEncoder = new Encoder(0, 1, false, CounterBase.EncodingType.k4X);
+        //shooterEncoder = new Encoder(0, 1, false, CounterBase.EncodingType.k4X);
     }
 
     public double getShooterSpeed()
     {
-        return shooterEncoder.getRate();
+        return 0.0;//shooterEncoder.getRate();
     }
 
 }

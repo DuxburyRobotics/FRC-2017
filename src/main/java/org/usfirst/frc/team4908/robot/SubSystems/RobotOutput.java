@@ -25,17 +25,17 @@ public class RobotOutput
 
     public RobotOutput()
     {
-        shooterOne = new VictorSP(0);
-        shooterTwo = new VictorSP(1);
-        shooterThree = new VictorSP(2);
-        shooterFour = new VictorSP(3);
+        //shooterOne = new VictorSP(0);
+        //shooterTwo = new VictorSP(1);
+        //shooterThree = new VictorSP(2);
+        //shooterFour = new VictorSP(3);
 
-        frontLeftMotor = new CANTalon(0);
-        rearLeftMotor = new CANTalon(1);
-        frontRightMotor = new CANTalon(2);
-        rearRightMotor = new CANTalon(3);
+        frontLeftMotor = new CANTalon(2);
+        rearLeftMotor = new CANTalon(3);
+        frontRightMotor = new CANTalon(1);
+        rearRightMotor = new CANTalon(0);
 
-        driveGearSolenoid = new DoubleSolenoid(0, 1);
+        driveGearSolenoid = new DoubleSolenoid(4, 5);
 
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
     }
@@ -64,10 +64,10 @@ public class RobotOutput
 
     public void setShooter(double val)
     {
-        shooterOne.set(val);
-        shooterTwo.set(val);
-        shooterThree.set(val);
-        shooterFour.set(val);
+        //shooterOne.set(val);
+        //shooterTwo.set(val);
+        //shooterThree.set(val);
+        //shooterFour.set(val);
     }
 
 }

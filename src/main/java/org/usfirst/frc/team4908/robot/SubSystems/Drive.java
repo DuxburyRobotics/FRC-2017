@@ -68,7 +68,7 @@ public class Drive implements ISubSystem
         }
 
 
-        if(driveX >= 0.05 || driveRot >= 0.05) // check if out of deadzone
+        if(Math.abs(driveX) >= 0.05 || Math.abs(driveRot) >= 0.05 ) // check if out of deadzone
         {
             // square x value
             if(driveX < 0.0)
@@ -92,6 +92,8 @@ public class Drive implements ISubSystem
 
             ro.setDriveMotors(driveX, driveRot);
         }
+        else
+        	ro.setDriveMotors(0.0,  0.0);
 
     }
 
