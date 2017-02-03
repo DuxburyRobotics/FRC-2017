@@ -13,18 +13,19 @@ public class DriverInput
     private Joystick operatorJoystick = new Joystick(2);
 
 
-    // TODO: Fix these values because they're for sure wrong
 
     // driver input
     public double getDriveX()
     {
-        return driverLeftStick.getRawAxis(0);
+        return driverLeftStick.getRawAxis(1);
     }
 
     public double getDriveRot()
     {
-        return driverRightStick.getRawAxis(1);
+        return driverRightStick.getRawAxis(0);
     }
+
+    public boolean getShifterButton() {return driverLeftStick.getRawButton(0); }
 
     // operator input
     public boolean getShooterButton()

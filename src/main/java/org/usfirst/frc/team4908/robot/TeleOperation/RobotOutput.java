@@ -1,9 +1,7 @@
 package org.usfirst.frc.team4908.robot.TeleOperation;
 
 import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.*;
 
 /**
  * Created by kyleknobloch on 1/24/17,
@@ -23,8 +21,9 @@ public class RobotOutput
     private SpeedController frontRightMotor;
     private SpeedController rearRightMotor;
 
-    private RobotDrive rd;
+    private DoubleSolenoid driveGearSolenoid;
 
+    private RobotDrive rd;
 
     public RobotOutput()
     {
@@ -38,12 +37,31 @@ public class RobotOutput
         frontRightMotor = new CANTalon(2);
         rearRightMotor = new CANTalon(3);
 
+        driveGearSolenoid = new DoubleSolenoid(0, 1);
+
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
     }
 
     public void setDriveMotors(double x, double r)
     {
         rd.arcadeDrive(x, r);
+    }
+
+    public void setHighGear(boolean b)
+    {
+        // if b is true, set to high gear
+        if(b)
+        {
+            driveGearSolenoid.set(DoubleSolenoid.Value.kForward);
+        }
+        else if (!b)
+        {
+            driveGearSolenoid.set(DoubleSolenoid.Value.kReverse);
+        }
+        else
+        {
+            driveGearSolenoid.set(DoubleSolenoid.Value.kOff);
+        }
     }
 
     public void setShooter(double val)

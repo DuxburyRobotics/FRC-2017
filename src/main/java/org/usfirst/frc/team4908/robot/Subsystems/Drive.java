@@ -20,6 +20,10 @@ public class Drive implements ISubsystem
     private double driveX;
     private double driveRot;
 
+    private boolean shifterWasPressed = false;
+    private boolean isLow = true;
+
+
     private RobotOutput ro;
 
     public Drive()
@@ -35,10 +39,61 @@ public class Drive implements ISubsystem
     // TELEOPS
     public void calculate()
     {
-        driveX = di.getDriveX();
-        driveRot = di.getDriveRot();
+        driveX = -di.getDriveX();
+        driveRot = -di.getDriveRot();
 
-        ro.setDriveMotors(driveX, driveRot);
+        // set high gear
+        if(di.getShifterButton() && !shifterWasPressed && isLow)
+        {
+            shifterWasPressed = true;
+            isLow = false;
+
+            ro.setHighGear(true);
+        }
+        else if(!di.getShifterButton())
+        {
+            shifterWasPressed = false;
+        }
+
+        // set low gear
+        if(di.getShifterButton() && !shifterWasPressed && !isLow)
+        {
+            shifterWasPressed = true;
+            isLow = true;
+
+            ro.setHighGear(false);
+        }
+        else if(!di.getShifterButton())
+        {
+            shifterWasPressed = false;
+        }
+
+
+        if(driveX >= 0.05 || driveRot >= 0.05) // check if out of deadzone
+        {
+            // square x value
+            if(driveX < 0.0)
+            {
+                driveX = Math.pow(driveX, 2.0)*-1.0;
+            }
+            else if(driveX > 0.0)
+            {
+                driveX = Math.pow(driveX, 2.0);
+            }
+
+            // square rot values
+            if(driveRot < 0.0)
+            {
+                driveRot = Math.pow(driveRot, 2.0)*-1.0;
+            }
+            else if (driveRot > 0.0)
+            {
+                driveRot = Math.pow(driveRot, 2.0);
+            }
+
+            ro.setDriveMotors(driveX, driveRot);
+        }
+
     }
 
     public void disable()
