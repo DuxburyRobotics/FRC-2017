@@ -1,6 +1,6 @@
 Classes:
-  - ISubSystem
-    - The following classes all use the ISubsystem interface. This means they all have a calculate() and a disable() command inside of them. 
+- ISubSystem
+  - The following classes all use the ISubsystem interface. This means they all have a calculate() and a disable() command inside of them. 
     - Climb
     - Drive
     - Intake
