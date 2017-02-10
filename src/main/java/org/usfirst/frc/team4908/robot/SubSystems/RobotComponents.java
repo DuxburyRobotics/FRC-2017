@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4908.robot.SubSystems;
 
 import java.util.ArrayList;
+import org.usfirst.frc.team4908.robot.Input.*;
 
 /**
  * @author Bill
@@ -11,20 +12,24 @@ public class RobotComponents
 {
     private ArrayList<ISubSystem> subsystems;
     private RobotOutput ro;
+    private SensorInput si;
+    private DriverInput di;
 
     public RobotComponents()
     {
         subsystems = new ArrayList<ISubSystem>();
 
         ro = new RobotOutput();
+        si = new SensorInput();
+        di = new DriverInput();
 
         /**
          * DO NOT CHANGE THIS ORDER
          */
-        subsystems.add(new Drive(ro));
-        subsystems.add(new Climb(ro));
-        subsystems.add(new Intake(ro));
-        subsystems.add(new Shooter(ro));
+        subsystems.add(new Drive(di, si, ro));
+        subsystems.add(new Climb(di, si, ro));
+        subsystems.add(new Intake(di, si, ro));
+        subsystems.add(new Shooter(di, si, ro));
         /**
          * DO NOT CHANGE THIS ORDER
          */

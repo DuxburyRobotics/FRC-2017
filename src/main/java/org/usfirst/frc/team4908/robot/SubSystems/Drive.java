@@ -25,10 +25,10 @@ public class Drive implements ISubSystem
 
     private RobotOutput ro;
 
-    public Drive(RobotOutput ro)
+    public Drive(DriverInput di, SensorInput si, RobotOutput ro)
     {
-        di = new DriverInput();
-        si = new SensorInput();
+        this.di = di;
+        this.si = si;
         this.ro = ro;
 
         driveX = 0.0;
