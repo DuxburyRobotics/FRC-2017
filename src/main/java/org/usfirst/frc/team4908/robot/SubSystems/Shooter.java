@@ -9,20 +9,24 @@ import org.usfirst.frc.team4908.robot.Util.DuxPID;
 public class Shooter implements ISubSystem
 {
     private double targetRPM;
-    public DriverInput di;
-    public RobotOutput ro;
-    public SensorInput si;
-    public DuxPID PID;
+
+    private DriverInput di;
+    private RobotOutput ro;
+    private SensorInput si;
+
+    private DuxPID PID;
 
     private double setValue;
 
-    public Shooter(RobotOutput ro)
+    public Shooter(DriverInput di, SensorInput si, RobotOutput ro)
     {
+        this.di = di;
+        this.si = si;
         this.ro = ro;
-        di = new DriverInput();
-        si = new SensorInput();
+
         PID = new DuxPID(0.0, 0.0, 0.0, 0.02);
         setValue = 0.0;
+
     }
 
     public void calculate()
@@ -52,7 +56,7 @@ public class Shooter implements ISubSystem
 
     /**
      * Used for auto, will turn on the shooter at the target RPM.
-     * @param targetRPM
+     * @param targetRPM the target RPM to run at.
      */
     public void activate(int targetRPM) {
         PID.reset();
