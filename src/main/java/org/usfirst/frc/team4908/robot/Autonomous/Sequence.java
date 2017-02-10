@@ -10,7 +10,7 @@ import java.util.Scanner;
 /**
  *
  */
-public class InstructionSet {
+public class Sequence {
 
     private ArrayList<ICommand> instructionsList;
     private boolean isRunnable;
@@ -20,7 +20,7 @@ public class InstructionSet {
     /**
      * This construction will use a file to get the instructions
      */
-    public InstructionSet(File file, RobotComponents rc) {
+    public Sequence(File file, RobotComponents rc) {
         this.rc = rc;
         importFile(file);
 
@@ -30,7 +30,7 @@ public class InstructionSet {
      * This constructor will be the default one and will wait until you add a commnad to make runnable
      */
 
-    public InstructionSet(RobotComponents rc) {
+    public Sequence(RobotComponents rc) {
         this.rc = rc;
         isRunnable = false;
 
@@ -56,6 +56,7 @@ public class InstructionSet {
         //if this is not runnable we set it here.
         if (scanner == null)    //This means that this is not a valid option for a
             isRunnable = false;
+
         else {                  //Okay, so the scanner has _something_ so we will work with it.
             isRunnable = true;
 
@@ -81,7 +82,7 @@ public class InstructionSet {
 
         instructionsList.add(command);
 
-        if (!isRunnable)    //we now know that a instruction was added and we can more on in life!
+        if (!isRunnable)    //we now know that a instruction was added and we can move on in life!
             isRunnable = true;
     }
 
@@ -107,7 +108,7 @@ public class InstructionSet {
 
 
     public void runCommand(int index) {
-        instructionsList.get(index).start();
+        instructionsList.get(index).init();
     }
 
     public void updateCommand(int index) {
@@ -122,6 +123,9 @@ public class InstructionSet {
         return instructionsList.get(index);
     }
 
+    public RobotComponents getRc() {
+        return rc;
+    }
 
     //endregion
 

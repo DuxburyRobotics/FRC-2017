@@ -10,13 +10,13 @@ import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
  */
 public class AutoDrive extends ICommand {
 
-    public AutoDrive(String type, RobotComponents rc) {
+    public AutoDrive(String type, RobotComponents rc, double distance) {
         super(type, rc);
     }
 
     //region Auto Code
 
-    public void start() {
+    public void init() {
 
     }
 

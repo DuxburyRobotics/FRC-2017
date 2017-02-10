@@ -17,7 +17,7 @@ public class AutoIntake extends ICommand{
 
     //region Auto Code
 
-    public void start() {
+    public void init() {
 
     }
 

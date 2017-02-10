@@ -18,7 +18,7 @@ public class AutoShooter extends ICommand {
     //region Auto Code
 
     @Override
-    public void start() {
+    public void init() {
         shooter = getRc().getShooter();
         //TODO: Vision code will go here
     }

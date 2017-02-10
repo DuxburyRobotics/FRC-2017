@@ -40,7 +40,7 @@ public class Robot extends IterativeRobot
 
     //region Autonomous
     /**
-     * This function is called to start the autonomous code
+     * This function is called to init the autonomous code
      */
     public void autonomousInit()
     {

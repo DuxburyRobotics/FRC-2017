@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.Autonomous;
 
+import org.usfirst.frc.team4908.robot.Autonomous.Commands.AutoDrive;
+import org.usfirst.frc.team4908.robot.Autonomous.Commands.AutoShooter;
 import org.usfirst.frc.team4908.robot.Autonomous.Commands.ICommand;
 import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
@@ -10,15 +12,15 @@ import java.util.ArrayList;
  */
 public class AutoCommand {
 
-    private int instructionSet;
+    private int instructionSequence;
     private RobotComponents rc;
     private int commandNumber;
     private boolean firstRun;
-    private ArrayList<InstructionSet> autoInstructionList;
-    private InstructionSet theSet;
+    private ArrayList<Sequence> autoInstructionList;
+    private Sequence sequence;
 
 
-    //TODO: Figure out a way to set theSet from the DuxDash
+    //TODO: Figure out a way to set sequence from the DuxDash
 
     //region Constructors
 
@@ -28,11 +30,11 @@ public class AutoCommand {
      * @param rc the Class that controls the robot.
      */
     public AutoCommand(RobotComponents rc) {
-        this.instructionSet = 0;
+        this.instructionSequence = 0;
         this.commandNumber = 0;
         this.firstRun = true;
         this.rc = rc;
-        this.autoInstructionList = new ArrayList<InstructionSet>();
+        this.autoInstructionList = new ArrayList<Sequence>();
         generateDefaultAuto();
     }
 
@@ -55,11 +57,11 @@ public class AutoCommand {
         if(firstRun) {
             firstRun = false;
 
-            if (theSet == null && instructionSet >= 0) //if theSet was empty and there is a instructionSet we want to use
-                theSet = autoInstructionList.get(instructionSet);
+            if (sequence == null && instructionSequence >= 0) //if sequence was empty and there is a instructionSequence we want to use
+                sequence = autoInstructionList.get(instructionSequence);
 
             else {
-                theSet = autoInstructionList.get(0); //just get the default one that does nothing since there was nothing set to use
+                sequence = autoInstructionList.get(1); //just get the default one that does nothing since there was nothing set to use
                                                      //This means that Auto did not know what to run and is using default one.
                 System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
                         "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n");
@@ -67,16 +69,16 @@ public class AutoCommand {
             } //else
         } //if
 
-        if(theSet.getCommand(commandNumber).isFirstRun())
-            theSet.getCommand(commandNumber).firstRun(); //set command firstRun to false and run Start
+        if(sequence.getCommand(commandNumber).isFirstRun())
+            sequence.getCommand(commandNumber).firstRun(); //set command firstRun to false and run init
 
 
         //now run update
-        theSet.getCommand(commandNumber).update();
+        sequence.getCommand(commandNumber).update();
 
         //check if finished
-        if (theSet.getCommand(commandNumber).isFinished()) {
-            theSet.getCommand(commandNumber).finish(); //call finish function to end command
+        if (sequence.getCommand(commandNumber).isFinished()) {
+            sequence.getCommand(commandNumber).finish(); //call finish function to end command
             commandNumber++; //move to next command
         }
 
@@ -96,7 +98,7 @@ public class AutoCommand {
          * None.
          */
 
-        InstructionSet default0 = new InstructionSet(rc);
+        Sequence default0 = new Sequence(rc);
 
         default0.addInstruction(new ICommand("do_Nothing", rc) {
             @Override
@@ -104,20 +106,37 @@ public class AutoCommand {
                 //do nothing
             }
         });
+
+        /**
+         * index: 1
+         *
+         * Actions:
+         * drive "5"
+         */
+        Sequence drive = new Sequence(rc);
+        drive.addInstruction(new AutoDrive("drive", rc, 5.0));
+
+
+        /**
+         * Add the Sequences into the araw
+         */
+        autoInstructionList.add(default0);
+        autoInstructionList.add(drive);
     }
 
 
     /**
-     * This must be called before we start auto.
+     * This must be called before we init auto.
      */
-    public void setInstructionSet(int instructionSet) {
-        this.instructionSet = instructionSet;
-        this.theSet = autoInstructionList.get(instructionSet);
+    public void setInstructionSequence(int instructionSequence) {
+        this.instructionSequence = instructionSequence;
+        this.sequence = autoInstructionList.get(instructionSequence);
+
     }
 
-    public void setInstructionSet(InstructionSet instructionSet) {
-        this.theSet = instructionSet;
-        this.instructionSet = -1; //this value is not useful as the theSet was not in the array list in the first place.
+    public void setInstructionSet(Sequence instructionSet) {
+        this.sequence = instructionSet;
+        this.instructionSequence = -1; //this value is not useful as the sequence was not in the array list in the first place.
 
     }
 
@@ -130,7 +149,7 @@ public class AutoCommand {
 
         /*
     public AutoCommand() {
-        this.instructionSet = 0;
+        this.instructionSequence = 0;
         this.commandNumber = 0;
         this.firstRun = true;
         this.autoInstructionList = new ArrayList<InstructionSet>();
@@ -148,13 +167,13 @@ public class AutoCommand {
      public void periodic() {
      if (firstRun) {
      lastTime = System.nanoTime();
-     theSet = autoInstructionList.get(instructionSet);
+     sequence = autoInstructionList.get(instructionSequence);
      commandNumber = 0;
      firstRun = false;
      }
 
-     theSet.runCommand(commandNumber);
-     incrementTime(theSet.getCommand(commandNumber).getWaitTime());
+     sequence.runCommand(commandNumber);
+     incrementTime(sequence.getCommand(commandNumber).getWaitTime());
 
 
      } */

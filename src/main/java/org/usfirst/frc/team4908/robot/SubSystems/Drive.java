@@ -99,7 +99,7 @@ public class Drive implements ISubSystem
 
     public void disable()
     {
-
+        ro.setDriveMotors(0.0,  0.0);
     }
 
 

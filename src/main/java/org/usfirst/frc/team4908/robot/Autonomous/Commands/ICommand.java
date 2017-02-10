@@ -24,7 +24,7 @@ public abstract class ICommand {
 
     //region Auto Code
 
-    public void start() {
+    public void init() {
 
     }
 
@@ -62,7 +62,7 @@ public abstract class ICommand {
 
     public void firstRun() {
         isFirstRun = false;
-        start();
+        init();
     }
 
     public RobotComponents getRc() {
