@@ -21,6 +21,7 @@ public class Climb implements ISubSystem
         this.di = di;
         this.si = si;
         this.ro = ro;
+
     }
 
 
@@ -29,6 +30,14 @@ public class Climb implements ISubSystem
     }
 
     public void disable() {
+
+    }
+
+
+    /**
+     * Start the climbing until finished.
+     */
+    public void startClimb() {
 
     }
 

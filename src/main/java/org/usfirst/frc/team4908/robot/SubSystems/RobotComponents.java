@@ -86,7 +86,4 @@ public class RobotComponents
     public Intake getIntake() { return (Intake) subsystems.get(2); }
     public Shooter getShooter() { return (Shooter) subsystems.get(3); }
 
-    public RobotOutput getRo() {
-        return ro;
-    }
 }
