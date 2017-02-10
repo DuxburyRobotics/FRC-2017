@@ -19,6 +19,9 @@ public class AutoCommand {
     private ArrayList<Sequence> autoInstructionList;
     private Sequence sequence;
 
+    double startTime;
+    double time;
+
 
     //TODO: Figure out a way to set sequence from the DuxDash
 
@@ -30,7 +33,7 @@ public class AutoCommand {
      * @param rc the Class that controls the robot.
      */
     public AutoCommand(RobotComponents rc) {
-        this.instructionSequence = 0;
+        this.instructionSequence = 1;
         this.commandNumber = 0;
         this.firstRun = true;
         this.rc = rc;
@@ -40,7 +43,9 @@ public class AutoCommand {
 
     //endregion
 
-    public void init() {
+    public void init()
+    {
+        startTime = System.currentTimeMillis()/1000.0;
         this.firstRun = true;
     }
 
@@ -74,7 +79,7 @@ public class AutoCommand {
 
 
         //now run update
-        sequence.getCommand(commandNumber).update();
+        sequence.getCommand(commandNumber).update(System.currentTimeMillis()/1000.0-startTime);
 
         //check if finished
         if (sequence.getCommand(commandNumber).isFinished()) {

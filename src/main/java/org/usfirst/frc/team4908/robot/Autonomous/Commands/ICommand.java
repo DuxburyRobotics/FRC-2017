@@ -28,7 +28,7 @@ public abstract class ICommand {
 
     }
 
-    public void update() {
+    public void update(double time) {
 
     }
 

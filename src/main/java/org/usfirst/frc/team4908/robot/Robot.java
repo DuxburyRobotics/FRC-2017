@@ -32,7 +32,7 @@ public class Robot extends IterativeRobot
     public void robotInit()
     {
         robotComponents = new RobotComponents();
-        //autoCommand = new AutoCommand(robotComponents);
+        autoCommand = new AutoCommand(robotComponents);
         duxDash = new DuxDash();
 
     }
@@ -45,9 +45,6 @@ public class Robot extends IterativeRobot
     public void autonomousInit()
     {
         autoCommand.init();
-
-
-
     }
 
 
