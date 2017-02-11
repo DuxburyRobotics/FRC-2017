@@ -23,6 +23,8 @@ public class Sequence {
     public Sequence(File file, RobotComponents rc) {
         this.rc = rc;
         importFile(file);
+        
+        instructionsList = new ArrayList();
 
     }
 
@@ -34,6 +36,7 @@ public class Sequence {
         this.rc = rc;
         isRunnable = false;
 
+        instructionsList = new ArrayList();
     }
 
     //region Commands

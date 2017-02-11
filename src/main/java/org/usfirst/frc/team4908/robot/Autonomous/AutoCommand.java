@@ -119,7 +119,7 @@ public class AutoCommand {
          * drive "5"
          */
         Sequence drive = new Sequence(rc);
-        drive.addInstruction(new AutoDrive("drive", rc, 5.0));
+        drive.addInstruction(new AutoDrive("drive", rc, 20.0));
 
 
         /**

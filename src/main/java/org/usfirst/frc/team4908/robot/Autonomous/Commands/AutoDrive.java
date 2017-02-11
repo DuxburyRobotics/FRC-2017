@@ -30,6 +30,8 @@ public class AutoDrive extends ICommand {
         super(type, rc);
         this.rc = rc;
         this.distance = distance;
+    
+        setpoint = new Setpoint();
     }
 
     //region Auto Code
@@ -45,8 +47,9 @@ public class AutoDrive extends ICommand {
         setpoint.velocity = 0;
         setpoint.position = 0;
 
-        rc.getDrive().getRo().setHighGear(true);
+        rc.getDrive().getRo().setHighGear();
 
+        System.out.println("HEREHEREHERE");
     }
 
     public void update(double time)
@@ -57,6 +60,14 @@ public class AutoDrive extends ICommand {
 
 
         rc.getDrive().getRo().setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration, 0.0);
+    
+        //System.out.println("here " + setpoint.velocity + " time: " + time + " " + k1 + " " + kT + " " + k2 + " " +k3);
+    } 
+    
+    
+    public boolean isFinished()
+    {
+    	return false;
     }
 
     public boolean finish()

@@ -18,7 +18,8 @@ public abstract class ICommand {
         this.rc = rc;
         this.type = type;
         this.isFinished = false;
-        this.isFinished = true;
+        this.isFirstRun = true;
+        
 
     }
 
