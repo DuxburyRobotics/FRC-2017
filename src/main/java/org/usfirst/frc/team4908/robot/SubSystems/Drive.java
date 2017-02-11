@@ -47,7 +47,7 @@ public class Drive implements ISubSystem
             shifterWasPressed = true;
             isLow = false;
 
-            ro.setHighGear(true);
+            ro.setHighGear();
         }
         else if(!di.getShifterButton())
         {
@@ -60,7 +60,7 @@ public class Drive implements ISubSystem
             shifterWasPressed = true;
             isLow = true;
 
-            ro.setHighGear(false);
+            ro.setLowGear();
         }
         else if(!di.getShifterButton())
         {

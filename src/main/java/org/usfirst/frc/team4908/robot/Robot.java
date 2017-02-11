@@ -34,7 +34,6 @@ public class Robot extends IterativeRobot
         robotComponents = new RobotComponents();
         autoCommand = new AutoCommand(robotComponents);
         duxDash = new DuxDash();
-
     }
 
 

@@ -32,4 +32,24 @@ public class DriverInput
     {
         return false; //operatorJoystick.getRawButton(1);
     }
+
+    public boolean getClimbButton()
+    {
+        return false; // operatorJoystick.getRawButton(2);
+    }
+
+    public boolean getIntakeToggleButton()
+    {
+        return false; // operatorJoystick.getRawButton(3);
+    }
+
+    public boolean getIntakeEnableButton()
+    {
+        return false; //operatorJoystick.getRawButton(4);
+    }
+
+    public boolean getGearButton()
+    {
+        return false; //operatorJoystick.getRawButton(5);
+    }
 }
