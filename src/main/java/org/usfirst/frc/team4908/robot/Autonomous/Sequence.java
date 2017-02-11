@@ -111,9 +111,11 @@ public class Sequence {
         instructionsList.get(index).init();
     }
 
+    /*
     public void updateCommand(int index) {
         instructionsList.get(index).update();
     }
+    */
 
     public void finished(int index) {
         instructionsList.get(index).finish();

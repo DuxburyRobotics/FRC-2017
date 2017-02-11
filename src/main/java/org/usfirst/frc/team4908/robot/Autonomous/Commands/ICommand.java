@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
 import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
+import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
 
 /**
  *

@@ -13,6 +13,8 @@ public class AutoDrive extends ICommand {
 
     double distance;
 
+    private RobotComponents rc;
+
     private double kT;
     private double k1;
     private double k2;
@@ -23,14 +25,11 @@ public class AutoDrive extends ICommand {
 
     Setpoint setpoint;
 
-    RobotOutput ro;
-
-
     public AutoDrive(String type, RobotComponents rc, double distance)
     {
         super(type, rc);
+        this.rc = rc;
         this.distance = distance;
-        ro = new RobotOutput();
     }
 
     //region Auto Code
@@ -46,7 +45,7 @@ public class AutoDrive extends ICommand {
         setpoint.velocity = 0;
         setpoint.position = 0;
 
-        ro.setHighGear(true);
+        rc.getDrive().getRo().setHighGear(true);
 
     }
 
@@ -57,7 +56,7 @@ public class AutoDrive extends ICommand {
         setpoint.position = (k2*(time-(k3*Math.sin(k1*time))));
 
 
-        ro.setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration, 0.0);
+        rc.getDrive().getRo().setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration, 0.0);
     }
 
     public boolean finish()

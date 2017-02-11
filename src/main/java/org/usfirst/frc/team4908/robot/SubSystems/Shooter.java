@@ -29,14 +29,15 @@ public class Shooter implements ISubSystem
 
     }
 
-    public void calculate()
-    {
-
-        targetRPM = 4908; // get value from vision tracking
-
-        if(di.getShooterButton())
+        public void calculate()
         {
-            PID.reset();
+            // TODO: Shift to low gear, add a spin up switch or some shit with SD
+
+            targetRPM = 4908; // get value from vision tracking
+
+            if(di.getShooterButton())
+            {
+                PID.reset();
             PID.setSetPoint(targetRPM);
             setValue = PID.calculate(si.getShooterSpeed());
         }
@@ -65,6 +66,11 @@ public class Shooter implements ISubSystem
 
     }
 
+
+    public RobotOutput getRo()
+    {
+        return ro;
+    }
 
 
 }

@@ -102,6 +102,10 @@ public class Drive implements ISubSystem
         ro.setDriveMotors(0.0,  0.0);
     }
 
+    public RobotOutput getRo()
+    {
+        return ro;
+    }
 
     // COMMANDS
     public void driveToDistance()

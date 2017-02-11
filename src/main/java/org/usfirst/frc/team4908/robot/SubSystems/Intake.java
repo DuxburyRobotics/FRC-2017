@@ -42,5 +42,11 @@ public class Intake implements ISubSystem
 
     }
 
+
+    public RobotOutput getRo()
+    {
+        return ro;
+    }
+
 }
 

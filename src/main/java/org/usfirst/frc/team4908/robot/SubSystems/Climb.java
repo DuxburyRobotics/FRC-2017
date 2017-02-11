@@ -33,6 +33,11 @@ public class Climb implements ISubSystem
 
     }
 
+    public RobotOutput getRo()
+    {
+        return ro;
+    }
+
 
     /**
      * Start the climbing until finished.
