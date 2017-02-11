@@ -2,6 +2,7 @@ package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
+import org.usfirst.frc.team4908.robot.Util.SetPoint;
 
 /**
  * Created by kyleknobloch on 1/26/17,
