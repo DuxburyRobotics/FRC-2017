@@ -18,8 +18,8 @@ public class AutoDrive extends ICommand {
     private double k2;
     private double k3;
 
-    private double kV = 1/19.0;
-    private double kA = 0.0;
+    private double kV = 1.0/19.0;
+    private double kA = 1.0/19.0;
 
     private SetPoint setpoint;
 
@@ -57,7 +57,7 @@ public class AutoDrive extends ICommand {
 
         ro.setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration, 0.0);
     
-        //System.out.println("here " + setpoint.velocity + " time: " + time + " " + k1 + " " + kT + " " + k2 + " " +k3);
+        System.out.println(setpoint.velocity + " \t" + (1.0/19.0)*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));
     } 
     
     
