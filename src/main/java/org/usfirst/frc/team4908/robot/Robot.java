@@ -4,7 +4,8 @@ package org.usfirst.frc.team4908.robot;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.usfirst.frc.team4908.robot.Autonomous.AutoCommand;
 import org.usfirst.frc.team4908.robot.DuxDashboard.DuxDash;
-import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
+import org.usfirst.frc.team4908.robot.Input.*;
+import org.usfirst.frc.team4908.robot.SubSystems.*;
 
 
 /**
@@ -17,6 +18,11 @@ import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 
 public class Robot extends IterativeRobot
 {
+
+    private RobotOutput robotOutput;
+    private SensorInput sensorInput;
+    private DriverInput driverInput;
+
     private RobotComponents robotComponents;
     private AutoCommand autoCommand;
     private DuxDash duxDash;
@@ -31,9 +37,15 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
-        robotComponents = new RobotComponents();
-        autoCommand = new AutoCommand(robotComponents);
+        robotOutput = new RobotOutput();
+        sensorInput = new SensorInput();
+        driverInput = new DriverInput();
+
+
+        robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput);
+        autoCommand = new AutoCommand(robotOutput, sensorInput);
         duxDash = new DuxDash();
+
     }
 
 

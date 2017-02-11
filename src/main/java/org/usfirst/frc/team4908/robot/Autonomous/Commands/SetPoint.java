@@ -4,9 +4,11 @@ package org.usfirst.frc.team4908.robot.Autonomous.Commands;
  * @author Siggy
  *         $
  */
-public class Setpoint
+public class SetPoint
 {
-    public double acceleration, velocity, position;
+    public double acceleration;
+    public double velocity;
+    public double position;
 
     public String toString()
     {

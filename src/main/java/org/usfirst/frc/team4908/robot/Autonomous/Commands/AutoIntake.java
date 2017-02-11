@@ -1,5 +1,6 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
+import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.SubSystems.*;
 
 /**
@@ -11,8 +12,8 @@ import org.usfirst.frc.team4908.robot.SubSystems.*;
 public class AutoIntake extends ICommand{
 
 
-    public AutoIntake(String type, RobotComponents rc) {
-        super(type, rc);
+    public AutoIntake(String type, RobotOutput ro, SensorInput si) {
+        super(type, ro, si);
     }
 
     //region Auto Code

@@ -11,17 +11,10 @@ import org.usfirst.frc.team4908.robot.Input.*;
 public class RobotComponents
 {
     private ArrayList<ISubSystem> subsystems;
-    private RobotOutput ro;
-    private SensorInput si;
-    private DriverInput di;
 
-    public RobotComponents()
+    public RobotComponents(RobotOutput ro, SensorInput si, DriverInput di)
     {
         subsystems = new ArrayList<ISubSystem>();
-
-        ro = new RobotOutput();
-        si = new SensorInput();
-        di = new DriverInput();
 
         /**
          * DO NOT CHANGE THIS ORDER

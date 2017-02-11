@@ -1,16 +1,19 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
+import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.SubSystems.*;
+import org.usfirst.frc.team4908.robot.Util.DuxPID;
 
 /**
  *
  */
 public class AutoShooter extends ICommand {
 
-    private Shooter shooter;
+    private DuxPID PID;
+    private double setValue;
 
-    public AutoShooter(RobotComponents rc) {
-        super("Shooter", rc);
+    public AutoShooter(RobotOutput ro, SensorInput si) {
+        super("Shooter", ro, si);
 
     }
 
@@ -19,31 +22,36 @@ public class AutoShooter extends ICommand {
 
     @Override
     public void init() {
-        shooter = getRc().getShooter();
         //TODO: Vision code will go here
+        PID = new DuxPID(0.0, 0.0, 0.0, 0.02);
+        setValue = 0;
+
     }
 
     public void update() {
-        boolean keepGoing = true; //TODO: Change this to some weird vision stuff!
 
-        if (keepGoing) //some vision shit goes right here that's really cool bro.
-            shooter.activate(4800);
-        else
-            hasFinished();
+        PID.reset();
+        PID.setSetPoint(4900);
+        setValue = PID.calculate(si.getShooterSpeed());
+        ro.setShooter(setValue);
+
+
+
     }
 
     public void update(int targetRPM) {
-        shooter.activate(targetRPM);
+        PID.reset();
+        PID.setSetPoint(targetRPM);
+        setValue = PID.calculate(si.getShooterSpeed());
+        ro.setShooter(setValue);
+
     }
 
     public boolean finish() {
-        if (isFinished()) {
-            shooter.disable();
-            super.hasFinished();
-            return super.finish();
-        } else
-            return false;
+        hasFinished();
 
+        ro.setShooter(0);
+        return true;
     }
 
     //endregion
