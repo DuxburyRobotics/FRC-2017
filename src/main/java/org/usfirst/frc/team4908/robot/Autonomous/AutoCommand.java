@@ -32,7 +32,7 @@ public class AutoCommand {
      * so that you don't anciently have two in the Robot (because that would be weird).
      */
     public AutoCommand(RobotOutput ro, SensorInput si) {
-        this.instructionSequence = 1;
+        this.instructionSequence = 0;
         this.commandNumber = 0;
         this.firstRun = true;
         this.ro = ro;
@@ -145,7 +145,7 @@ public class AutoCommand {
 
     public void setInstructionSet(Sequence instructionSet) {
         this.sequence = instructionSet;
-        this.instructionSequence = -1; //this value is not useful as the sequence was not in the array list in the first place.
+        this.instructionSequence = 0; //this value is not useful as the sequence was not in the array list in the first place.
 
     }
 

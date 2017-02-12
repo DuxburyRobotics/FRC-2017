@@ -30,7 +30,7 @@ public class DriverInput
     // operator input
     public boolean getShooterButton()
     {
-        return false; //operatorJoystick.getRawButton(1);
+        return driverRightStick.getRawButton(1);
     }
 
     public boolean getClimbButton()

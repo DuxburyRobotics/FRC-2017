@@ -37,9 +37,11 @@ public class Shooter implements ISubSystem
 
             if(di.getShooterButton())
             {
-                PID.reset();
-                PID.setSetPoint(targetRPM);
-                setValue = PID.calculate(si.getShooterSpeed());
+//                PID.reset();
+//                PID.setSetPoint(targetRPM);
+//                setValue = PID.calculate(si.getShooterSpeed());
+            	
+            	setValue =0.1;
             }
             else if(!di.getShooterButton())
             {

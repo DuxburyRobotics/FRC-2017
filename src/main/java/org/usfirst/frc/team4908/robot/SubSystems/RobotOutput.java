@@ -52,10 +52,10 @@ public class RobotOutput
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 
         // SHOOTER SUBSYSTEM ===================================================
-        // shooterOne = new VictorSP(0);
-        // shooterTwo = new VictorSP(1);
-        // shooterThree = new VictorSP(2);
-        // shooterFour = new VictorSP(3);
+        shooterOne = new VictorSP(0);
+        shooterTwo = new VictorSP(1);
+        shooterThree = new VictorSP(2);
+        shooterFour = new VictorSP(3);
 
         // shooterHoodSolenoid = new DoubleSolenoid(-1, -1);
 
@@ -90,10 +90,10 @@ public class RobotOutput
     // SHOOTER SUBSYSTEM ===================================================
     public void setShooter(double val)
     {
-        //shooterOne.set(val);
-        //shooterTwo.set(val);
-        //shooterThree.set(val);
-        //shooterFour.set(val);
+        shooterOne.set(val);
+        shooterTwo.set(val);
+        shooterThree.set(-val);
+        shooterFour.set(-val);
     }
 
     public void setShooterHood()
