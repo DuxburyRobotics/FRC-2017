@@ -21,14 +21,18 @@ public class DuxPID
     private double calcI;
     private double calcD;
 
+
+    private double maxMotorValue;
+
     private double calcValue;
 
-    public DuxPID(double p, double i, double d, double e)
+    public DuxPID(double p, double i, double d, double e, double m)
     {
         this.kP = p;
         this.kI = i;
         this.kD = d;
         this.kEpsilon = e;
+        this.maxMotorValue = m;
 
         this.setPoint = 0.0;
         this.error = 0.0;
@@ -45,15 +49,30 @@ public class DuxPID
 
         calcI = kI * errorSum;
 
-        calcD = kD * lastError - error;
+        calcD = kD * (error - lastError);
 
-        PIDsum = calcP + calcI + calcD;
+        PIDsum = calcP + calcI + calcD; // value is still in RPM's not motor values
 
-        return PIDsum;
+        isDone(error);
+
+        lastError = error;
+
+        return convertMotors(PIDsum); // changes to motor values
     }
 
-    public double convertMotors(double value) {
-        return 0.0;
+    public boolean isDone(double error)
+    {
+        if(error <= kEpsilon)
+            return true;
+        else
+            return false;
+    }
+
+    public double convertMotors(double value)
+    {
+        value = (value/maxMotorValue);
+
+        return value;
     }
 
     public void setSetPoint(double setPoint)
@@ -65,5 +84,17 @@ public class DuxPID
     {
         error = 0.0;
         errorSum = 0.0;
+        lastError = 0.0;
     }
+
+    public void setMaxMotorValue(double maxMotorValue)
+    {
+        this.maxMotorValue = maxMotorValue;
+    }
+
+    public double getMaxMotorValue()
+    {
+        return maxMotorValue;
+    }
+
 }

@@ -18,35 +18,85 @@ public class Shooter implements ISubSystem
 
     private double setValue;
 
+    private boolean isDown;
+
+    private boolean wasPressed;
+    private boolean preSpeed;
+
+    private int preSpeedCounter;
+
+    private double preSpeedTarget = 0.5;
+
     public Shooter(DriverInput di, SensorInput si, RobotOutput ro)
     {
         this.di = di;
         this.si = si;
         this.ro = ro;
 
-        PID = new DuxPID(0.0, 0.0, 0.0, 0.02);
+        PID = new DuxPID(0.0, 0.0, 0.0, 0.02, si.getMaxShooterSpeed());
         setValue = 0.0;
 
+        wasPressed = false;
+        preSpeed = false;
+        isDown = false;
+
+        preSpeedCounter = 0;
     }
 
-        public void calculate()
+    public void calculate()
+    {
+        // TODO: Shift to low gear, add a spin up switch or some shit with SD
+
+        targetRPM = 4908; // get value from vision tracking
+
+        isDown = di.getShooterButton();
+
+        if(isDown && !wasPressed) // PRE SPEED START
         {
-            // TODO: Shift to low gear, add a spin up switch or some shit with SD
+            preSpeed = true;
+            wasPressed = true;
 
-            targetRPM = 4908; // get value from vision tracking
+            setValue = 0.0;
+            preSpeedCounter = 0;
+        }
 
-            if(di.getShooterButton())
+        if(isDown && wasPressed && !preSpeed) // MAIN SET LOOP (after pre speed) - i placed this check before the pre speed loop so that it sets the motors to be equal to prespeedtarget once before starting pids
+        {
+
+            setValue = PID.calculate(si.getShooterSpeed());
+        }
+
+        if(isDown && preSpeed && wasPressed) // PRE SPEED LOOP
+        {
+            preSpeedCounter++;
+
+            if (preSpeedCounter >= 5 && setValue <= preSpeedTarget) // increments setvalue
             {
-//                PID.reset();
-//                PID.setSetPoint(targetRPM);
-//                setValue = PID.calculate(si.getShooterSpeed());
-            	
-            	setValue =0.1;
+                setValue += 0.1;
+                preSpeedCounter = 0;
             }
-            else if(!di.getShooterButton())
+
+            if (setValue >= preSpeedTarget) // ends prespeed
             {
-                setValue = 0.0;
+                preSpeed = false;
+                setValue = preSpeedTarget;
+
+                PID.reset();
+                PID.setSetPoint(targetRPM);
             }
+        }
+
+        if(!isDown) // RESET LOOP
+        {
+            preSpeed = false;
+            wasPressed = false;
+            setValue = 0.0;
+        }
+
+        if(si.getMaxShooterSpeed() >= PID.getMaxMotorValue())
+        {
+            PID.setMaxMotorValue(si.getMaxShooterSpeed());
+        }
 
         ro.setShooter(setValue);
     }
