@@ -95,10 +95,14 @@ public class Shooter implements ISubSystem
 
         if(si.getMaxShooterSpeed() >= PID.getMaxMotorValue())
         {
+            System.out.println(si.getMaxShooterSpeed());// DEBUGGGGGG
             PID.setMaxMotorValue(si.getMaxShooterSpeed());
         }
 
         ro.setShooter(setValue);
+
+
+
     }
 
     public void disable() {
