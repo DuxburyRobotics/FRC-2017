@@ -1,7 +1,8 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
-import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
+import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
+import org.usfirst.frc.team4908.robot.Util.SetPoint;
 
 /**
  * Created by kyleknobloch on 1/26/17,
@@ -18,19 +19,16 @@ public class AutoDrive extends ICommand {
     private double k2;
     private double k3;
 
-    private double kV = 1/19.0;
-    private double kA = 0.0;
+    private double kV = 1.0/19.0;
+    private double kA = 1.0/19.0;
 
-    Setpoint setpoint;
+    private SetPoint setpoint;
 
-    RobotOutput ro;
-
-
-    public AutoDrive(String type, RobotComponents rc, double distance)
+    public AutoDrive(String type, RobotOutput ro, SensorInput si, double distance)
     {
-        super(type, rc);
+        super(type, ro, si);
         this.distance = distance;
-        ro = new RobotOutput();
+        setpoint = new SetPoint();
     }
 
     //region Auto Code
@@ -46,8 +44,9 @@ public class AutoDrive extends ICommand {
         setpoint.velocity = 0;
         setpoint.position = 0;
 
-        ro.setHighGear(true);
+        ro.setHighGear();
 
+        System.out.println("HEREHEREHERE");
     }
 
     public void update(double time)
@@ -58,6 +57,14 @@ public class AutoDrive extends ICommand {
 
 
         ro.setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration, 0.0);
+    
+        System.out.println(setpoint.velocity + " \t" + (1.0/19.0)*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));
+    } 
+    
+    
+    public boolean isFinished()
+    {
+    	return false;
     }
 
     public boolean finish()

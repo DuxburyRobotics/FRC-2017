@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
-import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
+import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.SubSystems.*;
 
 /**
  *
@@ -8,16 +9,19 @@ import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
 public abstract class ICommand {
 
     private String type;
-    private RobotComponents rc;
     private boolean isFinished;
     private boolean isFirstRun;
 
+    public RobotOutput ro;
+    public SensorInput si;
 
-    public ICommand(String type, RobotComponents rc){
-        this.rc = rc;
+
+    public ICommand(String type, RobotOutput ro, SensorInput si) {
         this.type = type;
+        this.ro = ro;
+        this.si = si;
         this.isFinished = false;
-        this.isFinished = true;
+        this.isFirstRun = true;
 
     }
 
@@ -65,9 +69,7 @@ public abstract class ICommand {
         init();
     }
 
-    public RobotComponents getRc() {
-        return rc;
-    }
+
 
     //endregion
 

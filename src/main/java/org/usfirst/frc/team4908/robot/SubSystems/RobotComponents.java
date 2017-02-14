@@ -11,17 +11,10 @@ import org.usfirst.frc.team4908.robot.Input.*;
 public class RobotComponents
 {
     private ArrayList<ISubSystem> subsystems;
-    private RobotOutput ro;
-    private SensorInput si;
-    private DriverInput di;
 
-    public RobotComponents()
+    public RobotComponents(RobotOutput ro, SensorInput si, DriverInput di)
     {
         subsystems = new ArrayList<ISubSystem>();
-
-        ro = new RobotOutput();
-        si = new SensorInput();
-        di = new DriverInput();
 
         /**
          * DO NOT CHANGE THIS ORDER
@@ -30,6 +23,7 @@ public class RobotComponents
         subsystems.add(new Climb(di, si, ro));
         subsystems.add(new Intake(di, si, ro));
         subsystems.add(new Shooter(di, si, ro));
+        subsystems.add(new Gear(di, si, ro));
         /**
          * DO NOT CHANGE THIS ORDER
          */
@@ -54,6 +48,8 @@ public class RobotComponents
     /**
      * Individual update and disable commands
      */
+
+    // idk if were ever gonna use the update and disable calls.........
 
     public void updateDrive() {
     subsystems.get(0).calculate();
@@ -85,5 +81,6 @@ public class RobotComponents
     public Climb getClimb() { return (Climb) subsystems.get(1); }
     public Intake getIntake() { return (Intake) subsystems.get(2); }
     public Shooter getShooter() { return (Shooter) subsystems.get(3); }
+    public Gear getGear() {return (Gear) subsystems.get(4); }
 
 }

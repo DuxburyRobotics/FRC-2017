@@ -9,11 +9,7 @@ import edu.wpi.first.wpilibj.*;
  */
 public class RobotOutput
 {
-    private SpeedController shooterOne;
-    private SpeedController shooterTwo;
-    private SpeedController shooterThree;
-    private SpeedController shooterFour;
-
+    // DRIVE SUBSYSTEM =====================================================
     private SpeedController frontLeftMotor;
     private SpeedController rearLeftMotor;
     private SpeedController frontRightMotor;
@@ -23,13 +19,29 @@ public class RobotOutput
 
     private RobotDrive rd;
 
+    // SHOOTER SUBSYSTEM ===================================================
+    private SpeedController shooterOne;
+    private SpeedController shooterTwo;
+    private SpeedController shooterThree;
+    private SpeedController shooterFour;
+
+    private DoubleSolenoid shooterHoodSolenoid;
+
+    // CLIMB SUBSYSTEM ====================================================
+    private SpeedController climbMotor;
+
+    // INTAKE SUBSYSTEM ===================================================
+    private SpeedController intakeMotor;
+
+    private DoubleSolenoid intakeSolenoid;
+
+    // GEAR SUBSYSTEM =====================================================
+
+    private DoubleSolenoid gearSolenoid;
+
     public RobotOutput()
     {
-        //shooterOne = new VictorSP(0);
-        //shooterTwo = new VictorSP(1);
-        //shooterThree = new VictorSP(2);
-        //shooterFour = new VictorSP(3);
-
+        // DRIVE SUBSYSTEM =====================================================
         frontLeftMotor = new CANTalon(2);
         rearLeftMotor = new CANTalon(3);
         frontRightMotor = new CANTalon(1);
@@ -38,36 +50,90 @@ public class RobotOutput
         driveGearSolenoid = new DoubleSolenoid(4, 5);
 
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
+
+        // SHOOTER SUBSYSTEM ===================================================
+        shooterOne = new VictorSP(0);
+        shooterTwo = new VictorSP(1);
+        shooterThree = new VictorSP(2);
+        shooterFour = new VictorSP(3);
+
+        // shooterHoodSolenoid = new DoubleSolenoid(-1, -1);
+
+        // CLIMB SUBSYSTEM ====================================================
+        // climbMotor = new VictorSP(-1);
+
+        // INTAKE SUBSYSTEM ===================================================
+        // intakeMotor = new VictorSP(-1);
+
+        // GEAR SUBSYSTEM =====================================================
+
+        // intakeSolenoid = new DoubleSolenoid(-1, -1);
     }
+
+    // DRIVE SUBSYSTEM =====================================================
 
     public void setDriveMotors(double x, double r)
     {
         rd.arcadeDrive(x, r);
     }
 
-    public void setHighGear(boolean b)
+    public void setHighGear()
     {
-        // if b is true, set to high gear
-        if(b)
-        {
-            driveGearSolenoid.set(DoubleSolenoid.Value.kForward);
-        }
-        else if (!b)
-        {
-            driveGearSolenoid.set(DoubleSolenoid.Value.kReverse);
-        }
-        else
-        {
-            driveGearSolenoid.set(DoubleSolenoid.Value.kOff);
-        }
+        driveGearSolenoid.set(DoubleSolenoid.Value.kForward);
     }
 
+    public void setLowGear()
+    {
+        driveGearSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    // SHOOTER SUBSYSTEM ===================================================
     public void setShooter(double val)
     {
-        //shooterOne.set(val);
-        //shooterTwo.set(val);
-        //shooterThree.set(val);
-        //shooterFour.set(val);
+        shooterOne.set(val);
+        shooterTwo.set(val);
+        shooterThree.set(-val);
+        shooterFour.set(-val);
     }
 
+    public void setShooterHood()
+    {
+
+    }
+
+    // CLIMB SUBSYSTEM ====================================================
+
+    public void setClimbMotor(double val)
+    {
+        //intakeMotor.set(val);
+    }
+
+    // INTAKE SUBSYSTEM ===================================================
+
+    public void deployIntake()
+    {
+        //intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retractIntake()
+    {
+        //intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
+
+    public void setIntakeMotor(double val)
+    {
+        //intakeMotor.set(val);
+    }
+
+    // GEAR SUBSYSTEM =====================================================
+
+    public void deployGear()
+    {
+        //gearSolenoid.set(DoubleSolenoid.Value.kForward);
+    }
+
+    public void retractGear()
+    {
+        //gearSolenoid.set(DoubleSolenoid.Value.kReverse);
+    }
 }

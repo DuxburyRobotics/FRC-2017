@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4908.robot.Autonomous;
 
-import org.usfirst.frc.team4908.robot.Autonomous.Commands.AutoDrive;
-import org.usfirst.frc.team4908.robot.Autonomous.Commands.AutoShooter;
-import org.usfirst.frc.team4908.robot.Autonomous.Commands.ICommand;
-import org.usfirst.frc.team4908.robot.SubSystems.RobotComponents;
-
+import org.usfirst.frc.team4908.robot.Autonomous.Commands.*;
+import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.SubSystems.*;
 import java.util.ArrayList;
 
 /**
@@ -12,15 +10,17 @@ import java.util.ArrayList;
  */
 public class AutoCommand {
 
+    private RobotOutput ro;
+    private SensorInput si;
+
     private int instructionSequence;
-    private RobotComponents rc;
     private int commandNumber;
     private boolean firstRun;
     private ArrayList<Sequence> autoInstructionList;
     private Sequence sequence;
 
-    double startTime;
-    double time;
+    private double startTime;
+    private double time;
 
 
     //TODO: Figure out a way to set sequence from the DuxDash
@@ -30,14 +30,15 @@ public class AutoCommand {
     /**
      * You must ALWAYS pass in the rc or else nothing will move. Make sure it's the one from the Robot class
      * so that you don't anciently have two in the Robot (because that would be weird).
-     * @param rc the Class that controls the robot.
      */
-    public AutoCommand(RobotComponents rc) {
-        this.instructionSequence = 1;
+    public AutoCommand(RobotOutput ro, SensorInput si) {
+        this.instructionSequence = 0;
         this.commandNumber = 0;
         this.firstRun = true;
-        this.rc = rc;
+        this.ro = ro;
+        this.si = si;
         this.autoInstructionList = new ArrayList<Sequence>();
+
         generateDefaultAuto();
     }
 
@@ -63,9 +64,12 @@ public class AutoCommand {
             firstRun = false;
 
             if (sequence == null && instructionSequence >= 0) //if sequence was empty and there is a instructionSequence we want to use
+            {
                 sequence = autoInstructionList.get(instructionSequence);
+                System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
+                System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
 
-            else {
+            } else {
                 sequence = autoInstructionList.get(1); //just get the default one that does nothing since there was nothing set to use
                                                      //This means that Auto did not know what to run and is using default one.
                 System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
@@ -102,24 +106,24 @@ public class AutoCommand {
          * Actions:
          * None.
          */
+        Sequence default0 = new Sequence();
 
-        Sequence default0 = new Sequence(rc);
-
-        default0.addInstruction(new ICommand("do_Nothing", rc) {
+        default0.addInstruction(new ICommand("do_Nothing", ro, si) {
             @Override
             public void firstRun() {
                 //do nothing
             }
         });
 
+
         /**
          * index: 1
          *
          * Actions:
-         * drive "5"
+         * drive "20"
          */
-        Sequence drive = new Sequence(rc);
-        drive.addInstruction(new AutoDrive("drive", rc, 5.0));
+        Sequence drive = new Sequence();
+        drive.addInstruction(new AutoDrive("drive", ro, si, 20.0));
 
 
         /**
@@ -141,12 +145,8 @@ public class AutoCommand {
 
     public void setInstructionSet(Sequence instructionSet) {
         this.sequence = instructionSet;
-        this.instructionSequence = -1; //this value is not useful as the sequence was not in the array list in the first place.
+        this.instructionSequence = 0; //this value is not useful as the sequence was not in the array list in the first place.
 
-    }
-
-    public RobotComponents getRc() {
-        return rc;
     }
 
 
@@ -161,6 +161,44 @@ public class AutoCommand {
 
     }
     */
+
+    /*
+    /**
+     * This will take a text file and turn it into command code for AutoCommand
+
+    public void importFile(File file) {
+        Scanner scanner = null;
+
+
+        try {
+            scanner = new Scanner(file);
+        } catch (Exception e) {
+            System.out.print("When trying to create a InstructionSet,\nThis file did not work. Here's what I can gather. \nFile Path: " + file.getPath() +
+                    "\nAbsolute Path: " + file.getAbsolutePath() +"\nException e: \n" + e);
+        }
+
+
+        //if this is not runnable we set it here.
+        if (scanner == null)    //This means that this is not a valid option for a
+            isRunnable = false;
+
+        else {                  //Okay, so the scanner has _something_ so we will work with it.
+            isRunnable = true;
+
+            while (scanner.hasNextLine()) {     //for each line the while loop runs
+                String working = scanner.nextLine(); //gets the next line
+                ICommand cmd = null;
+                //cmd = new ICommand(0, "");
+
+                //TODO: Dissect the String to a code!
+
+
+                addInstruction(cmd);
+            }
+
+        }
+    }
+     */
 
 
     /**

@@ -16,6 +16,8 @@ public class Climb implements ISubSystem
     private DriverInput di;
     private SensorInput si;
 
+    private double setVal;
+
     public Climb(DriverInput di, SensorInput si, RobotOutput ro)
     {
         this.di = di;
@@ -25,22 +27,36 @@ public class Climb implements ISubSystem
     }
 
 
-    public void calculate() {
+    public void calculate()
+    {
+        if(di.getClimbButton())
+        {
+            if(false) // faster speed after grab...?
+            {
+                setVal = 1.0;
+            }
+            else
+            {
+                setVal = 0.5;
+            }
+        }
+        else
+        {
+            setVal = 0.0;
+        }
+
+        ro.setClimbMotor(setVal);
 
     }
 
-    public void disable() {
+    public void disable()
+    {
+        ro.setClimbMotor(0.0);
 
     }
 
-
-    /**
-     * Start the climbing until finished.
-     */
-    public void startClimb() {
-
+    public RobotOutput getRo()
+    {
+        return ro;
     }
-
-
-
 }

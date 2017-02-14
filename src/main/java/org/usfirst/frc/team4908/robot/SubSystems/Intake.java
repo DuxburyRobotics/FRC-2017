@@ -16,6 +16,10 @@ public class Intake implements ISubSystem
     private DriverInput di;
     private SensorInput si;
 
+    private boolean wasPressed = false;
+
+    private double val;
+
     public Intake(DriverInput di, SensorInput si, RobotOutput ro)
     {
         this.di = di;
@@ -25,21 +29,48 @@ public class Intake implements ISubSystem
     }
 
 
-    public void calculate() {
+    public void calculate()
+    {
+        // intake deploy/retract
+        if(di.getIntakeToggleButton() && !wasPressed && si.getIntakeSwitch())
+        {
+            wasPressed = true;
+
+            ro.deployIntake();
+        }
+        else if(di.getIntakeToggleButton() && !wasPressed && !si.getIntakeSwitch())
+        {
+            wasPressed = true;
+
+            ro.retractIntake();
+        }
+        else if(!di.getShifterButton())
+        {
+            wasPressed = false;
+        }
+
+        // motor values
+        if(di.getIntakeEnableButton())
+        {
+            val = 1.0;
+        }
+        else
+        {
+            val = 0.0;
+        }
+
+        ro.setIntakeMotor(val);
+    }
+
+    public void disable()
+    {
 
     }
 
-    public void disable() {
 
-    }
-
-
-    public void activateIntake() {
-
-    }
-
-    public void dissableIntake() {
-
+    public RobotOutput getRo()
+    {
+        return ro;
     }
 
 }

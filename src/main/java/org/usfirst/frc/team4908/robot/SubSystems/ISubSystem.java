@@ -10,4 +10,6 @@ public interface ISubSystem
     void calculate();
 
     void disable();
+
+    RobotOutput getRo();
 }
