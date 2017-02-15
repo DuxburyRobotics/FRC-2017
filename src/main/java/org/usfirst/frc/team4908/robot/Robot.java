@@ -20,6 +20,12 @@ public class Robot extends IterativeRobot
 
     @Override
     public void teleopInit() {
+        //default values
+
+        double x = 0.0;
+        double y = 0.0;
+        table.putNumber("X Num _time", x);
+        table.putNumber("Y Num _ iteration", y);
 
     }
 
@@ -27,16 +33,18 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {
 
-        double x = 0;
-        double y = 0;
+        double x = 0.0;
+        double y = 0.0;
 
-        while (isOperatorControl() && isEnabled()) {
-            Timer.delay(.25);
-            table.putNumber("X Num _time", x);
-            table.putNumber("Y Num _ iteration", y);
-            x += .25;
-            y += 1; //num iterations
-        }
+        Timer.delay(.25);
+        table.putNumber("X Num _time", x);
+        table.putNumber("Y Num _ iteration", y);
+        x += .25;
+        y += 1; //num iterations
+
+
+        System.out.println("X value:" + table.getNumber("X Num _time", 0.0) + "\nY Value" +
+                table.getNumber("Y Num _ iteration", 0.0));
 
     }
 }
