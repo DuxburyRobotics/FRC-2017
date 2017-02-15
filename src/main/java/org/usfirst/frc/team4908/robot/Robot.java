@@ -1,23 +1,42 @@
 package org.usfirst.frc.team4908.robot;
 
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SpeedController;
-import edu.wpi.first.wpilibj.VictorSP;
+import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.networktables.NetworkTable;
+
 
 public class Robot extends IterativeRobot
 {
-    private SpeedController controller1;
-    private Joystick input;
 
+    private NetworkTable table;
+
+
+    @Override
     public void robotInit()
     {
-        controller1 = new VictorSP(0);
-        input = new Joystick(0);
+        table = NetworkTable.getTable("database");
+
     }
 
+    @Override
+    public void teleopInit() {
+
+    }
+
+    @Override
     public void teleopPeriodic()
     {
-        controller1.set(input.getRawAxis(2)-input.getRawAxis(3));
+
+        double x = 0;
+        double y = 0;
+
+        while (isOperatorControl() && isEnabled()) {
+            Timer.delay(.25);
+            table.putNumber("X Num _time", x);
+            table.putNumber("Y Num _ iteration", y);
+            x += .25;
+            y += 1; //num iterations
+        }
+
     }
 }
