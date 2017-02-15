@@ -25,7 +25,7 @@ public class Shooter implements ISubSystem
 
     private int preSpeedCounter;
 
-    private double preSpeedTarget = 0.5;
+    private double preSpeedTarget = 1.0;
 
     public Shooter(DriverInput di, SensorInput si, RobotOutput ro)
     {
@@ -33,7 +33,7 @@ public class Shooter implements ISubSystem
         this.si = si;
         this.ro = ro;
 
-        PID = new DuxPID(0.0, 0.0, 0.0, 0.02, si.getMaxShooterSpeed());
+        PID = new DuxPID(0.0, 0.0, 0.0, 0.02, 73.0);
         setValue = 0.0;
 
         wasPressed = false;
@@ -47,10 +47,11 @@ public class Shooter implements ISubSystem
     {
         // TODO: Shift to low gear, add a spin up switch or some shit with SD
 
-        targetRPM = 4908; // get value from vision tracking
+        targetRPM = 50.0; // get value from vision tracking
 
         isDown = di.getShooterButton();
 
+        
         if(isDown && !wasPressed) // PRE SPEED START
         {
             preSpeed = true;
@@ -63,7 +64,9 @@ public class Shooter implements ISubSystem
         if(isDown && wasPressed && !preSpeed) // MAIN SET LOOP (after pre speed) - i placed this check before the pre speed loop so that it sets the motors to be equal to prespeedtarget once before starting pids
         {
 
-            setValue = PID.calculate(si.getShooterSpeed());
+            setValue = preSpeedTarget;//PID.calculate(si.getShooterSpeed());
+
+            //System.out.println("spred" + 60.0*si.getShooterSpeed());
         }
 
         if(isDown && preSpeed && wasPressed) // PRE SPEED LOOP
@@ -93,13 +96,16 @@ public class Shooter implements ISubSystem
             setValue = 0.0;
         }
 
-        if(si.getMaxShooterSpeed() >= PID.getMaxMotorValue())
+        //if(si.getMaxShooterSpeed() >= PID.getMaxMotorValue())
         {
-            System.out.println(si.getMaxShooterSpeed());// DEBUGGGGGG
-            PID.setMaxMotorValue(si.getMaxShooterSpeed());
+            System.out.println(si.getShooterSpeed());// DEBUGGGGGG
+            //PID.setMaxMotorValue(si.getMaxShooterSpeed());
         }
+        
+        //System.out.println(si.getShooterSpeed() + "\t\t\t\t" + si.getShooterCount());
+        
 
-        ro.setShooter(setValue);
+        ro.setShooter(-setValue);
 
 
 

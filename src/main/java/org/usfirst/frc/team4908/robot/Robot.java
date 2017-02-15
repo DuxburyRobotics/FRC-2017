@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4908.robot;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import org.usfirst.frc.team4908.robot.Autonomous.AutoCommand;
 import org.usfirst.frc.team4908.robot.DuxDashboard.DuxDash;
@@ -26,6 +27,8 @@ public class Robot extends IterativeRobot
     private RobotComponents robotComponents;
     private AutoCommand autoCommand;
     private DuxDash duxDash;
+    
+    private CameraServer camera;
 
 
     /**
@@ -37,6 +40,11 @@ public class Robot extends IterativeRobot
     @Override
     public void robotInit()
     {
+    	/**
+    	 * http://www.pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+    	 * 
+    	 * ahrs = new AHRS(SerialPort.Port.kMXP); // Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB 
+    	 */
         robotOutput = new RobotOutput();
         sensorInput = new SensorInput();
         driverInput = new DriverInput();

@@ -2,6 +2,7 @@ package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
+import org.usfirst.frc.team4908.robot.Util.DuxPID;
 import org.usfirst.frc.team4908.robot.Util.SetPoint;
 
 /**
@@ -23,12 +24,16 @@ public class AutoDrive extends ICommand {
     private double kA = 1.0/19.0;
 
     private SetPoint setpoint;
+    
+    DuxPID PID;
 
     public AutoDrive(String type, RobotOutput ro, SensorInput si, double distance)
     {
         super(type, ro, si);
         this.distance = distance;
         setpoint = new SetPoint();
+    
+        PID = new DuxPID(0.0, 0.0, 0.0, 0.0, 0.0);
     }
 
     //region Auto Code
@@ -55,8 +60,11 @@ public class AutoDrive extends ICommand {
         setpoint.velocity = (k2*(1-(Math.cos(k1*time))));
         setpoint.position = (k2*(time-(k3*Math.sin(k1*time))));
 
+        PID.setSetPoint(setpoint.position);
 
-        ro.setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration, 0.0);
+        //PID.calc should intake from the SI.encoder for distance. 
+        //tune Ka (higher or lower) 
+        ro.setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration + PID.calculate(0.0), 0.0);
     
         System.out.println(setpoint.velocity + " \t" + (1.0/19.0)*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));
     } 

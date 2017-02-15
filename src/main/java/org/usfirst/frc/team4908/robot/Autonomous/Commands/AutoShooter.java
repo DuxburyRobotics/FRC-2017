@@ -15,6 +15,8 @@ public class AutoShooter extends ICommand {
     public AutoShooter(RobotOutput ro, SensorInput si) {
         super("Shooter", ro, si);
 
+        PID = new DuxPID(0.0, 0.0, 0.0, 0.02, 0.0);
+
     }
 
 
@@ -23,7 +25,6 @@ public class AutoShooter extends ICommand {
     @Override
     public void init() {
         //TODO: Vision code will go here
-        PID = new DuxPID(0.0, 0.0, 0.0, 0.02);
         setValue = 0;
 
     }

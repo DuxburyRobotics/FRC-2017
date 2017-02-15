@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4908.robot.Input;
 
 
+import edu.wpi.first.wpilibj.Counter;
 import edu.wpi.first.wpilibj.CounterBase;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Encoder;
@@ -14,25 +15,42 @@ public class SensorInput
     private Encoder leftEncoder;
     private Encoder rightEncoder;
 
-    private Encoder shooterEncoder;
+    private Counter shooterEncoder;
     private DigitalInput intakeSwitch;
 
     private double maxShooterSpeed;
 
+    private double current;
+    
     public SensorInput()
     {
-        //shooterEncoder = new Encoder(0, 1, false, CounterBase.EncodingType.k4X);
+        shooterEncoder = new Counter(0);
+        
+        shooterEncoder.setUpSource(9);
+        shooterEncoder.setDistancePerPulse(1);
+       //shooterEncoder.setReverseDirection(true);
+        shooterEncoder.setSamplesToAverage(1);
+        
+        //shooterEncoder.setDownSourceEdge(true, true);
+        
         //intakeSwitch = new DigitalInput(-1);
 
-        maxShooterSpeed = 6000;
+        maxShooterSpeed = 60.0;
     }
 
     public double getShooterSpeed()
     {
-        if(false)//shooterEncoder.getRate() >= maxShooterSpeed;
-            maxShooterSpeed = shooterEncoder.getRate();
+    	current = shooterEncoder.getRate();
+    	
+        if(current >= maxShooterSpeed);
+            maxShooterSpeed = current;
 
-        return 0.0;//shooterEncoder.getRate();
+        return current;
+    }
+    
+    public double getShooterCount()
+    {
+    	return shooterEncoder.get();
     }
 
     public boolean getIntakeSwitch()
