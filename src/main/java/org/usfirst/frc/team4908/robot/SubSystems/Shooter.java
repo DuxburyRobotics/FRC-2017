@@ -13,8 +13,10 @@ public class Shooter implements ISubSystem
     private DriverInput di;
     private RobotOutput ro;
     private SensorInput si;
+    private VisionInput vi;
 
-    private DuxPID PID;
+    private DuxPID speedPID;
+    private DuxPID rotatePID;
 
     private double setValue;
 
@@ -24,16 +26,24 @@ public class Shooter implements ISubSystem
     private boolean preSpeed;
 
     private int preSpeedCounter;
+    private int rotatePIDCount;
+
+    private boolean readyToShoot;
 
     private double preSpeedTarget = 1.0;
 
-    public Shooter(DriverInput di, SensorInput si, RobotOutput ro)
+    public Shooter(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
         this.di = di;
         this.si = si;
         this.ro = ro;
+        this.vi = vi;
 
-        PID = new DuxPID(0.0, 0.0, 0.0, 0.02, 73.0);
+        rotatePID = new DuxPID(0.0, 0.0, 0.0, 1, 180); // PID in degrees
+        rotatePID.reset();
+
+        speedPID = new DuxPID(0.0, 0.0, 0.0, 0.02, 75.0);
+        speedPID.reset();
         setValue = 0.0;
 
         wasPressed = false;
@@ -41,13 +51,16 @@ public class Shooter implements ISubSystem
         isDown = false;
 
         preSpeedCounter = 0;
+        rotatePIDCount = 0;
+
+        readyToShoot = false;
     }
 
     public void calculate()
     {
         // TODO: Shift to low gear, add a spin up switch or some shit with SD
 
-        targetRPM = 50.0; // get value from vision tracking
+        targetRPM = 50.0; // vi.getTargetDistance
 
         isDown = di.getShooterButton();
 
@@ -59,14 +72,13 @@ public class Shooter implements ISubSystem
 
             setValue = 0.0;
             preSpeedCounter = 0;
+            rotatePIDCount = 0;
         }
 
         if(isDown && wasPressed && !preSpeed) // MAIN SET LOOP (after pre speed) - i placed this check before the pre speed loop so that it sets the motors to be equal to prespeedtarget once before starting pids
         {
 
-            setValue = preSpeedTarget;//PID.calculate(si.getShooterSpeed());
-
-            //System.out.println("spred" + 60.0*si.getShooterSpeed());
+            setValue = preSpeedTarget;//speedPID.calculate(si.getShooterSpeed());
         }
 
         if(isDown && preSpeed && wasPressed) // PRE SPEED LOOP
@@ -84,8 +96,8 @@ public class Shooter implements ISubSystem
                 preSpeed = false;
                 setValue = preSpeedTarget;
 
-                PID.reset();
-                PID.setSetPoint(targetRPM);
+                speedPID.reset();
+                speedPID.setSetPoint(targetRPM);
             }
         }
 
@@ -96,19 +108,52 @@ public class Shooter implements ISubSystem
             setValue = 0.0;
         }
 
-        //if(si.getMaxShooterSpeed() >= PID.getMaxMotorValue())
+        if(isDown) // rotation for shooting
         {
-            System.out.println(si.getShooterSpeed());// DEBUGGGGGG
-            //PID.setMaxMotorValue(si.getMaxShooterSpeed());
+            // region PIDset
+            if(rotatePIDCount == 0)
+            {
+                rotatePID.setSetPoint(vi.getTargetRotation());
+            }
+
+            if (rotatePIDCount < 50)
+            {
+                rotatePIDCount++;
+            }
+            else if(!readyToShoot)
+            {
+                rotatePID.reset();
+                rotatePID.setSetPoint(vi.getTargetRotation());
+                rotatePIDCount = 0;
+            }
+            // endregion PIDset
+
+            // region isDoneCheck
+            if (rotatePID.isDone())
+            {
+                readyToShoot = true;
+            }
+            else
+            {
+                readyToShoot = false;
+            }
+            // endregion isDoneCheck
+
+            if(!readyToShoot)
+            {
+                ro.setDriveMotors(0.0, rotatePID.calculate(si.getYaw()));
+            }
+            else if(readyToShoot)
+            {
+                ro.setDriveMotors(0,0);
+                // elevator full speed
+            }
+
         }
-        
-        //System.out.println(si.getShooterSpeed() + "\t\t\t\t" + si.getShooterCount());
-        
+
+        System.out.println(si.getShooterSpeed());
 
         ro.setShooter(-setValue);
-
-
-
     }
 
     public void disable() {
@@ -122,9 +167,9 @@ public class Shooter implements ISubSystem
      * @param targetRPM the target RPM to run at.
      */
     public void activate(int targetRPM) {
-        PID.reset();
-        PID.setSetPoint(targetRPM);
-        ro.setShooter(PID.calculate(si.getShooterSpeed()));
+        speedPID.reset();
+        speedPID.setSetPoint(targetRPM);
+        ro.setShooter(speedPID.calculate(si.getShooterSpeed()));
 
     }
 

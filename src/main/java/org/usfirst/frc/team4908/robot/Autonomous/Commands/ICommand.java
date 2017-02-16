@@ -36,8 +36,8 @@ public abstract class ICommand {
 
     }
 
-    public boolean finish() {
-        return isFinished;
+    public void finish() {
+
     }
 
     //endregion

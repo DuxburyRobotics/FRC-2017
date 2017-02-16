@@ -63,7 +63,7 @@ public class AutoDrive extends ICommand {
         PID.setSetPoint(setpoint.position);
 
         //PID.calc should intake from the SI.encoder for distance. 
-        //tune Ka (higher or lower) 
+        //tune Ka (higher or lower) then tune PID
         ro.setDriveMotors(kV * setpoint.velocity + kA * setpoint.acceleration + PID.calculate(0.0), 0.0);
     
         System.out.println(setpoint.velocity + " \t" + (1.0/19.0)*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));
@@ -72,12 +72,11 @@ public class AutoDrive extends ICommand {
     
     public boolean isFinished()
     {
-    	return false;
+    	return PID.isDone();
     }
 
-    public boolean finish()
+    public void finish()
     {
-        return true;
 
     }
 

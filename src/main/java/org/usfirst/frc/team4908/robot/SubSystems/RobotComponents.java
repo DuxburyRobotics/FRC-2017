@@ -12,17 +12,17 @@ public class RobotComponents
 {
     private ArrayList<ISubSystem> subsystems;
 
-    public RobotComponents(RobotOutput ro, SensorInput si, DriverInput di)
+    public RobotComponents(RobotOutput ro, SensorInput si, DriverInput di, VisionInput vi)
     {
         subsystems = new ArrayList<ISubSystem>();
 
         /**
          * DO NOT CHANGE THIS ORDER
          */
-        subsystems.add(new Drive(di, si, ro));
+        subsystems.add(new Drive(di, si, ro, vi));
         subsystems.add(new Climb(di, si, ro));
         subsystems.add(new Intake(di, si, ro));
-        subsystems.add(new Shooter(di, si, ro));
+        subsystems.add(new Shooter(di, si, ro, vi));
         subsystems.add(new Gear(di, si, ro));
         /**
          * DO NOT CHANGE THIS ORDER

@@ -87,6 +87,7 @@ public class RobotOutput
         driveGearSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
+
     // SHOOTER SUBSYSTEM ===================================================
     public void setShooter(double val)
     {

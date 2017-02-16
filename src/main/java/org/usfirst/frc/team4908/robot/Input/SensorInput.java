@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4908.robot.Input;
 
 
-import edu.wpi.first.wpilibj.Counter;
-import edu.wpi.first.wpilibj.CounterBase;
-import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Encoder;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.*;
 
 /**
  * @author Siggy
@@ -18,6 +16,8 @@ public class SensorInput
     private Counter shooterEncoder;
     private DigitalInput intakeSwitch;
 
+    private AHRS navX;
+
     private double maxShooterSpeed;
 
     private double current;
@@ -25,17 +25,16 @@ public class SensorInput
     public SensorInput()
     {
         shooterEncoder = new Counter(0);
-        
         shooterEncoder.setUpSource(9);
         shooterEncoder.setDistancePerPulse(1);
-       //shooterEncoder.setReverseDirection(true);
         shooterEncoder.setSamplesToAverage(1);
-        
-        //shooterEncoder.setDownSourceEdge(true, true);
-        
+        shooterEncoder.setMaxPeriod(0.1);
+
         //intakeSwitch = new DigitalInput(-1);
 
-        maxShooterSpeed = 60.0;
+        navX = new AHRS(SerialPort.Port.kMXP);
+
+        navX.reset();
     }
 
     public double getShooterSpeed()
@@ -58,9 +57,21 @@ public class SensorInput
         return false; //intakeSwitch.get();
     }
 
-
     public double getMaxShooterSpeed()
     {
         return maxShooterSpeed;
     }
+
+    // NAVX ============================================================================================================
+    public void resetRotation()
+    {
+        navX.zeroYaw();
+    }
+
+    public double getYaw()
+    {
+        return navX.getYaw();
+    }
+
+
 }

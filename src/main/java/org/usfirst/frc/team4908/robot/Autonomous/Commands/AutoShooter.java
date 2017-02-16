@@ -36,8 +36,6 @@ public class AutoShooter extends ICommand {
         setValue = PID.calculate(si.getShooterSpeed());
         ro.setShooter(setValue);
 
-
-
     }
 
     public void update(int targetRPM) {
@@ -48,11 +46,11 @@ public class AutoShooter extends ICommand {
 
     }
 
-    public boolean finish() {
+    public void finish()
+    {
         hasFinished();
 
         ro.setShooter(0);
-        return true;
     }
 
     //endregion

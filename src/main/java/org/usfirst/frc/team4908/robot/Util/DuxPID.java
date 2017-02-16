@@ -53,14 +53,14 @@ public class DuxPID
 
         PIDsum = calcP + calcI + calcD; // value is still in RPM's not motor values
 
-        isDone(error);
+        isDone();
 
         lastError = error;
 
         return convertMotors(PIDsum); // changes to motor values
     }
 
-    public boolean isDone(double error)
+    public boolean isDone()
     {
         if(error <= kEpsilon)
             return true;

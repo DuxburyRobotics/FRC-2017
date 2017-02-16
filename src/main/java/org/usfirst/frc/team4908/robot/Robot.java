@@ -23,6 +23,7 @@ public class Robot extends IterativeRobot
     private RobotOutput robotOutput;
     private SensorInput sensorInput;
     private DriverInput driverInput;
+    private VisionInput visionInput;
 
     private RobotComponents robotComponents;
     private AutoCommand autoCommand;
@@ -48,9 +49,9 @@ public class Robot extends IterativeRobot
         robotOutput = new RobotOutput();
         sensorInput = new SensorInput();
         driverInput = new DriverInput();
+        visionInput = new VisionInput();
 
-
-        robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput);
+        robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput, visionInput);
         autoCommand = new AutoCommand(robotOutput, sensorInput);
         duxDash = new DuxDash();
 

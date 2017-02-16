@@ -3,6 +3,8 @@ package org.usfirst.frc.team4908.robot.SubSystems;
 
 import org.usfirst.frc.team4908.robot.Input.DriverInput;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
+import org.usfirst.frc.team4908.robot.Util.DuxPID;
 
 /**
  * Created by kyleknobloch on 1/24/17,
@@ -15,6 +17,8 @@ public class Drive implements ISubSystem
 
     private DriverInput di;
     private SensorInput si;
+    private RobotOutput ro;
+    private VisionInput vi;
 
     private double driveX;
     private double driveRot;
@@ -23,14 +27,12 @@ public class Drive implements ISubSystem
     private boolean isLow = true;
 
 
-    private RobotOutput ro;
-
-    public Drive(DriverInput di, SensorInput si, RobotOutput ro)
+    public Drive(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
         this.di = di;
         this.si = si;
         this.ro = ro;
-
+        this.vi = vi;
         driveX = 0.0;
         driveRot = 0.0;
     }
@@ -93,8 +95,9 @@ public class Drive implements ISubSystem
             ro.setDriveMotors(driveX, driveRot);
         }
         else
-        	ro.setDriveMotors(0.0,  0.0);
-
+        {
+            ro.setDriveMotors(0.0, 0.0);
+        }
     }
 
     public void disable()

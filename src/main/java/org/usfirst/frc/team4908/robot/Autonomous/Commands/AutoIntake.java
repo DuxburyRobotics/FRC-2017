@@ -26,8 +26,7 @@ public class AutoIntake extends ICommand{
 
     }
 
-    public boolean finish() {
-        return true;
+    public void finish() {
 
     }
 
