@@ -32,9 +32,9 @@ public class SensorInput
 
         //intakeSwitch = new DigitalInput(-1);
 
-        navX = new AHRS(SerialPort.Port.kMXP);
+        //navX = new AHRS(SerialPort.Port.kMXP);
 
-        navX.reset();
+//        navX.reset();
     }
 
     public double getShooterSpeed()

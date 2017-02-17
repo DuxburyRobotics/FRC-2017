@@ -42,7 +42,7 @@ public class Shooter implements ISubSystem
         rotatePID = new DuxPID(0.0, 0.0, 0.0, 1, 180); // PID in degrees
         rotatePID.reset();
 
-        speedPID = new DuxPID(0.0, 0.0, 0.0, 0.02, 75.0);
+        speedPID = new DuxPID(1.0, 0.0, 0.0, 0.02, 75.0);
         speedPID.reset();
         setValue = 0.0;
 
@@ -63,7 +63,6 @@ public class Shooter implements ISubSystem
         targetRPM = 50.0; // vi.getTargetDistance
 
         isDown = di.getShooterButton();
-
         
         if(isDown && !wasPressed) // PRE SPEED START
         {
@@ -129,8 +128,9 @@ public class Shooter implements ISubSystem
             // endregion PIDset
 
             // region isDoneCheck
-            if (rotatePID.isDone())
+            if (speedPID.isDone())
             {
+            	System.out.println("heya");
                 readyToShoot = true;
             }
             else
@@ -141,11 +141,15 @@ public class Shooter implements ISubSystem
 
             if(!readyToShoot)
             {
-                ro.setDriveMotors(0.0, rotatePID.calculate(si.getYaw()));
+                //ro.setDriveMotors(0.0, rotatePID.calculate(si.getYaw()));
             }
             else if(readyToShoot)
             {
                 ro.setDriveMotors(0,0);
+                
+                System.out.println("heya");
+                
+                ro.setElevator(.5);
                 // elevator full speed
             }
 

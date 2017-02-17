@@ -107,6 +107,6 @@ public class VisionInput
 
     public double getTargetDistance()
     {
-        return 0.0;
+        return ((16.0/getWidth())*(centerX))/(Math.tan(Ha/2.0));
     }
 }

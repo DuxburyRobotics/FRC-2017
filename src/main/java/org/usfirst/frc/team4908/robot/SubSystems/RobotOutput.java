@@ -27,6 +27,8 @@ public class RobotOutput
 
     private DoubleSolenoid shooterHoodSolenoid;
 
+    private SpeedController elevator;
+    
     // CLIMB SUBSYSTEM ====================================================
     private SpeedController climbMotor;
 
@@ -52,10 +54,12 @@ public class RobotOutput
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 
         // SHOOTER SUBSYSTEM ===================================================
-        shooterOne = new VictorSP(0);
-        shooterTwo = new VictorSP(1);
-        shooterThree = new VictorSP(2);
-        shooterFour = new VictorSP(3);
+        shooterOne = new VictorSP(3);
+        shooterTwo = new VictorSP(4);
+        shooterThree = new VictorSP(6);
+        shooterFour = new VictorSP(5);
+        
+        elevator = new VictorSP(1);
 
         // shooterHoodSolenoid = new DoubleSolenoid(-1, -1);
 
@@ -100,6 +104,11 @@ public class RobotOutput
     public void setShooterHood()
     {
 
+    }
+    
+    public void setElevator(double val)
+    {
+    	elevator.set(val);
     }
 
     // CLIMB SUBSYSTEM ====================================================
