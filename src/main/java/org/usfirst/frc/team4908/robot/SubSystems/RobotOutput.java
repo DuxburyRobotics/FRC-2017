@@ -49,7 +49,7 @@ public class RobotOutput
         frontRightMotor = new CANTalon(1);
         rearRightMotor = new CANTalon(0);
 
-        driveGearSolenoid = new DoubleSolenoid(4, 5);
+        driveGearSolenoid = new DoubleSolenoid(0, 1);
 
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
 
@@ -64,14 +64,16 @@ public class RobotOutput
         // shooterHoodSolenoid = new DoubleSolenoid(-1, -1);
 
         // CLIMB SUBSYSTEM ====================================================
-        // climbMotor = new VictorSP(-1);
+        climbMotor = new VictorSP(2);
 
         // INTAKE SUBSYSTEM ===================================================
-        // intakeMotor = new VictorSP(-1);
+        intakeMotor = new VictorSP(0);
+        
+        intakeSolenoid = new DoubleSolenoid(4, 5);
 
         // GEAR SUBSYSTEM =====================================================
 
-        // intakeSolenoid = new DoubleSolenoid(-1, -1);
+        gearSolenoid = new DoubleSolenoid(3, 2);
     }
 
     // DRIVE SUBSYSTEM =====================================================
@@ -115,35 +117,35 @@ public class RobotOutput
 
     public void setClimbMotor(double val)
     {
-        //intakeMotor.set(val);
+        climbMotor.set(val);
     }
 
     // INTAKE SUBSYSTEM ===================================================
 
     public void deployIntake()
     {
-        //intakeSolenoid.set(DoubleSolenoid.Value.kForward);
+        intakeSolenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     public void retractIntake()
     {
-        //intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
+        intakeSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 
     public void setIntakeMotor(double val)
     {
-        //intakeMotor.set(val);
+        intakeMotor.set(val);
     }
 
     // GEAR SUBSYSTEM =====================================================
 
     public void deployGear()
     {
-        //gearSolenoid.set(DoubleSolenoid.Value.kForward);
+        gearSolenoid.set(DoubleSolenoid.Value.kForward);
     }
 
     public void retractGear()
     {
-        //gearSolenoid.set(DoubleSolenoid.Value.kReverse);
+        gearSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
 }

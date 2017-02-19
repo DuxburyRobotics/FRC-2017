@@ -25,16 +25,16 @@ public class SensorInput
     public SensorInput()
     {
         shooterEncoder = new Counter(0);
-        shooterEncoder.setUpSource(9);
+        shooterEncoder.setUpSource(4);
         shooterEncoder.setDistancePerPulse(1);
         shooterEncoder.setSamplesToAverage(1);
         shooterEncoder.setMaxPeriod(0.1);
 
         //intakeSwitch = new DigitalInput(-1);
 
-        //navX = new AHRS(SerialPort.Port.kMXP);
+        navX = new AHRS(SerialPort.Port.kUSB1);
 
-//        navX.reset();
+        navX.reset();
     }
 
     public double getShooterSpeed()

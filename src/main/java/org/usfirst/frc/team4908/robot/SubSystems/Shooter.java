@@ -28,9 +28,13 @@ public class Shooter implements ISubSystem
     private int preSpeedCounter;
     private int rotatePIDCount;
 
+    private static final double scaleFactor = 1.0;
+    
     private boolean readyToShoot;
 
-    private double preSpeedTarget = 1.0;
+    private double speedSet;
+    
+    private double preSpeedTarget = 0.8;
 
     public Shooter(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
@@ -64,6 +68,8 @@ public class Shooter implements ISubSystem
 
         isDown = di.getShooterButton();
         
+        System.out.println(si.getShooterSpeed() + "\t\t\t\t\t" + si.getShooterCount());
+        
         if(isDown && !wasPressed) // PRE SPEED START
         {
             preSpeed = true;
@@ -76,8 +82,12 @@ public class Shooter implements ISubSystem
 
         if(isDown && wasPressed && !preSpeed) // MAIN SET LOOP (after pre speed) - i placed this check before the pre speed loop so that it sets the motors to be equal to prespeedtarget once before starting pids
         {
-
-            setValue = preSpeedTarget;//speedPID.calculate(si.getShooterSpeed());
+        	System.out.println("new here");
+            
+        	speedPID.setSetPoint(targetRPM);
+        	
+        	setValue = 0.8;//speedPID.calculate(si.getShooterSpeed());
+        	ro.setElevator(1.0);
         }
 
         if(isDown && preSpeed && wasPressed) // PRE SPEED LOOP
@@ -105,6 +115,8 @@ public class Shooter implements ISubSystem
             preSpeed = false;
             wasPressed = false;
             setValue = 0.0;
+            ro.setElevator(0.0);
+            readyToShoot = false;
         }
 
         if(isDown) // rotation for shooting
@@ -130,7 +142,6 @@ public class Shooter implements ISubSystem
             // region isDoneCheck
             if (speedPID.isDone())
             {
-            	System.out.println("heya");
                 readyToShoot = true;
             }
             else
@@ -141,23 +152,19 @@ public class Shooter implements ISubSystem
 
             if(!readyToShoot)
             {
+            	//ro.setElevator(1.0);
                 //ro.setDriveMotors(0.0, rotatePID.calculate(si.getYaw()));
             }
             else if(readyToShoot)
             {
-                ro.setDriveMotors(0,0);
-                
-                System.out.println("heya");
-                
-                ro.setElevator(.5);
+                ro.setDriveMotors(0.25, 0);
+                //ro.setElevator(1.0);
                 // elevator full speed
             }
 
         }
 
-        System.out.println(si.getShooterSpeed());
-
-        ro.setShooter(-setValue);
+        ro.setShooter(setValue);
     }
 
     public void disable() {

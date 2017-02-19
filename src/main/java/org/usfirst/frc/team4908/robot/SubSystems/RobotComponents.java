@@ -20,10 +20,10 @@ public class RobotComponents
          * DO NOT CHANGE THIS ORDER
          */
         subsystems.add(new Drive(di, si, ro, vi));
-        subsystems.add(new Climb(di, si, ro));
-        subsystems.add(new Intake(di, si, ro));
+        subsystems.add(new Climb(di, si, ro, vi));
+        subsystems.add(new Intake(di, si, ro, vi));
         subsystems.add(new Shooter(di, si, ro, vi));
-        subsystems.add(new Gear(di, si, ro));
+        subsystems.add(new Gear(di, si, ro, vi));
         /**
          * DO NOT CHANGE THIS ORDER
          */
@@ -31,10 +31,9 @@ public class RobotComponents
 
     public void update()
     {
-
         for (ISubSystem system:subsystems)
             system.calculate();
-
+            
     }
 
     public void disable()

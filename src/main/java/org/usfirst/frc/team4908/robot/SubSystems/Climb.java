@@ -3,6 +3,7 @@ package org.usfirst.frc.team4908.robot.SubSystems;
 
 import org.usfirst.frc.team4908.robot.Input.DriverInput;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
 
 /**
  * Created by kyleknobloch on 1/24/17,
@@ -15,14 +16,16 @@ public class Climb implements ISubSystem
     private RobotOutput ro;
     private DriverInput di;
     private SensorInput si;
+    private VisionInput vi;
 
     private double setVal;
 
-    public Climb(DriverInput di, SensorInput si, RobotOutput ro)
+    public Climb(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
         this.di = di;
         this.si = si;
         this.ro = ro;
+        this.vi= vi;
 
     }
 
@@ -31,14 +34,7 @@ public class Climb implements ISubSystem
     {
         if(di.getClimbButton())
         {
-            if(false) // faster speed after grab...?
-            {
-                setVal = 1.0;
-            }
-            else
-            {
-                setVal = 0.5;
-            }
+        	setVal = 1.0;
         }
         else
         {

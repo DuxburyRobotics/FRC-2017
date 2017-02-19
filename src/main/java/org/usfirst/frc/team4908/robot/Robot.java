@@ -54,7 +54,6 @@ public class Robot extends IterativeRobot
         robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput, visionInput);
         autoCommand = new AutoCommand(robotOutput, sensorInput);
         duxDash = new DuxDash();
-
     }
 
 
@@ -88,7 +87,6 @@ public class Robot extends IterativeRobot
      */
     @Override
     public void teleopInit() {
-
     }
 
 
@@ -97,7 +95,7 @@ public class Robot extends IterativeRobot
      */
     @Override
     public void teleopPeriodic()
-    {
+    {    	
         robotComponents.update();
     }
 

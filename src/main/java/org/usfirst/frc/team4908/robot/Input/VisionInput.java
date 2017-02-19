@@ -72,7 +72,7 @@ public class VisionInput
         });
 
         runner.start();
-
+		
     }
 
     public double getCenterX()

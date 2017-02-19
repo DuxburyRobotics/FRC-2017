@@ -14,7 +14,6 @@ import org.usfirst.frc.team4908.robot.Util.DuxPID;
  */
 public class Drive implements ISubSystem
 {
-
     private DriverInput di;
     private SensorInput si;
     private RobotOutput ro;
@@ -92,6 +91,10 @@ public class Drive implements ISubSystem
                 driveRot = Math.pow(driveRot, 2.0);
             }
 
+            if(!isLow)
+            {
+            	driveRot *= 0.5;
+            }
             ro.setDriveMotors(driveX, driveRot);
         }
         else

@@ -3,6 +3,7 @@ package org.usfirst.frc.team4908.robot.SubSystems;
 
 import org.usfirst.frc.team4908.robot.Input.DriverInput;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
 
 /**
  * Created by kyleknobloch on 1/24/17,
@@ -15,44 +16,38 @@ public class Intake implements ISubSystem
     private RobotOutput ro;
     private DriverInput di;
     private SensorInput si;
+    private VisionInput vi;
 
     private boolean wasPressed = false;
 
     private double val;
 
-    public Intake(DriverInput di, SensorInput si, RobotOutput ro)
+    public Intake(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
         this.di = di;
         this.si = si;
         this.ro = ro;
-
+        this.vi = vi;
     }
 
 
     public void calculate()
-    {
+    {    	
         // intake deploy/retract
-        if(di.getIntakeToggleButton() && !wasPressed && si.getIntakeSwitch())
+        if(di.getIntakeDeployButton())
         {
-            wasPressed = true;
-
-            ro.deployIntake();
+        	ro.deployIntake();
         }
-        else if(di.getIntakeToggleButton() && !wasPressed && !si.getIntakeSwitch())
+       
+        if(di.getIntakeRetractButton())
         {
-            wasPressed = true;
-
-            ro.retractIntake();
+        	ro.retractIntake();
         }
-        else if(!di.getShifterButton())
-        {
-            wasPressed = false;
-        }
-
+        
         // motor values
-        if(di.getIntakeEnableButton())
+        if(di.getIntakeButton())
         {
-            val = 1.0;
+            val = 0.75;
         }
         else
         {
