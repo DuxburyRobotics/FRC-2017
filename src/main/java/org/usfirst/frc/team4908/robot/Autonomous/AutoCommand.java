@@ -32,7 +32,7 @@ public class AutoCommand {
      * so that you don't anciently have two in the Robot (because that would be weird).
      */
     public AutoCommand(RobotOutput ro, SensorInput si) {
-        this.instructionSequence = 0;
+        this.instructionSequence = 1;
         this.commandNumber = 0;
         this.firstRun = true;
         this.ro = ro;
@@ -48,6 +48,8 @@ public class AutoCommand {
     {
         startTime = System.currentTimeMillis()/1000.0;
         this.firstRun = true;
+        
+        //sequence = autoInstructionList.get(1);
     }
 
 
@@ -86,11 +88,12 @@ public class AutoCommand {
         sequence.getCommand(commandNumber).update(System.currentTimeMillis()/1000.0-startTime);
 
         //check if finished
-        if (sequence.getCommand(commandNumber).isFinished()) {
+        if (sequence.getCommand(commandNumber).isFinished()) 
+        {
             sequence.getCommand(commandNumber).finish(); //call finish function to end command
-            commandNumber++; //move to next command
+            if(commandNumber > 1)
+            		commandNumber++; //move to next command
         }
-
     }
 
 
@@ -120,10 +123,10 @@ public class AutoCommand {
          * index: 1
          *
          * Actions:
-         * drive "20"
+         * drive "10"
          */
         Sequence drive = new Sequence();
-        drive.addInstruction(new AutoDrive("drive", ro, si, 20.0));
+        drive.addInstruction(new AutoDrive("drive", ro, si, 10.0));
 
 
         /**

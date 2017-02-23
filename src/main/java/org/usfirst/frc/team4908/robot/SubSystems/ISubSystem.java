@@ -6,6 +6,7 @@ package org.usfirst.frc.team4908.robot.SubSystems;
 
 public interface ISubSystem
 {
+	void init();
 
     void calculate();
 

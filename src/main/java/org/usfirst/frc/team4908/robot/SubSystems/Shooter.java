@@ -3,6 +3,9 @@ package org.usfirst.frc.team4908.robot.SubSystems;
 import org.usfirst.frc.team4908.robot.Input.*;
 import org.usfirst.frc.team4908.robot.Util.DuxPID;
 
+import edu.wpi.first.wpilibj.Preferences;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 /**
  *
  */
@@ -21,9 +24,7 @@ public class Shooter implements ISubSystem
     private double setValue;
 
     private boolean isDown;
-
-    private boolean wasPressed;
-    private boolean preSpeed;
+    private boolean wasDown;
 
     private int preSpeedCounter;
     private int rotatePIDCount;
@@ -36,6 +37,8 @@ public class Shooter implements ISubSystem
     
     private double preSpeedTarget = 0.8;
 
+    private double count;
+    
     public Shooter(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
         this.di = di;
@@ -46,125 +49,89 @@ public class Shooter implements ISubSystem
         rotatePID = new DuxPID(0.0, 0.0, 0.0, 1, 180); // PID in degrees
         rotatePID.reset();
 
-        speedPID = new DuxPID(1.0, 0.0, 0.0, 0.02, 75.0);
+        speedPID = new DuxPID(6.5, 0.2, 1.25, 0.02, 83.0);
         speedPID.reset();
         setValue = 0.0;
 
-        wasPressed = false;
-        preSpeed = false;
+        wasDown = false;
+        
+        count = 0;
         isDown = false;
 
         preSpeedCounter = 0;
         rotatePIDCount = 0;
-
+        
         readyToShoot = false;
+        
+        Preferences.getInstance().putDouble("shooterTarget", 10.0);
+    }
+    
+    public void init()
+    {
+    	/*
+    	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
+    	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
+    	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
+    	*/
     }
 
+    
+    
     public void calculate()
     {
         // TODO: Shift to low gear, add a spin up switch or some shit with SD
-
-        targetRPM = 50.0; // vi.getTargetDistance
-
+    	
+    	/*
+    	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
+    	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
+    	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
+    	*/
+    	
+    	targetRPM = Preferences.getInstance().getDouble("shooterTarget", 0.0); // vi.getTargetSpeed(getTargetDistanceInches/12.0);
+    	speedPID.setSetPoint(30.0);
+    	
         isDown = di.getShooterButton();
+                count++; 
         
-        System.out.println(si.getShooterSpeed() + "\t\t\t\t\t" + si.getShooterCount());
-        
-        if(isDown && !wasPressed) // PRE SPEED START
+        if(isDown && !wasDown)
         {
-            preSpeed = true;
-            wasPressed = true;
-
-            setValue = 0.0;
-            preSpeedCounter = 0;
-            rotatePIDCount = 0;
+        	//System.out.println("1");
+        	speedPID.setSetPoint(30.0);
+        	wasDown = true;
         }
-
-        if(isDown && wasPressed && !preSpeed) // MAIN SET LOOP (after pre speed) - i placed this check before the pre speed loop so that it sets the motors to be equal to prespeedtarget once before starting pids
+        
+        if(isDown && wasDown)
         {
-        	System.out.println("new here");
-            
-        	speedPID.setSetPoint(targetRPM);
+        	//System.out.println("2");
+        	setValue = speedPID.calculate(si.getShooterSpeed());
+        
+        	if(speedPID.isDone())
+        	{
+        		//ro.setElevator(1.0);
+        	}
+        	if(count >= 75)
+        	{
+        		ro.setElevator(1.0);
+        	}
         	
-        	setValue = 0.8;//speedPID.calculate(si.getShooterSpeed());
-        	ro.setElevator(1.0);
+        	//System.out.println(si.getYaw() + "loo");
+        	
+        	
         }
-
-        if(isDown && preSpeed && wasPressed) // PRE SPEED LOOP
+        
+        if(!isDown)
         {
-            preSpeedCounter++;
-
-            if (preSpeedCounter >= 5 && setValue <= preSpeedTarget) // increments setvalue
-            {
-                setValue += 0.1;
-                preSpeedCounter = 0;
-            }
-
-            if (setValue >= preSpeedTarget) // ends prespeed
-            {
-                preSpeed = false;
-                setValue = preSpeedTarget;
-
-                speedPID.reset();
-                speedPID.setSetPoint(targetRPM);
-            }
-        }
-
-        if(!isDown) // RESET LOOP
-        {
-            preSpeed = false;
-            wasPressed = false;
-            setValue = 0.0;
+        	//System.out.println("3");
+        	setValue= 0.0;
             ro.setElevator(0.0);
-            readyToShoot = false;
-        }
-
-        if(isDown) // rotation for shooting
-        {
-            // region PIDset
-            if(rotatePIDCount == 0)
-            {
-                rotatePID.setSetPoint(vi.getTargetRotation());
-            }
-
-            if (rotatePIDCount < 50)
-            {
-                rotatePIDCount++;
-            }
-            else if(!readyToShoot)
-            {
-                rotatePID.reset();
-                rotatePID.setSetPoint(vi.getTargetRotation());
-                rotatePIDCount = 0;
-            }
-            // endregion PIDset
-
-            // region isDoneCheck
-            if (speedPID.isDone())
-            {
-                readyToShoot = true;
-            }
-            else
-            {
-                readyToShoot = false;
-            }
-            // endregion isDoneCheck
-
-            if(!readyToShoot)
-            {
-            	//ro.setElevator(1.0);
-                //ro.setDriveMotors(0.0, rotatePID.calculate(si.getYaw()));
-            }
-            else if(readyToShoot)
-            {
-                ro.setDriveMotors(0.25, 0);
-                //ro.setElevator(1.0);
-                // elevator full speed
-            }
-
-        }
-
-        ro.setShooter(setValue);
+ 
+            count = 0;
+            
+        	speedPID.reset();
+        }       
+        
+        ro.setShooter(0.8);
+        ro.setElevator(1.0);
     }
 
     public void disable() {

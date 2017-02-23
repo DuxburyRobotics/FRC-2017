@@ -30,6 +30,11 @@ public class Intake implements ISubSystem
         this.vi = vi;
     }
 
+    
+    public void init()
+    {
+    	
+    }
 
     public void calculate()
     {    	
@@ -44,10 +49,15 @@ public class Intake implements ISubSystem
         	ro.retractIntake();
         }
         
+        
         // motor values
         if(di.getIntakeButton())
         {
-            val = 0.75;
+            val = 1.0;
+        }
+        else if(di.getIntakeReverseButton())
+        {
+        	val = -1.0;
         }
         else
         {

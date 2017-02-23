@@ -36,6 +36,11 @@ public class DriverInput
     	return operatorJoystick.getRawButton(5);
     }
 
+    public boolean getIntakeReverseButton()
+    {
+    	return operatorJoystick.getRawButton(7);
+    }
+    
     public boolean getIntakeDeployButton()
     {
         return operatorJoystick.getRawButton(2);

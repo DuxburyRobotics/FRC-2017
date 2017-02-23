@@ -36,6 +36,11 @@ public class Drive implements ISubSystem
         driveRot = 0.0;
     }
 
+    public void init()
+    {
+    	
+    }
+    
     // TELEOPS
     public void calculate()
     {
@@ -91,16 +96,15 @@ public class Drive implements ISubSystem
                 driveRot = Math.pow(driveRot, 2.0);
             }
 
-            if(!isLow)
-            {
-            	driveRot *= 0.5;
-            }
             ro.setDriveMotors(driveX, driveRot);
         }
         else
         {
             ro.setDriveMotors(0.0, 0.0);
         }
+        
+        
+        //System.out.println(si.getLeftDriveSpeed() + "\t\t\t\t" + si.getRightDriveSpeed());
     }
 
     public void disable()

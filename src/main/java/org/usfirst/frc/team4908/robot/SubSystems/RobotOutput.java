@@ -29,6 +29,8 @@ public class RobotOutput
 
     private SpeedController elevator;
     
+    private SpeedController shaker;
+    
     // CLIMB SUBSYSTEM ====================================================
     private SpeedController climbMotor;
 
@@ -60,6 +62,8 @@ public class RobotOutput
         shooterFour = new VictorSP(5);
         
         elevator = new VictorSP(1);
+        
+        shaker = new VictorSP(7);
 
         // shooterHoodSolenoid = new DoubleSolenoid(-1, -1);
 
@@ -111,6 +115,7 @@ public class RobotOutput
     public void setElevator(double val)
     {
     	elevator.set(val);
+    	shaker.set(val);
     }
 
     // CLIMB SUBSYSTEM ====================================================

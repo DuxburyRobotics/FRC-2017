@@ -1,5 +1,7 @@
 package org.usfirst.frc.team4908.robot.Util;
 
+import edu.wpi.first.wpilibj.Preferences;
+
 /**
  * @author Bill
  *         $
@@ -21,7 +23,6 @@ public class DuxPID
     private double calcI;
     private double calcD;
 
-
     private double maxMotorValue;
 
     private double calcValue;
@@ -41,7 +42,7 @@ public class DuxPID
     }
 
     public double calculate(double position)
-    {
+    {	
         error = setPoint - position;
         errorSum += error;
 
@@ -57,6 +58,8 @@ public class DuxPID
 
         lastError = error;
 
+        System.out.println(error + "\t\t\t" + setPoint);
+        
         return convertMotors(PIDsum); // changes to motor values
     }
 
@@ -95,6 +98,36 @@ public class DuxPID
     public double getMaxMotorValue()
     {
         return maxMotorValue;
+    }
+    
+    public void setP(double p)
+    {
+    	this.kP = p;
+    }
+    
+    public void setI(double I)
+    {
+    	this.kI = I;
+    }
+    
+    public void setD(double d)
+    {
+    	this.kD = d;
+    }
+    
+    public double getP()
+    {
+    	return kP;
+    }
+    
+    public double getI()
+    {
+    	return kI;
+    }
+    
+    public double getD()
+    {
+    	return kD;
     }
 
 }

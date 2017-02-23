@@ -3,6 +3,8 @@ package org.usfirst.frc.team4908.robot;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import org.usfirst.frc.team4908.robot.Autonomous.AutoCommand;
 import org.usfirst.frc.team4908.robot.DuxDashboard.DuxDash;
 import org.usfirst.frc.team4908.robot.Input.*;
@@ -28,9 +30,9 @@ public class Robot extends IterativeRobot
     private RobotComponents robotComponents;
     private AutoCommand autoCommand;
     private DuxDash duxDash;
+    private SensorOutput so;
     
-    private CameraServer camera;
-
+    private SmartDashboard sd;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -49,11 +51,16 @@ public class Robot extends IterativeRobot
         robotOutput = new RobotOutput();
         sensorInput = new SensorInput();
         driverInput = new DriverInput();
-        visionInput = new VisionInput();
-
+        //visionInput = new VisionInput();
+        so = new SensorOutput(sensorInput);
+        
         robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput, visionInput);
         autoCommand = new AutoCommand(robotOutput, sensorInput);
         duxDash = new DuxDash();
+    
+        sd = new SmartDashboard();
+        
+        
     }
 
 
@@ -97,6 +104,8 @@ public class Robot extends IterativeRobot
     public void teleopPeriodic()
     {    	
         robotComponents.update();
+    
+        so.update();
     }
 
     //endregion

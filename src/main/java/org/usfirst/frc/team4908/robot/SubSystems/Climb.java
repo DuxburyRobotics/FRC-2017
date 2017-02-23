@@ -29,6 +29,10 @@ public class Climb implements ISubSystem
 
     }
 
+    public void init()
+    {
+    	
+    }
 
     public void calculate()
     {

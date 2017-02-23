@@ -24,6 +24,11 @@ public class Gear implements ISubSystem
         this.vi = vi;
     }
 
+    public void init()
+    {
+    	
+    }
+    
     public void calculate()
     {
         if(di.getGearButton() && !wasPressed)
