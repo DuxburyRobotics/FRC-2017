@@ -31,7 +31,7 @@ public class AutoRotate extends ICommand
 
     public void update()
     {
-        ro.setDriveMotors(0.0, PID.calculate(si.getYaw()));
+       // ro.setDriveMotors(0.0, PID.calculate(si.getYaw()));
     }
 
     public boolean isFinished()

@@ -44,6 +44,7 @@ public class Drive implements ISubSystem
     // TELEOPS
     public void calculate()
     {
+    	/*
         driveX = -di.getDriveX();
         driveRot = -di.getDriveRot();
 
@@ -103,13 +104,13 @@ public class Drive implements ISubSystem
             ro.setDriveMotors(0.0, 0.0);
         }
         
-        
+        */
         //System.out.println(si.getLeftDriveSpeed() + "\t\t\t\t" + si.getRightDriveSpeed());
     }
 
     public void disable()
     {
-        ro.setDriveMotors(0.0,  0.0);
+        //ro.setDriveMotors(0.0,  0.0);
     }
 
     public RobotOutput getRo()

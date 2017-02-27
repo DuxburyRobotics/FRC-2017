@@ -51,7 +51,7 @@ public class Robot extends IterativeRobot
         robotOutput = new RobotOutput();
         sensorInput = new SensorInput();
         driverInput = new DriverInput();
-        //visionInput = new VisionInput();
+        visionInput = new VisionInput(driverInput);
         so = new SensorOutput(sensorInput);
         
         robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput, visionInput);
@@ -93,7 +93,9 @@ public class Robot extends IterativeRobot
      *
      */
     @Override
-    public void teleopInit() {
+    public void teleopInit() 
+    {
+    	sensorInput.resetRotation();
     }
 
 
@@ -101,11 +103,16 @@ public class Robot extends IterativeRobot
      * This function is called periodically during operator control
      */
     @Override
+    
     public void teleopPeriodic()
     {    	
         robotComponents.update();
-    
-        so.update();
+          
+        System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int)visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
+        System.out.println("Rotation: " + (int)sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches()/12.0)));
+        
+        
+//        so.update();
     }
 
     //endregion

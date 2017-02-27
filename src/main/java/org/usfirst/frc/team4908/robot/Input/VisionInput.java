@@ -1,10 +1,13 @@
 package org.usfirst.frc.team4908.robot.Input;
 
 import edu.wpi.cscore.AxisCamera;
+import edu.wpi.cscore.CvSink;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.vision.VisionThread;
+
+import org.opencv.core.Mat;
 import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4908.robot.Input.Vision.GripPipeline;
@@ -51,23 +54,46 @@ public class VisionInput
     private double width;
     private double height;
     private double area;
+    
+    private double cameraBoilerHeightDiffernce = 37.0;
+    private double cameraOffset = 6.0;
 
     private static final double C_X = IMG_WIDTH/2 - 0.5;
     private static final double C_Y = IMG_HEIGHT/2 - 0.5;
 
     private AxisCamera camera;
     
-    private double[] distanceTable;
+    private double[] distanceTable = 
+    		{
+    			0.0,
+    			10.0,
+    			20.0,
+    			30.0,
+    			40.0,
+    			50.0,
+    			60.0,
+    			70.0,
+    			80.0,
+    			90.0,
+    			100.0,
+    			110.0,
+    			120.0,
+    			130.0,
+    			140.0, 
+    		};
+    
     private int closerDistance;
     private int fartherDistance;
     private int count = 0;
     private File distanceFile;
     
-    public VisionInput()
-    {    	
+    private double xAngle = Math.tan(Math.toRadians(Ha/2.0));
+    
+    public VisionInput(DriverInput di)
+    {   
     	camera = CameraServer.getInstance().addAxisCamera("10.49.8.12");
     	camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-    	
+
         runner = new VisionThread(camera, new GripPipeline(), visionPipeline ->
         {
             if (!visionPipeline.filterContoursOutput().isEmpty())
@@ -80,14 +106,21 @@ public class VisionInput
                     width = r.width;
                     height = r.height;
                     area = r.area();
-                }
-            }
-        });
 
-        runner.start();
-	
-        distanceTable = new double[15];
-        distanceFile = new File("DistanceTables.txt");
+                    //System.out.println(r.width + "\t\t" + r.height + "\t\t" + r.area() + "\t\t" + centerY);
+                }
+            
+                try {
+					//Thread.sleep(20);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+            }            
+        });
+                
+        /*
+        distanceFile = new File("Distances.txt");
         
         try
         {
@@ -97,12 +130,14 @@ public class VisionInput
         	{
         		distanceTable[count] = readFile.nextDouble();
         		count++;
+        		System.out.println(count + "\t" +distanceTable[count]);
         	}
         }
         catch(FileNotFoundException e)
         {
         	System.out.println("rip no file");
         }
+        */
     }
 
     public double getCenterX()
@@ -132,12 +167,18 @@ public class VisionInput
 
     public double getTargetRotation()
     {
-        return Math.atan((centerX-C_X) / Hf);
+        return Math.toDegrees(Math.atan((centerX-C_X) / Hf));
     }
 
     public double getTargetDistanceInches()
     {	
-        return Math.sqrt(Math.pow((((16.0/getWidth())*(centerX))/(Math.tan(Ha/2.0))), 2) - Math.pow(64.0, 2)) - 25.0;
+    	double inchesPerPixel = 16.0/getWidth();
+    	
+    	double diagonalDistance = ((inchesPerPixel*(IMG_WIDTH/2.0))/xAngle);
+        	
+    	return Math.sqrt(Math.pow(diagonalDistance, 2) - Math.pow(cameraBoilerHeightDiffernce, 2)) - cameraOffset;
+    	
+        //return Math.sqrt(Math.abs(Math.pow(((inchesPerPixel*centerX)/xAngle), 2) - Math.pow(37.0, 2))) - 6.0;
     }
     
     public double getTargetSpeed(double distance)
@@ -154,5 +195,16 @@ public class VisionInput
     	{
     		return 75.0;
     	}	
+    }
+    
+    
+    public void start()
+    {
+
+    }
+    
+	public void stop()
+    {
+    	runner.destroy();
     }
 }

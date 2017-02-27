@@ -41,12 +41,12 @@ public class Intake implements ISubSystem
         // intake deploy/retract
         if(di.getIntakeDeployButton())
         {
-        	ro.deployIntake();
+        	//ro.deployIntake();
         }
        
         if(di.getIntakeRetractButton())
         {
-        	ro.retractIntake();
+        	//ro.retractIntake();
         }
         
         
@@ -64,7 +64,7 @@ public class Intake implements ISubSystem
             val = 0.0;
         }
 
-        ro.setIntakeMotor(val);
+        //ro.setIntakeMotor(val);
     }
 
     public void disable()

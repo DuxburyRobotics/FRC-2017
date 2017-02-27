@@ -81,17 +81,17 @@ public class Shooter implements ISubSystem
     {
         // TODO: Shift to low gear, add a spin up switch or some shit with SD
     	
-    	/*
+    	
     	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
     	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
     	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
-    	*/
+    	
     	
     	targetRPM = Preferences.getInstance().getDouble("shooterTarget", 0.0); // vi.getTargetSpeed(getTargetDistanceInches/12.0);
-    	speedPID.setSetPoint(30.0);
+    	speedPID.setSetPoint(vi.getTargetSpeed(vi.getTargetDistanceInches()/12.0));
     	
         isDown = di.getShooterButton();
-                count++; 
+        count++; 
         
         if(isDown && !wasDown)
         {
@@ -104,14 +104,16 @@ public class Shooter implements ISubSystem
         {
         	//System.out.println("2");
         	setValue = speedPID.calculate(si.getShooterSpeed());
-        
-        	if(speedPID.isDone())
+        	double rotateValue = rotatePID.calculate(si.getYaw());
+        	
+        	if(speedPID.isDone() && rotatePID.isDone())
         	{
         		//ro.setElevator(1.0);
         	}
+        
         	if(count >= 75)
         	{
-        		ro.setElevator(1.0);
+        		//ro.setElevator(1.0);
         	}
         	
         	//System.out.println(si.getYaw() + "loo");
@@ -119,23 +121,82 @@ public class Shooter implements ISubSystem
         	
         }
         
-        if(!isDown)
+    
+    	rotatePID.setP(Preferences.getInstance().getDouble("rotateP", 0.0));
+    	rotatePID.setI(Preferences.getInstance().getDouble("rotateI", 0.0));
+    	rotatePID.setD(Preferences.getInstance().getDouble("rotateD", 0.0));
+    
+    	if(!isDown)
         {
         	//System.out.println("3");
         	setValue= 0.0;
-            ro.setElevator(0.0);
+            //ro.setElevator(0.0);
  
             count = 0;
             
+            wasDown = false;
+            
         	speedPID.reset();
-        }       
+        }
+               
         
-        ro.setShooter(0.8);
-        ro.setElevator(1.0);
+        //ro.setShooter(0.8);
+        //ro.setElevator(1.0);
+    	
+    	if(di.getShooterButton())
+    	{
+    		if(rotatePIDCount == 0)
+    		{
+    			double current = si.getYaw(); // 15
+        		
+        		double goal = current + vi.getTargetRotation(); 
+        		
+        		rotatePID.setSetPoint(goal);
+        		
+        		//rotatePID.reset();
+        		
+        		rotatePIDCount++;
+    		}
+    		
+    		if(rotatePIDCount <= 100)
+    		{
+    			double val = -rotatePID.calculate(si.getYaw());
+    			
+    			if (val > .5)
+    				val = .5;
+    			else if (val < -.5)
+    				val = -.5;
+    			
+    			ro.setDriveMotors(0.0, val);
+    			
+    			rotatePIDCount++;
+    		}
+    		if(rotatePIDCount >= 100)
+    		{
+    			double current = si.getYaw(); // 15
+        		
+        		double goal = current + vi.getTargetRotation(); 
+        		
+        		rotatePID.setSetPoint(goal);
+        		
+        		//rotatePID.reset();
+        		
+        		rotatePIDCount = 0;
+    		
+    		}
+    		
+    	}
+    	
+    	if(!di.getShooterButton())
+    	{
+    		rotatePIDCount = 0;
+    	}
+    	
+    	
     }
 
     public void disable() {
-        ro.setShooter(0);
+        //ro.setShooter(0);
     }
 
     /** AUTO CODE BELOW **/
@@ -147,7 +208,7 @@ public class Shooter implements ISubSystem
     public void activate(int targetRPM) {
         speedPID.reset();
         speedPID.setSetPoint(targetRPM);
-        ro.setShooter(speedPID.calculate(si.getShooterSpeed()));
+        //ro.setShooter(speedPID.calculate(si.getShooterSpeed()));
 
     }
 

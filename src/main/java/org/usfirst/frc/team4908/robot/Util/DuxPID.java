@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj.Preferences;
  */
 public class DuxPID
 {
+	private double count = 0;
+	
     private double kP;
     private double kI;
     private double kD;
@@ -25,6 +27,8 @@ public class DuxPID
 
     private double maxMotorValue;
 
+    private double doneThreshold = 5;
+    
     private double calcValue;
 
     public DuxPID(double p, double i, double d, double e, double m)
@@ -58,7 +62,8 @@ public class DuxPID
 
         lastError = error;
 
-        System.out.println(error + "\t\t\t" + setPoint);
+        //System.out.println(error + "\t\t\t" + setPoint + "\t" + kP + "\t" + kI + "\t" + kD);
+        
         
         return convertMotors(PIDsum); // changes to motor values
     }
@@ -66,9 +71,14 @@ public class DuxPID
     public boolean isDone()
     {
         if(error <= kEpsilon)
-            return true;
+            count++;
         else
-            return false;
+        	count = 0;
+   
+        if(count >= doneThreshold)
+        	return true;
+        else
+        	return false;
     }
 
     public double convertMotors(double value)

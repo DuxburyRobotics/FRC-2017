@@ -61,7 +61,7 @@ public class AutoDrive extends ICommand {
         setpoint.velocity = 0;
         setpoint.position = 0;
 
-        ro.setLowGear();
+        //ro.setLowGear();
     }
 
     public void update(double time)
@@ -83,7 +83,7 @@ public class AutoDrive extends ICommand {
         
         setSpeed = kV * setpoint.velocity + kA * setpoint.acceleration;
         
-        ro.setDriveMotors(setSpeed, 0.0);
+        //ro.setDriveMotors(setSpeed, 0.0);
     
         System.out.println(setSpeed);
         //System.out.println(setpoint.velocity + " \t" + kV*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));

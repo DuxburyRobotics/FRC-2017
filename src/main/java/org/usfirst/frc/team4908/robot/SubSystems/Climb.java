@@ -45,13 +45,13 @@ public class Climb implements ISubSystem
             setVal = 0.0;
         }
 
-        ro.setClimbMotor(setVal);
+        //ro.setClimbMotor(setVal);
 
     }
 
     public void disable()
     {
-        ro.setClimbMotor(0.0);
+        //ro.setClimbMotor(0.0);
 
     }
 

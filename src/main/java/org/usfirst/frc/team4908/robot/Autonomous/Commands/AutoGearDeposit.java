@@ -20,7 +20,7 @@ public class AutoGearDeposit extends ICommand
 
     public void init()
     {
-        ro.deployGear();
+        //ro.deployGear();
     }
 
     public void update()
@@ -30,7 +30,7 @@ public class AutoGearDeposit extends ICommand
 
     public void finish()
     {
-        ro.retractGear();
+        //ro.retractGear();
     }
 
     public boolean isFinished()

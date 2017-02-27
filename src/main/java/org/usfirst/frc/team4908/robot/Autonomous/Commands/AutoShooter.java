@@ -34,7 +34,7 @@ public class AutoShooter extends ICommand {
         PID.reset();
         PID.setSetPoint(4900);
         setValue = PID.calculate(si.getShooterSpeed());
-        ro.setShooter(setValue);
+//        ro.setShooter(setValue);
 
     }
 
@@ -42,7 +42,7 @@ public class AutoShooter extends ICommand {
         PID.reset();
         PID.setSetPoint(targetRPM);
         setValue = PID.calculate(si.getShooterSpeed());
-        ro.setShooter(setValue);
+  //      ro.setShooter(setValue);
 
     }
 
@@ -50,7 +50,7 @@ public class AutoShooter extends ICommand {
     {
         hasFinished();
 
-        ro.setShooter(0);
+    //    ro.setShooter(0);
     }
 
     //endregion
