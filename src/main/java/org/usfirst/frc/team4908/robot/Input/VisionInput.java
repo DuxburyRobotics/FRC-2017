@@ -1,10 +1,8 @@
 package org.usfirst.frc.team4908.robot.Input;
 
-import edu.wpi.cscore.AxisCamera;
-import edu.wpi.cscore.CvSink;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.cscore.VideoSource;
+import edu.wpi.cscore.*;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.vision.VisionThread;
 
 import org.opencv.core.Mat;
@@ -12,8 +10,6 @@ import org.opencv.core.Rect;
 import org.opencv.imgproc.Imgproc;
 import org.usfirst.frc.team4908.robot.Input.Vision.GripPipeline;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.util.Scanner;
 
 /**
  * @author Bill
@@ -65,32 +61,80 @@ public class VisionInput
     
     private double[] distanceTable = 
     		{
-    			0.0,
-    			10.0,
-    			20.0,
-    			30.0,
-    			40.0,
-    			50.0,
-    			60.0,
-    			70.0,
-    			80.0,
-    			90.0,
-    			100.0,
-    			110.0,
-    			120.0,
-    			130.0,
-    			140.0, 
+    			0.0,    // 0ft
+    			10.0,   // 1ft
+    			20.0,   // 2ft
+    			30.0,   // 3ft
+    			40.0,   // 4ft
+    			50.0,   // 5ft
+    			60.0,   // 6ft
+    			70.0,   // 7ft
+    			80.0,   // 8ft
+    			90.0,   // 9ft
+    			100.0,  // 10ft
+    			110.0,  // 11ft
+    			120.0,  // 12ft
+    			130.0,  // 13ft
+    			140.0,  // 14ft
     		};
     
     private int closerDistance;
     private int fartherDistance;
-    private int count = 0;
-    private File distanceFile;
-    
+
     private double xAngle = Math.tan(Math.toRadians(Ha/2.0));
     
     public VisionInput(DriverInput di)
-    {   
+    {
+        new Thread(() ->
+        {
+            System.out.println("Here1");
+            GripPipeline pipeline = new GripPipeline();
+
+            camera = CameraServer.getInstance().addAxisCamera("10.49.8.12");
+            camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+
+            CvSink cvSink = CameraServer.getInstance().getVideo();
+            cvSink.setSource(camera);
+
+            Mat source = new Mat();
+
+            while(!Thread.interrupted() && di.getShooterButton())
+            {
+                System.out.println("Here2");
+                cvSink.grabFrame(source);
+                pipeline.process(source);
+
+                long frameTime = cvSink.grabFrame(source);
+
+                if(frameTime == 0L)
+                {
+                    String error = cvSink.getError();
+                    DriverStation.reportError(error, true);
+                }
+                else
+                {
+                    pipeline.process(source);
+
+                    Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+                    synchronized (imgLock)
+                    {
+                        centerX = r.x + (r.width / 2);
+                        centerY = r.x + (r.height / 2);
+                        width = r.width;
+                        height = r.height;
+                        area = r.area();
+
+                        //System.out.println(r.width + "\t\t" + r.height + "\t\t" + r.area() + "\t\t" + centerY);
+                    }
+                }
+
+            }
+
+        }).start();
+
+
+
+        /*
     	camera = CameraServer.getInstance().addAxisCamera("10.49.8.12");
     	camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 
@@ -118,25 +162,6 @@ public class VisionInput
 				}
             }            
         });
-                
-        /*
-        distanceFile = new File("Distances.txt");
-        
-        try
-        {
-        	Scanner readFile = new Scanner(distanceFile);
-        
-        	while(readFile.hasNext())
-        	{
-        		distanceTable[count] = readFile.nextDouble();
-        		count++;
-        		System.out.println(count + "\t" +distanceTable[count]);
-        	}
-        }
-        catch(FileNotFoundException e)
-        {
-        	System.out.println("rip no file");
-        }
         */
     }
 

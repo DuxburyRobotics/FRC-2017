@@ -80,8 +80,7 @@ public class Shooter implements ISubSystem
     public void calculate()
     {
         // TODO: Shift to low gear, add a spin up switch or some shit with SD
-    	
-    	
+
     	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
     	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
     	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
@@ -184,7 +183,6 @@ public class Shooter implements ISubSystem
         		rotatePIDCount = 0;
     		
     		}
-    		
     	}
     	
     	if(!di.getShooterButton())
@@ -192,7 +190,13 @@ public class Shooter implements ISubSystem
     		rotatePIDCount = 0;
     	}
     	
-    	
+    	// FEEDER
+        if (!isDown && si.getShakerSwitch())
+        {
+            //ro.setShaker(0.5);
+        }
+
+
     }
 
     public void disable() {

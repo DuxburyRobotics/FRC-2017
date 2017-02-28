@@ -118,7 +118,11 @@ public class RobotOutput
     public void setElevator(double val)
     {
     	elevator.set(val);
-    	shaker.set(val);
+    }
+
+    public void setShaker(double val)
+    {
+        shaker.set(val);
     }
 
     // CLIMB SUBSYSTEM ====================================================

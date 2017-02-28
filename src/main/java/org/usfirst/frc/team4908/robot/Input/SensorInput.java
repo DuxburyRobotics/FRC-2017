@@ -14,7 +14,7 @@ public class SensorInput
     private Encoder rightEncoder;
 
     private Counter shooterEncoder;
-    private DigitalInput intakeSwitch;
+    private DigitalInput shakerSwitch;
 
     private AHRS navX;
 
@@ -37,7 +37,7 @@ public class SensorInput
         leftEncoder = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
         leftEncoder.setDistancePerPulse((Math.PI*4.0625/360.0)/12.0);
         
-        //intakeSwitch = new DigitalInput(-1);
+        //sensorSwitch = new DigitalInput(-1);
 
         navX = new AHRS(SerialPort.Port.kUSB1);
 
@@ -69,9 +69,9 @@ public class SensorInput
     	return shooterEncoder.get();
     }
 
-    public boolean getIntakeSwitch()
+    public boolean getShakerSwitch()
     {
-        return false; //intakeSwitch.get();
+        return false;//shakerSwitch.get();
     }
 
     public double getMaxShooterSpeed()
