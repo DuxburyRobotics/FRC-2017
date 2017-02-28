@@ -46,7 +46,7 @@ public class Shooter implements ISubSystem
         this.ro = ro;
         this.vi = vi;
 
-        rotatePID = new DuxPID(0.0, 0.0, 0.0, 1, 180); // PID in degrees
+        rotatePID = new DuxPID(0.0, 0.0, 0.0, 1.0, 180); // PID in degrees
         rotatePID.reset();
 
         speedPID = new DuxPID(6.5, 0.2, 1.25, 0.02, 83.0);

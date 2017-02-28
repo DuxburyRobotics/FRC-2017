@@ -37,7 +37,7 @@ public class SensorInput
         leftEncoder = new Encoder(2, 3, false, Encoder.EncodingType.k4X);
         leftEncoder.setDistancePerPulse((Math.PI*4.0625/360.0)/12.0);
         
-        //sensorSwitch = new DigitalInput(-1);
+        //shakerSwitch = new DigitalInput(-1);
 
         navX = new AHRS(SerialPort.Port.kUSB1);
 

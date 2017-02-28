@@ -85,6 +85,7 @@ public class VisionInput
     
     public VisionInput(DriverInput di)
     {
+    	/*
         new Thread(() ->
         {
             System.out.println("Here1");
@@ -98,40 +99,56 @@ public class VisionInput
 
             Mat source = new Mat();
 
-            while(!Thread.interrupted() && di.getShooterButton())
+            while(!Thread.interrupted())
             {
-                System.out.println("Here2");
-                cvSink.grabFrame(source);
-                pipeline.process(source);
-
-                long frameTime = cvSink.grabFrame(source);
-
-                if(frameTime == 0L)
+            	System.out.println("2-.5");
+            	
+                synchronized (imgLock)
                 {
-                    String error = cvSink.getError();
-                    DriverStation.reportError(error, true);
+                	System.out.println("no idea");
+            	
+            	if(di.getShooterButton())
+            	{
+            		System.out.println("Here2");
+            		cvSink.grabFrame(source);
+            		pipeline.process(source);
+
+            		long frameTime = cvSink.grabFrame(source);
+
+            		if(frameTime == 0L)
+            		{
+            			String error = cvSink.getError();
+            			DriverStation.reportError(error, true);
+            		}
+            		else
+            		{
+            			pipeline.process(source);
+
+            			Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+            			synchronized (imgLock)
+            			{
+            				centerX = r.x + (r.width / 2.0);
+            				centerY = r.x + (r.height / 2.0);
+            				width = r.width;
+            				height = r.height;
+            				area = r.area();
+
+            				//System.out.println(r.width + "\t\t" + r.height + "\t\t" + r.area() + "\t\t" + centerY);
+            			}
+            		}
+            	}
                 }
-                else
-                {
-                    pipeline.process(source);
-
-                    Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-                    synchronized (imgLock)
-                    {
-                        centerX = r.x + (r.width / 2);
-                        centerY = r.x + (r.height / 2);
-                        width = r.width;
-                        height = r.height;
-                        area = r.area();
-
-                        //System.out.println(r.width + "\t\t" + r.height + "\t\t" + r.area() + "\t\t" + centerY);
-                    }
-                }
-
+            
+            	try {
+					Thread.sleep(20);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
             }
 
         }).start();
-
+		*/
 
 
         /*
@@ -155,16 +172,24 @@ public class VisionInput
                 }
             
                 try {
-					//Thread.sleep(20);
+					Thread.sleep(20);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
             }            
         });
-        */
+        
+        runner.start();
+    
+		*/
     }
-
+    
+    public void calc()
+    {
+    	
+    }
+        
     public double getCenterX()
     {
         return centerX;
