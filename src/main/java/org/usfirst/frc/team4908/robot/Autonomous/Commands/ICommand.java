@@ -28,9 +28,7 @@ public abstract class ICommand {
 
     //region Auto Code
 
-    public void init() {
-
-    }
+    public abstract void init();
 
     public void update(double time) {
 

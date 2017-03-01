@@ -31,9 +31,9 @@ public class AutoDrive extends ICommand {
     
     private double time;
 
-    public AutoDrive(String type, RobotOutput ro, SensorInput si, double distance)
+    public AutoDrive(RobotOutput ro, SensorInput si, double distance)
     {
-        super(type, ro, si);
+        super("Drive", ro, si);
         this.distance = distance;
         setpoint = new SetPoint();
     

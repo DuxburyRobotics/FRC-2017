@@ -14,9 +14,9 @@ public class AutoRotate extends ICommand
 
     private double target;
 
-    public AutoRotate(String type, RobotOutput ro, SensorInput si, double target)
+    public AutoRotate(RobotOutput ro, SensorInput si, double target)
     {
-        super(type, ro, si);
+        super("Drive Rotate Auto Helper", ro, si);
 
         this.target = target;
 
@@ -29,7 +29,7 @@ public class AutoRotate extends ICommand
         PID.setSetPoint(target);
     }
 
-    public void update()
+    public void update(double time)
     {
        // ro.setDriveMotors(0.0, PID.calculate(si.getYaw()));
     }

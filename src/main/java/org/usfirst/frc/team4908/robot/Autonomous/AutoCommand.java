@@ -14,8 +14,9 @@ public class AutoCommand {
     private SensorInput si;
 
     private int instructionSequence;
-    private int commandNumber;
+    private int commandIndex;
     private boolean firstRun;
+    private boolean isFinished;
     private ArrayList<Sequence> autoInstructionList;
     private Sequence sequence;
 
@@ -32,12 +33,14 @@ public class AutoCommand {
      * so that you don't anciently have two in the Robot (because that would be weird).
      */
     public AutoCommand(RobotOutput ro, SensorInput si) {
-        this.instructionSequence = 1;
-        this.commandNumber = 0;
+        this.instructionSequence = -1;
+        this.commandIndex = 0;
         this.firstRun = true;
         this.ro = ro;
         this.si = si;
         this.autoInstructionList = new ArrayList<Sequence>();
+        sequence = null;
+        isFinished = false;
 
         generateDefaultAuto();
     }
@@ -61,40 +64,51 @@ public class AutoCommand {
      * next command. Until then this will keep calling update() in ICommand.
      */
     public void periodic() {
+        if(!isFinished) {
+            if (firstRun) {      //this is the first time init() is called
+                firstRun = false;
+                commandIndex = 0;
 
-        if(firstRun) {
-            firstRun = false;
-
-            if (sequence == null && instructionSequence >= 0) //if sequence was empty and there is a instructionSequence we want to use
-            {
-                sequence = autoInstructionList.get(instructionSequence);
-                System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
-                System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
-
-            } else {
-                sequence = autoInstructionList.get(1); //just get the default one that does nothing since there was nothing set to use
-                                                     //This means that Auto did not know what to run and is using default one.
-                System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
-                        "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n");
-
-            } //else
-        } //if
-
-        if(sequence.getCommand(commandNumber).isFirstRun())
-            sequence.getCommand(commandNumber).firstRun(); //set command firstRun to false and run init
+                /**
+                 * This is where the code to get the auto Index to run would be
+                 */
 
 
-        //now run update
-        sequence.getCommand(commandNumber).update(System.currentTimeMillis()/1000.0-startTime);
+                if (sequence == null && instructionSequence >= 0) //if sequence was empty and there is a instructionSequence we want to use
+                {
+                    sequence = autoInstructionList.get(instructionSequence);
+                    System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
+                    System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
 
-        //check if finished
-        if (sequence.getCommand(commandNumber).isFinished()) 
-        {
-            sequence.getCommand(commandNumber).finish(); //call finish function to end command
-            if(commandNumber > 1)
-            		commandNumber++; //move to next command
-        }
-    }
+                } else {
+                    sequence = autoInstructionList.get(0); //just get the default one that does nothing since there was nothing set to use
+                    //This means that Auto did not know what to run and is using default one.
+                    System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
+                            "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n");
+
+                } //else
+            } //if
+
+            if (sequence.getCommand(commandIndex).isFirstRun())
+                sequence.getCommand(commandIndex).firstRun(); //set command firstRun to false and run init
+
+
+            //now run update
+            sequence.getCommand(commandIndex).update(System.currentTimeMillis() / 1000.0 - startTime);
+
+            //check if finished
+            if (sequence.getCommand(commandIndex).isFinished()) {
+                sequence.getCommand(commandIndex).finish(); //call finish function to end command
+                if (commandIndex < sequence.getCommandListSize())
+                    commandIndex++; //move to next command
+                else //there's no more instructions in the list!
+                    isFinished = true;
+            }
+
+
+
+        } //isFinished
+    } //periodic()
 
 
     /**
@@ -116,6 +130,8 @@ public class AutoCommand {
             public void firstRun() {
                 //do nothing
             }
+
+            public void init() {}
         });
 
 
@@ -126,14 +142,32 @@ public class AutoCommand {
          * drive "10"
          */
         Sequence drive = new Sequence();
-        drive.addInstruction(new AutoDrive("drive", ro, si, 10.0));
+        drive.addInstruction(new AutoDrive(ro, si, 10.0));
 
 
         /**
-         * Add the Sequences into the araw
+         * index 2:
+         *
+         * Actions:
+         * something?
+         */
+        Sequence index2 = new Sequence();
+
+        index2.addInstruction(new AutoDrive(ro, si, 10.0));
+        index2.addInstruction(new AutoGearDeposit(ro, si));
+        index2.addInstruction(new AutoIntake(ro, si));
+        index2.addInstruction(new AutoRotate(ro, si, 0.0));
+        index2.addInstruction(new AutoShooter(ro, si));
+
+
+
+
+        /**
+         * Add the Sequences into the array
          */
         autoInstructionList.add(default0);
         autoInstructionList.add(drive);
+        autoInstructionList.add(index2);
     }
 
 
@@ -158,7 +192,7 @@ public class AutoCommand {
         /*
     public AutoCommand() {
         this.instructionSequence = 0;
-        this.commandNumber = 0;
+        this.commandIndex = 0;
         this.firstRun = true;
         this.autoInstructionList = new ArrayList<InstructionSet>();
 
@@ -214,12 +248,12 @@ public class AutoCommand {
      if (firstRun) {
      lastTime = System.nanoTime();
      sequence = autoInstructionList.get(instructionSequence);
-     commandNumber = 0;
+     commandIndex = 0;
      firstRun = false;
      }
 
-     sequence.runCommand(commandNumber);
-     incrementTime(sequence.getCommand(commandNumber).getWaitTime());
+     sequence.runCommand(commandIndex);
+     incrementTime(sequence.getCommand(commandIndex).getWaitTime());
 
 
      } */
@@ -230,7 +264,7 @@ public class AutoCommand {
     private void incrementTime(double secondsToWait) {
     if ((System.nanoTime() - lastTime) >= (secondsToWait * 1000000000)) {
     lastTime = System.nanoTime();
-    commandNumber++;
+    commandIndex++;
     }
 
     }*/

@@ -29,7 +29,7 @@ public class AutoShooter extends ICommand {
 
     }
 
-    public void update() {
+    public void update(double time) {
 
         PID.reset();
         PID.setSetPoint(4900);

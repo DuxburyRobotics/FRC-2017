@@ -12,17 +12,17 @@ import org.usfirst.frc.team4908.robot.SubSystems.*;
 public class AutoIntake extends ICommand{
 
 
-    public AutoIntake(String type, RobotOutput ro, SensorInput si) {
-        super(type, ro, si);
+    public AutoIntake(RobotOutput ro, SensorInput si) {
+        super("Intake", ro, si);
     }
 
     //region Auto Code
 
     public void init() {
-
+        System.out.print("\n\nAUTO: WARNING THIS COMMAND WILL NOT WORK. (AutoIntake)");
     }
 
-    public void update() {
+    public void update(double time) {
 
     }
 

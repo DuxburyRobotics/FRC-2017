@@ -48,6 +48,30 @@ public class Sequence {
         return instructionsList.get(index);
     }
 
+    public int getCommandListSize() {
+        return instructionsList.size();
+    }
+
+    /**
+     * To String method re-writen
+     * @return the toString
+     */
+    @Override
+    public String toString() {
+
+        String print = "\nList of commands\n";
+        int count = 0;
+
+        for (ICommand autoCommand:instructionsList) {
+            print += count + ": " + autoCommand.getType();
+
+        }
+
+        print += "\n\nEnd of List";
+
+        return print;
+    }
+
 
     //endregion
 

@@ -11,9 +11,9 @@ public class AutoGearDeposit extends ICommand
 {
     private int count;
 
-    public AutoGearDeposit(String type, RobotOutput ro, SensorInput si)
+    public AutoGearDeposit(RobotOutput ro, SensorInput si)
     {
-        super(type, ro, si);
+        super("Gear Deposit", ro, si);
 
         count = 0;
     }
@@ -23,7 +23,7 @@ public class AutoGearDeposit extends ICommand
         //ro.deployGear();
     }
 
-    public void update()
+    public void update(double time)
     {
         count++;
     }

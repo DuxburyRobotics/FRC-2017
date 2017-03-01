@@ -1,7 +1,6 @@
 
 package org.usfirst.frc.team4908.robot;
 
-import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -19,8 +18,7 @@ import org.usfirst.frc.team4908.robot.SubSystems.*;
  * directory.
  */
 
-public class Robot extends IterativeRobot
-{
+public class Robot extends IterativeRobot {
 
     private RobotOutput robotOutput;
     private SensorInput sensorInput;
@@ -30,46 +28,45 @@ public class Robot extends IterativeRobot
     private RobotComponents robotComponents;
     private AutoCommand autoCommand;
     private DuxDash duxDash;
-    private SensorOutput so;
-    
+    private SensorOutput sensorOutput;
+
     private SmartDashboard sd;
 
     /**
      * This function is run when the robot is first started up and should be
      * used for any initialization code.
-     *
+     * <p>
      * Initialised the auto, teleOp and Java Dashboard
      */
     @Override
-    public void robotInit()
-    {
-    	/**
-    	 * http://www.pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
-    	 * 
-    	 * ahrs = new AHRS(SerialPort.Port.kMXP); // Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB 
-    	 */
+    public void robotInit() {
+        /**
+         * http://www.pdocs.kauailabs.com/navx-mxp/software/roborio-libraries/java/
+         *
+         * ahrs = new AHRS(SerialPort.Port.kMXP); // Alternatives:  SPI.Port.kMXP, I2C.Port.kMXP or SerialPort.Port.kUSB
+         */
         robotOutput = new RobotOutput();
         sensorInput = new SensorInput();
         driverInput = new DriverInput();
         visionInput = new VisionInput(driverInput);
-        so = new SensorOutput(sensorInput);
-        
+        sensorOutput = new SensorOutput(sensorInput);
+
         robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput, visionInput);
         autoCommand = new AutoCommand(robotOutput, sensorInput);
         duxDash = new DuxDash();
-    
+
         sd = new SmartDashboard();
-        
-        
+
+
     }
 
 
     //region Autonomous
+
     /**
      * This function is called to init the autonomous code
      */
-    public void autonomousInit()
-    {
+    public void autonomousInit() {
         autoCommand.init();
     }
 
@@ -78,24 +75,19 @@ public class Robot extends IterativeRobot
      * This function is called periodically during autonomous
      */
     @Override
-    public void autonomousPeriodic()
-    {
-
-        autoCommand.periodic();
-
-    }
+    public void autonomousPeriodic() { autoCommand.periodic(); }
 
     //endregion
 
 
     //region TeleOperation
+
     /**
      *
      */
     @Override
-    public void teleopInit() 
-    {
-    	sensorInput.resetRotation();
+    public void teleopInit() {
+        sensorInput.resetRotation();
     }
 
 
@@ -103,22 +95,22 @@ public class Robot extends IterativeRobot
      * This function is called periodically during operator control
      */
     @Override
-    
-    public void teleopPeriodic()
-    {    	
+
+    public void teleopPeriodic() {
         robotComponents.update();
-          
-        System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int)visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
-        System.out.println("Rotation: " + (int)sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches()/12.0)));
-        
-        
-//        so.update();
+
+        System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int) visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
+        System.out.println("Rotation: " + (int) sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches() / 12.0)));
+
+
+//        sensorOutput.update();
     }
 
     //endregion
 
 
     //region Test
+
     /**
      *
      */
@@ -133,25 +125,15 @@ public class Robot extends IterativeRobot
      * This function is called periodically during test mode
      */
     @Override
-    public void testPeriodic()
-    {
-    
+    public void testPeriodic() {
+
     }
 
     //endregion
 
 
-    public void disabledInit()
-    {
+    public void disabledInit() {
         robotComponents.disable();
     }
 
-
-    /**
-     * This function gets the RobotComponents class that controls the robot.
-     * @return RobotComonents
-     */
-    public RobotComponents getRobotComponents() {
-        return robotComponents;
-    }
 }
