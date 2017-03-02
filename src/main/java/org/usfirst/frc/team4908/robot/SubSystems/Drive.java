@@ -44,17 +44,24 @@ public class Drive implements ISubSystem
     // TELEOPS
     public void calculate()
     {
-    	/*
         driveX = -di.getDriveX();
         driveRot = -di.getDriveRot();
-
+    
+        if(di.getShifterButton())
+        {
+        	ro.setHighGear();
+        }
+        else
+        	ro.setLowGear();
+        
+        
         // set high gear
         if(di.getShifterButton() && !shifterWasPressed && isLow)
         {
             shifterWasPressed = true;
             isLow = false;
 
-            ro.setHighGear();
+//            ro.setHighGear();
         }
         else if(!di.getShifterButton())
         {
@@ -67,7 +74,7 @@ public class Drive implements ISubSystem
             shifterWasPressed = true;
             isLow = true;
 
-            ro.setLowGear();
+  //          ro.setLowGear();
         }
         else if(!di.getShifterButton())
         {
@@ -104,7 +111,6 @@ public class Drive implements ISubSystem
             ro.setDriveMotors(0.0, 0.0);
         }
         
-        */
         //System.out.println(si.getLeftDriveSpeed() + "\t\t\t\t" + si.getRightDriveSpeed());
     }
 

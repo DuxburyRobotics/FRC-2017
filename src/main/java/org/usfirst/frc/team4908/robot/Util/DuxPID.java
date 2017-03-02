@@ -27,7 +27,7 @@ public class DuxPID
 
     private double maxMotorValue;
 
-    private double doneThreshold = 5;
+    private double doneThreshold = 10;
     
     private double calcValue;
 
@@ -58,11 +58,10 @@ public class DuxPID
 
         PIDsum = calcP + calcI + calcD; // value is still in RPM's not motor values
 
-        isDone();
 
         lastError = error;
 
-        //System.out.println(error + "\t\t\t" + setPoint + "\t" + kP + "\t" + kI + "\t" + kD);
+        System.out.println(error + "\t\t\t" + setPoint + "\t" + kP + "\t" + kI + "\t" + kD);
         
         
         return convertMotors(PIDsum); // changes to motor values
@@ -70,15 +69,12 @@ public class DuxPID
 
     public boolean isDone()
     {
-        if(error <= kEpsilon)
+        if(Math.abs(error) <= kEpsilon)
             count++;
         else
         	count = 0;
-   
-        if(count >= doneThreshold)
-        	return true;
-        else
-        	return false;
+
+        return (count >= doneThreshold);
     }
 
     public double convertMotors(double value)

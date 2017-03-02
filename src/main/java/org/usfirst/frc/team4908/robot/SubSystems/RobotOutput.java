@@ -46,15 +46,14 @@ public class RobotOutput
     public RobotOutput()
     {
         // DRIVE SUBSYSTEM =====================================================
-        frontLeftMotor = new CANTalon(1);// real robot 2
+        frontLeftMotor = new CANTalon(2);// real robot 2
         rearLeftMotor = new CANTalon(3); // real robot 3
-        frontRightMotor = new CANTalon(4);// real robot 1
-        rearRightMotor = new CANTalon(2); // real robot 0
+        frontRightMotor = new CANTalon(1);// real robot 1
+        rearRightMotor = new CANTalon(4); // real robot 4
 
-        //driveGearSolenoid = new DoubleSolenoid(0, 1);
+        driveGearSolenoid = new DoubleSolenoid(0, 1);
 		
         rd = new RobotDrive(frontLeftMotor, rearLeftMotor, frontRightMotor, rearRightMotor);
-        /*
         // SHOOTER SUBSYSTEM ===================================================
         shooterOne = new VictorSP(3);
         shooterTwo = new VictorSP(4);
@@ -78,7 +77,6 @@ public class RobotOutput
         // GEAR SUBSYSTEM =====================================================
 
         gearSolenoid = new DoubleSolenoid(3, 2);
-    	*/
     }
 
     // DRIVE SUBSYSTEM =====================================================
@@ -89,8 +87,7 @@ public class RobotOutput
         rd.arcadeDrive(x, r);
     }
 
-	/*
-    public void setHighGear()
+	public void setHighGear()
     {
         driveGearSolenoid.set(DoubleSolenoid.Value.kForward);
     }
@@ -160,5 +157,4 @@ public class RobotOutput
     {
         gearSolenoid.set(DoubleSolenoid.Value.kReverse);
     }
-    */
 }

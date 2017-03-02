@@ -34,11 +34,11 @@ public class Gear implements ISubSystem
         if(di.getGearButton() && !wasPressed)
         {
             wasPressed = true;
-     //       ro.deployGear();
+            ro.deployGear();
         }
         else if (!di.getGearButton())
         {
-       //     ro.retractGear();
+            ro.retractGear();
             wasPressed = false;
         }
     }

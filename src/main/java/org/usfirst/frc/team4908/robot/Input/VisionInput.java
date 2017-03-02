@@ -85,10 +85,9 @@ public class VisionInput
     
     public VisionInput(DriverInput di)
     {
-    	/*
+    	
         new Thread(() ->
         {
-            System.out.println("Here1");
             GripPipeline pipeline = new GripPipeline();
 
             camera = CameraServer.getInstance().addAxisCamera("10.49.8.12");
@@ -101,18 +100,15 @@ public class VisionInput
 
             while(!Thread.interrupted())
             {
-            	System.out.println("2-.5");
-            	
                 synchronized (imgLock)
                 {
-                	System.out.println("no idea");
             	
             	if(di.getShooterButton())
             	{
             		System.out.println("Here2");
             		cvSink.grabFrame(source);
             		pipeline.process(source);
-
+ 
             		long frameTime = cvSink.grabFrame(source);
 
             		if(frameTime == 0L)
@@ -124,7 +120,11 @@ public class VisionInput
             		{
             			pipeline.process(source);
 
+            			if(!pipeline.filterContoursOutput().isEmpty())
+            			{
             			Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+            			
+            			
             			synchronized (imgLock)
             			{
             				centerX = r.x + (r.width / 2.0);
@@ -133,7 +133,8 @@ public class VisionInput
             				height = r.height;
             				area = r.area();
 
-            				//System.out.println(r.width + "\t\t" + r.height + "\t\t" + r.area() + "\t\t" + centerY);
+            				System.out.println(r.width + "\t\t" + r.height + "\t\t" + r.area() + "\t\t" + centerY);
+            			}
             			}
             		}
             	}
@@ -148,7 +149,7 @@ public class VisionInput
             }
 
         }).start();
-		*/
+		
 
 
         /*

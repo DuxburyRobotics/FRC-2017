@@ -49,7 +49,7 @@ public class Shooter implements ISubSystem
         rotatePID = new DuxPID(0.0, 0.0, 0.0, 1.0, 180); // PID in degrees
         rotatePID.reset();
 
-        speedPID = new DuxPID(6.5, 0.2, 1.25, 0.02, 83.0);
+        speedPID = new DuxPID(6.5, 0.2, 1.25, 1.0, 83.0);
         speedPID.reset();
         setValue = 0.0;
 
@@ -79,8 +79,20 @@ public class Shooter implements ISubSystem
     
     public void calculate()
     {
+    	// FEEDER
+        if (!isDown && si.getShakerSwitch())
+        {
+            ro.setShaker(0.5);
+        }
+        else
+        {
+        	ro.setShaker(0.0);
+        }
+    	
+    	
         // TODO: Shift to low gear, add a spin up switch or some shit with SD
 
+    	
     	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
     	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
     	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
@@ -103,11 +115,17 @@ public class Shooter implements ISubSystem
         {
         	//System.out.println("2");
         	setValue = speedPID.calculate(si.getShooterSpeed());
+        
+        	System.out.println(si.getShooterSpeed());
+        	
         	double rotateValue = rotatePID.calculate(si.getYaw());
         	
-        	if(speedPID.isDone() && rotatePID.isDone())
+        	ro.setShooter(setValue);
+        	
+        	if(speedPID.isDone())// && rotatePID.isDone())
         	{
-        		//ro.setElevator(1.0);
+        		ro.setElevator(1.0);
+        		ro.setShaker(1.0);
         	}
         
         	if(count >= 75)
@@ -136,10 +154,11 @@ public class Shooter implements ISubSystem
             wasDown = false;
             
         	speedPID.reset();
+        
         }
                
         
-        //ro.setShooter(0.8);
+        ro.setShooter(setValue);
         //ro.setElevator(1.0);
     	
     	if(di.getShooterButton())
@@ -166,7 +185,7 @@ public class Shooter implements ISubSystem
     			else if (val < -.5)
     				val = -.5;
     			
-    			ro.setDriveMotors(0.0, val);
+    			//ro.setDriveMotors(0.0, val); // THING THING THING THING THING THING THING
     			
     			rotatePIDCount++;
     		}
@@ -183,6 +202,13 @@ public class Shooter implements ISubSystem
         		rotatePIDCount = 0;
     		
     		}
+    		
+    		
+    		if(rotatePID.isDone())
+    		{
+    			System.out.println("LAAAA\nLAAAAAAA\nADFJSFSSJAKJAJAFJAFKAJSDFJSFJAFJ");
+    		}	
+    		
     	}
     	
     	if(!di.getShooterButton())
@@ -190,13 +216,9 @@ public class Shooter implements ISubSystem
     		rotatePIDCount = 0;
     	}
     	
-    	// FEEDER
-        if (!isDown && si.getShakerSwitch())
-        {
-            //ro.setShaker(0.5);
-        }
+    	
 
-
+        
     }
 
     public void disable() {
@@ -208,13 +230,13 @@ public class Shooter implements ISubSystem
     /**
      * Used for auto, will turn on the shooter at the target RPM.
      * @param targetRPM the target RPM to run at.
-     */
+     *
     public void activate(int targetRPM) {
         speedPID.reset();
         speedPID.setSetPoint(targetRPM);
         //ro.setShooter(speedPID.calculate(si.getShooterSpeed()));
 
-    }
+    } */
 
 
     public RobotOutput getRo()
