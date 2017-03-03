@@ -58,7 +58,6 @@ public class DuxPID
 
         PIDsum = calcP + calcI + calcD; // value is still in RPM's not motor values
 
-
         lastError = error;
 
         System.out.println(error + "\t\t\t" + setPoint + "\t" + kP + "\t" + kI + "\t" + kD);

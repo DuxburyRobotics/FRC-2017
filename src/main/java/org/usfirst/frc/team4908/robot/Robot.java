@@ -1,6 +1,7 @@
 
 package org.usfirst.frc.team4908.robot;
 
+import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -57,7 +58,16 @@ public class Robot extends IterativeRobot {
 
         sd = new SmartDashboard();
 
-
+        try
+        {
+        	Compressor c = new Compressor();
+        
+        	c.start();
+        }
+        catch(Exception e)
+        {
+        	System.out.println("no compressor");
+        }
     }
 
 
@@ -99,8 +109,8 @@ public class Robot extends IterativeRobot {
     public void teleopPeriodic() {
         robotComponents.update();
 
-        //System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int) visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
-        //System.out.println("Rotation: " + (int) sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches() / 12.0)));
+        System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int) visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
+        System.out.println("Rotation: " + (int) sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches() / 12.0)));
 
 
 //        sensorOutput.update();

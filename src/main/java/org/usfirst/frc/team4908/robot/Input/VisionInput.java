@@ -51,8 +51,8 @@ public class VisionInput
     private double height;
     private double area;
     
-    private double cameraBoilerHeightDiffernce = 37.0;
-    private double cameraOffset = 6.0;
+    private double cameraBoilerHeightDiffernce = 60.0;
+    private double cameraOffset = 15.0;
 
     private static final double C_X = IMG_WIDTH/2 - 0.5;
     private static final double C_Y = IMG_HEIGHT/2 - 0.5;
@@ -61,21 +61,21 @@ public class VisionInput
     
     private double[] distanceTable = 
     		{
-    			0.0,    // 0ft
-    			10.0,   // 1ft
-    			20.0,   // 2ft
-    			30.0,   // 3ft
-    			40.0,   // 4ft
-    			50.0,   // 5ft
-    			60.0,   // 6ft
-    			70.0,   // 7ft
-    			80.0,   // 8ft
-    			90.0,   // 9ft
-    			100.0,  // 10ft
-    			110.0,  // 11ft
-    			120.0,  // 12ft
-    			130.0,  // 13ft
-    			140.0,  // 14ft
+    			52.5,    // 0ft
+    			52.5,   // 1ft
+    			52.5,   // 2ft
+    			52.5,   // 3ft
+    			52.5,   // 4ft
+    			54.0,   // 5ft
+    			56.5,   // 6ft
+    			62.0,   // 7ft
+    			66.0,   // 8ft
+    			74.0,   // 9ft
+    			80.0,  // 10ft
+    			83.0,  // 11ft
+    			83.0,  // 12ft
+    			83.0,  // 13ft
+    			83.0,  // 14ft
     		};
     
     private int closerDistance;

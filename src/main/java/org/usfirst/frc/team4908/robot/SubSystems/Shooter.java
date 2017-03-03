@@ -99,7 +99,7 @@ public class Shooter implements ISubSystem
     	
     	
     	targetRPM = Preferences.getInstance().getDouble("shooterTarget", 0.0); // vi.getTargetSpeed(getTargetDistanceInches/12.0);
-    	speedPID.setSetPoint(vi.getTargetSpeed(vi.getTargetDistanceInches()/12.0));
+    	//speedPID.setSetPoint(vi.getTargetSpeed(vi.getTargetDistanceInches()/12.0));
     	
         isDown = di.getShooterButton();
         count++; 
@@ -107,7 +107,7 @@ public class Shooter implements ISubSystem
         if(isDown && !wasDown)
         {
         	//System.out.println("1");
-        	speedPID.setSetPoint(30.0);
+        	speedPID.setSetPoint(targetRPM);
         	wasDown = true;
         }
         
@@ -118,12 +118,11 @@ public class Shooter implements ISubSystem
         
         	System.out.println(si.getShooterSpeed());
         	
-        	double rotateValue = rotatePID.calculate(si.getYaw());
+        	//ro.setShooter(setValue);
         	
-        	ro.setShooter(setValue);
-        	
-        	if(speedPID.isDone())// && rotatePID.isDone())
+        	if(rotatePID.isDone())// && speedPID.isDone())
         	{
+        		System.out.println("\n\n\n\n\n");
         		ro.setElevator(1.0);
         		ro.setShaker(1.0);
         	}
@@ -147,7 +146,7 @@ public class Shooter implements ISubSystem
         {
         	//System.out.println("3");
         	setValue= 0.0;
-            //ro.setElevator(0.0);
+            ro.setElevator(0.0);
  
             count = 0;
             
@@ -158,9 +157,6 @@ public class Shooter implements ISubSystem
         }
                
         
-        ro.setShooter(setValue);
-        //ro.setElevator(1.0);
-    	
     	if(di.getShooterButton())
     	{
     		if(rotatePIDCount == 0)
@@ -185,7 +181,7 @@ public class Shooter implements ISubSystem
     			else if (val < -.5)
     				val = -.5;
     			
-    			//ro.setDriveMotors(0.0, val); // THING THING THING THING THING THING THING
+    			ro.setDriveMotors(0.0, val); // THING THING THING THING THING THING THING
     			
     			rotatePIDCount++;
     		}
@@ -206,8 +202,10 @@ public class Shooter implements ISubSystem
     		
     		if(rotatePID.isDone())
     		{
-    			System.out.println("LAAAA\nLAAAAAAA\nADFJSFSSJAKJAJAFJAFKAJSDFJSFJAFJ");
-    		}	
+    			ro.setShooter(targetRPM/83.0);
+    	        ro.setElevator(1.0);
+    	    	ro.setShaker(1.0);
+    	   	}	
     		
     	}
     	
