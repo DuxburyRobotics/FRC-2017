@@ -136,38 +136,125 @@ public class AutoCommand {
 
 
         /**
-         * index: 1
+         * index: 1 Cross Baseline
          *
          * Actions:
-         * drive "10"
+         * low gear
+         * drive 8 feet // OL
+         * Drop intake
          */
-        Sequence drive = new Sequence();
-        drive.addInstruction(new AutoDrive(ro, si, 10.0));
+        Sequence crossBaseline = new Sequence();
+        crossBaseline.addInstruction(new AutoDrive(ro, si, 5)); //TODO: Check distences
+        crossBaseline.addInstruction(new AutoGearDeposit(ro, si));
+        crossBaseline.addInstruction(new AutoDrive(ro, si, -1)); //TODO: CHECK THIS
+        crossBaseline.addInstruction(new AutoDrive(ro, si, 8));
+        crossBaseline.addInstruction(new AutoIntake(ro, si)); //only drop
 
 
         /**
-         * index 2:
+         * index: 2 center gear
          *
          * Actions:
-         * something?
+         * SETUP: Lined up perfectly straight with gear peg, bumpers against wall
+         * Low gear
+         * Drive backwards 5 ft 2in // CL
+         * Deposit gear
+         * Drive forward 2 feet // OL
+         * Deploy intake
          */
-        Sequence index2 = new Sequence();
+        Sequence centerGear = new Sequence();
+        centerGear.addInstruction(new AutoDrive(ro, si, 3));
+        centerGear.addInstruction(new AutoGearDeposit(ro, si));
+        centerGear.addInstruction(new AutoDrive(ro, si, 5.16)); //5f + 2/12
+        centerGear.addInstruction(new AutoDrive(ro, si, 2));
+        centerGear.addInstruction(new AutoIntake(ro, si)); //deploy only
 
-        index2.addInstruction(new AutoDrive(ro, si, 10.0));
-        index2.addInstruction(new AutoGearDeposit(ro, si));
-        index2.addInstruction(new AutoIntake(ro, si));
-        index2.addInstruction(new AutoRotate(ro, si, 0.0));
-        index2.addInstruction(new AutoShooter(ro, si));
+
+        /**
+         * index: 3 Deliver center gear and cross baseline
+         *
+         * Actions:
+         * SETUP: Lined up perfectly straight with gear peg, bumpers against wall
+         * //Same as standard center gear
+         * Turn 90 degrees left or right
+         * Drive forward 5 //OL
+         * Rotate to 0 angle
+         * Drive forward 5 // OL
+         */
+        Sequence centerGearBaseline = new Sequence();
+        //centerGear
+        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 3));
+        centerGearBaseline.addInstruction(new AutoGearDeposit(ro, si));
+        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 5.16)); //5f + 2/12
+        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 2));
+        centerGearBaseline.addInstruction(new AutoIntake(ro, si)); //deploy only
+        centerGearBaseline.addInstruction(new AutoRotate(ro, si, 90));
+        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 5));
+        centerGearBaseline.addInstruction(new AutoRotate(ro, si, -90)); //TODO: Negative values okay?
+        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 5));
 
 
+        /**
+         * index 4: Center gear + 10 kpa + baseline
+         *
+         * Actions:
+         * SETUP: Lined up perfectly straight with gear peg, bumpers against wall
+         * Center gear
+         * Rotate 80 degrees right (BLUE) or left (RED)
+         * Drop intake
+         * Drive forward x feet depending on where shooter performs best
+         * Vision track, shoot
+         * Rotate back to 0 angle
+         * Drive forward 8 ft at full speed
+         */
+        Sequence centerGearShootBaseline = new Sequence();
+        Sequence CGSB = centerGearShootBaseline;
+        //centerGear
+        CGSB.addInstruction(new AutoDrive(ro, si, 3));
+        CGSB.addInstruction(new AutoGearDeposit(ro, si));
+        CGSB.addInstruction(new AutoDrive(ro, si, 5.16)); //5f + 2/12
+        CGSB.addInstruction(new AutoDrive(ro, si, 2));
+        CGSB.addInstruction(new AutoRotate(ro, si, 80));
+        CGSB.addInstruction(new AutoIntake(ro, si)); //deploy only
+        CGSB.addInstruction(new AutoDrive(ro, si, 999)); //check distance
+        CGSB.addInstruction(new AutoShooter(ro, si));
+        CGSB.addInstruction(new AutoRotate(ro, si, -80)); //TODO: Neg okay?
+        CGSB.addInstruction(new AutoDrive(ro, si, 8)); //@100% speed
+
+
+        /**
+         * Autonomous 5: 10 kpa and baseline
+
+         SETUP: bumpers against wall with intake forward, back of bumper aligned with alliance station near boiler
+
+         Low gear
+
+         Drop intake
+
+         Drive forward 2ft
+
+         Rotate 90 degrees left (BLUE) or right (RED)
+
+         Vision track, shoot
+
+         Rotate to angle 0
+
+         Drive forward 10 ft
+
+         Autonomous 6/7: Gear at left/right positions
+
+         SETUP: bumpers against wall with intake forward
+         */
 
 
         /**
          * Add the Sequences into the array
          */
         autoInstructionList.add(default0);
-        autoInstructionList.add(drive);
-        autoInstructionList.add(index2);
+        autoInstructionList.add(crossBaseline);
+        autoInstructionList.add(centerGear);
+        autoInstructionList.add(centerGearBaseline);
+        autoInstructionList.add(centerGearShootBaseline);
     }
 
 
