@@ -57,6 +57,13 @@ public class Robot extends IterativeRobot {
         duxDash = new DuxDash();
 
         sd = new SmartDashboard();
+        autoChooser = new SendableChooser();
+        autoChooser.addDefault(autoCommand.autoList[0], 0);
+        for(int x=1;x++; x<autoCommand.autoList.length())
+        {            
+            autoChooser.addObject(autoCommand.autoList[x], x);
+        }
+        sd.putData("Autonomous Select", autoChooser);
 
         try
         {
@@ -78,6 +85,7 @@ public class Robot extends IterativeRobot {
      */
     public void autonomousInit() {
         autoCommand.init();
+        autoCommand.setInstructionSequence(autoChooser.getSelected());
     }
 
 
