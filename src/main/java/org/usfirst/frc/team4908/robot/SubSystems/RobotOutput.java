@@ -84,7 +84,7 @@ public class RobotOutput
     
     public void setDriveMotors(double x, double r)
     {
-        rd.arcadeDrive(x, r);
+        rd.arcadeDrive(x, (r*0.75));
     }
 
 	public void setHighGear()

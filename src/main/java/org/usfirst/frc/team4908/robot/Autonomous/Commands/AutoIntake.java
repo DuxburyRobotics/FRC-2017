@@ -1,39 +1,43 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
-import org.usfirst.frc.team4908.robot.SubSystems.*;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
+import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
 
 /**
- * Created by kyleknobloch on 1/26/17,
- * For
- * *
- * Actions:
+ * @author Siggy
+ *         $
  */
-public class AutoIntake extends ICommand{
+public class AutoIntake extends ICommand
+{
+    private int count;
 
+    public AutoIntake(RobotOutput ro, SensorInput si, VisionInput vi)
+    {
+        super("Intake", ro, si, vi);
 
-    public AutoIntake(RobotOutput ro, SensorInput si) {
-        super("Intake", ro, si);
+        count = 0;
     }
 
-    //region Auto Code
-
-    public void init() {
-        System.out.print("\n\nAUTO: WARNING THIS COMMAND WILL NOT WORK. (AutoIntake)");
+    public void init()
+    {
+        ro.deployIntake();
     }
 
-    public void update(double time) {
-
+    public void update(double time)
+    {
+        count++;
     }
 
-    public void finish() {
-
+    public void finish()
+    {
     }
 
-    //endregion
-
-
-
-
-
+    public boolean isFinished()
+    {
+        if(count >= 5)
+            return true;
+        else
+            return false;
+    }
 }

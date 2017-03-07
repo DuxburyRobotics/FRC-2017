@@ -2,7 +2,6 @@ package org.usfirst.frc.team4908.robot.SubSystems;
 
 import org.usfirst.frc.team4908.robot.Input.*;
 import org.usfirst.frc.team4908.robot.Util.DuxPID;
-
 import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -21,10 +20,16 @@ public class Shooter implements ISubSystem
     private DuxPID speedPID;
     private DuxPID rotatePID;
 
+    private double shooterVal;
+    private double elevatorVal;
+    private double shakerVal;
+
     private double setValue;
 
-    private boolean isDown;
-    private boolean wasDown;
+    private boolean isShooterDown;
+    private boolean wasShooterDown;
+    private boolean isVisionDown;
+    private boolean wasVisionDown;
 
     private int preSpeedCounter;
     private int rotatePIDCount;
@@ -32,12 +37,14 @@ public class Shooter implements ISubSystem
     private static final double scaleFactor = 1.0;
     
     private boolean readyToShoot;
-
     private double speedSet;
     
     private double preSpeedTarget = 0.8;
 
-    private double count;
+    private double visionShooterCount;
+    private double noVisionShooterCount;
+
+    private double PIDResetCount;
     
     public Shooter(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
@@ -46,41 +53,156 @@ public class Shooter implements ISubSystem
         this.ro = ro;
         this.vi = vi;
 
-        rotatePID = new DuxPID(0.0, 0.0, 0.0, 1.0, 180); // PID in degrees
+        rotatePID = new DuxPID(12.5, 0.5, 0.0, 1.0, 180); // PID in degrees
         rotatePID.reset();
 
-        speedPID = new DuxPID(6.5, 0.2, 1.25, 1.0, 83.0);
+        speedPID = new DuxPID(3.0, 0.1, 2.0, 1.0, 83.0);
         speedPID.reset();
         setValue = 0.0;
 
-        wasDown = false;
+        wasShooterDown = false;
         
-        count = 0;
-        isDown = false;
+        noVisionShooterCount = 0;
+        isShooterDown = false;
 
         preSpeedCounter = 0;
         rotatePIDCount = 0;
         
         readyToShoot = false;
         
+    	Preferences.getInstance().putDouble("RP", 0.0);
+    	Preferences.getInstance().putDouble("RI", 0.0);
+    	Preferences.getInstance().putDouble("RD", 0.0);
+        
         Preferences.getInstance().putDouble("shooterTarget", 10.0);
     }
     
     public void init()
     {
-    	/*
-    	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
-    	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
-    	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
-    	*/
+    	rotatePID.setP(Preferences.getInstance().getDouble("RP", 0.0));
+    	rotatePID.setI(Preferences.getInstance().getDouble("RI", 0.0));
+    	rotatePID.setD(Preferences.getInstance().getDouble("RD", 0.0));
     }
 
     
     
     public void calculate()
     {
+    	isShooterDown = di.getShooterButton();
+        isVisionDown = di.getVisionButton();
+
+        if((isVisionDown || isShooterDown) && !wasShooterDown) { ro.setLowGear(); }
+        // region SHOOT WITH NO VISION
+        if(isShooterDown && !isVisionDown)
+        {
+
+            if(!wasShooterDown)
+            {
+                speedPID.reset();
+                speedPID.setSetPoint(54.0);
+            }
+            
+            if(wasShooterDown)
+            {
+            	System.out.println(si.getShooterSpeed());
+            	
+                shooterVal = speedPID.calculate(si.getShooterSpeed());
+
+                if(speedPID.isDone() || (noVisionShooterCount >= 50))
+                {
+                    elevatorVal = 0.8;
+                    shakerVal = 1.0;
+                }
+                else
+                {
+                    noVisionShooterCount++;
+                }
+            }
+        }
+
+        if(!isShooterDown)
+        {
+            noVisionShooterCount = 0;
+            speedPID.reset();
+            speedPID.setSetPoint(0.0);
+        }
+        // endregion
+
+        // region SHOOTER WITH VISION
+        if(isShooterDown && isVisionDown)
+        {
+            if(!wasShooterDown)
+            {
+            	rotatePID.reset();
+                rotatePID.setSetPoint(vi.getTargetRotation());
+
+                speedPID.reset();
+                speedPID.setSetPoint(vi.getTargetSpeed((vi.getTargetDistanceInches()-17.0)/12.0));
+            }
+
+            if(wasShooterDown)
+            {
+                visionShooterCount++;
+
+                ro.setDriveMotors(0.0, -rotatePID.calculate(si.getYaw()));
+                shooterVal = speedPID.calculate(si.getShooterSpeed());
+
+                if((rotatePID.isDone() || (visionShooterCount > 250)) && (speedPID.isDone() || (visionShooterCount > 150)))
+                {
+                    elevatorVal = 0.8;
+                    shakerVal = 1.0;
+                    visionShooterCount = 0;
+                }
+
+                PIDResetCount++;
+                if(PIDResetCount >= 1000)
+                {
+                    rotatePID.setSetPoint(vi.getTargetRotation());
+                    speedPID.setSetPoint(vi.getTargetSpeed((vi.getTargetDistanceInches()-17.0)/12.0));
+                    PIDResetCount = 0;
+                }
+            }
+        }
+        // endregion
+
+        // region SHAKER RESET
+        if(!isShooterDown && !isVisionDown && si.getShakerSwitch())
+        {
+        	System.out.println("here");
+            shakerVal = 0.5;
+        }
+        else if(!isShooterDown && !isVisionDown && !si.getShakerSwitch())
+        {
+            shakerVal = 0.0;
+        }
+        // endregion
+        
+        if(di.getShooterReverseButton())
+        {
+        	elevatorVal = -0.25;
+        	shooterVal = -0.25;
+        }
+
+
+        if(!isShooterDown && !di.getShooterReverseButton())
+        {
+            shooterVal = 0.0;
+            elevatorVal = 0.0;
+        }
+
+        // WAS DOWN CHECK
+        wasShooterDown = isShooterDown;
+        wasVisionDown = isVisionDown;
+
+        // ROBOT OUTPUTS
+        ro.setShooter(shooterVal);
+        ro.setElevator(elevatorVal);
+        ro.setShaker(shakerVal);
+
+        // region OLD
+    	/*
     	// FEEDER
-        if (!isDown && si.getShakerSwitch())
+        if (!isShooterDown && si.getShakerSwitch())
         {
             ro.setShaker(0.5);
         }
@@ -96,22 +218,21 @@ public class Shooter implements ISubSystem
     	speedPID.setP(Preferences.getInstance().getDouble("shooterSpeedP", 0.0));
     	speedPID.setI(Preferences.getInstance().getDouble("shooterSpeedI", 0.0));
     	speedPID.setD(Preferences.getInstance().getDouble("shooterSpeedD", 0.0));
-    	
-    	
+
     	targetRPM = Preferences.getInstance().getDouble("shooterTarget", 0.0); // vi.getTargetSpeed(getTargetDistanceInches/12.0);
     	//speedPID.setSetPoint(vi.getTargetSpeed(vi.getTargetDistanceInches()/12.0));
     	
-        isDown = di.getShooterButton();
+        isShooterDown = di.getShooterButton();
         count++; 
         
-        if(isDown && !wasDown)
+        if(isShooterDown && !wasShooterDown)
         {
         	//System.out.println("1");
         	speedPID.setSetPoint(targetRPM);
-        	wasDown = true;
+        	wasShooterDown = true;
         }
         
-        if(isDown && wasDown)
+        if(isShooterDown && wasShooterDown)
         {
         	//System.out.println("2");
         	setValue = speedPID.calculate(si.getShooterSpeed());
@@ -133,16 +254,14 @@ public class Shooter implements ISubSystem
         	}
         	
         	//System.out.println(si.getYaw() + "loo");
-        	
-        	
         }
         
     
-    	rotatePID.setP(Preferences.getInstance().getDouble("rotateP", 0.0));
-    	rotatePID.setI(Preferences.getInstance().getDouble("rotateI", 0.0));
-    	rotatePID.setD(Preferences.getInstance().getDouble("rotateD", 0.0));
+    	rotatePID.setP(Preferences.getInstance().getDouble("rotateP", 20.0));
+    	rotatePID.setI(Preferences.getInstance().getDouble("rotateI", 0.5));
+    	rotatePID.setD(Preferences.getInstance().getDouble("rotateD", 8.0));
     
-    	if(!isDown)
+    	if(!isShooterDown)
         {
         	//System.out.println("3");
         	setValue= 0.0;
@@ -150,7 +269,7 @@ public class Shooter implements ISubSystem
  
             count = 0;
             
-            wasDown = false;
+            wasShooterDown = false;
             
         	speedPID.reset();
         
@@ -216,7 +335,8 @@ public class Shooter implements ISubSystem
     	
     	
 
-        
+        */
+        // endregion
     }
 
     public void disable() {
@@ -227,7 +347,6 @@ public class Shooter implements ISubSystem
 
     /**
      * Used for auto, will turn on the shooter at the target RPM.
-     * @param targetRPM the target RPM to run at.
      *
     public void activate(int targetRPM) {
         speedPID.reset();

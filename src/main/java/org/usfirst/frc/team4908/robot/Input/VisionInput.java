@@ -38,7 +38,7 @@ public class VisionInput
     //private static final double Vf = 596.5106429;
 
     private static final int IMG_WIDTH = 640;
-    private static final int IMG_HEIGHT = 360;
+    private static final int IMG_HEIGHT = 480;
 
     private final Object imgLock = new Object();
 
@@ -50,6 +50,8 @@ public class VisionInput
     private double width;
     private double height;
     private double area;
+    
+    private boolean autoShooting;
     
     private double cameraBoilerHeightDiffernce = 60.0;
     private double cameraOffset = 15.0;
@@ -85,12 +87,13 @@ public class VisionInput
     
     public VisionInput(DriverInput di)
     {
+    	autoShooting= false;
     	
         new Thread(() ->
         {
             GripPipeline pipeline = new GripPipeline();
 
-            camera = CameraServer.getInstance().addAxisCamera("10.49.8.12");
+            camera = CameraServer.getInstance().addAxisCamera("10.49.8.13");
             camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 
             CvSink cvSink = CameraServer.getInstance().getVideo();
@@ -103,9 +106,8 @@ public class VisionInput
                 synchronized (imgLock)
                 {
             	
-            	if(di.getShooterButton())
+            	if(di.getVisionButton() || autoShooting)
             	{
-            		System.out.println("Here2");
             		cvSink.grabFrame(source);
             		pipeline.process(source);
  
@@ -215,6 +217,11 @@ public class VisionInput
     {
         return area;
     }
+    
+    public void setAutotargeting(boolean val)
+    {
+    	autoShooting = val;
+    }
 
     public double getTargetRotation()
     {
@@ -224,10 +231,10 @@ public class VisionInput
     public double getTargetDistanceInches()
     {	
     	double inchesPerPixel = 16.0/getWidth();
-    	
+
     	double diagonalDistance = ((inchesPerPixel*(IMG_WIDTH/2.0))/xAngle);
-        	
-    	return Math.sqrt(Math.pow(diagonalDistance, 2) - Math.pow(cameraBoilerHeightDiffernce, 2)) - cameraOffset;
+    	
+    	return (Math.sqrt((Math.abs(Math.pow(diagonalDistance, 2) - Math.pow(cameraBoilerHeightDiffernce, 2)))));
     	
         //return Math.sqrt(Math.abs(Math.pow(((inchesPerPixel*centerX)/xAngle), 2) - Math.pow(37.0, 2))) - 6.0;
     }

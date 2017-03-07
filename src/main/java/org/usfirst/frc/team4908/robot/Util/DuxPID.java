@@ -60,7 +60,7 @@ public class DuxPID
 
         lastError = error;
 
-        System.out.println(error + "\t\t\t" + setPoint + "\t" + kP + "\t" + kI + "\t" + kD);
+        System.out.println("Error: " + error + "\t\t\t Setpoint: " + setPoint + "\t" + kP + "\t" + kI + "\t" + kD);
         
         
         return convertMotors(PIDsum); // changes to motor values

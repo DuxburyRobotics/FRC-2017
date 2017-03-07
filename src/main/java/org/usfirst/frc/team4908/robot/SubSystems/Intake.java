@@ -46,18 +46,13 @@ public class Intake implements ISubSystem
        
         if(di.getIntakeRetractButton())
         {
-        	ro.retractIntake();
+            ro.retractIntake();
         }
-        
         
         // motor values
-        if(di.getIntakeButton())
+        if(di.getRunIntake())
         {
-            val = 1.0;
-        }
-        else if(di.getIntakeReverseButton())
-        {
-        	val = -1.0;
+            val = di.getIntakeValue();
         }
         else
         {

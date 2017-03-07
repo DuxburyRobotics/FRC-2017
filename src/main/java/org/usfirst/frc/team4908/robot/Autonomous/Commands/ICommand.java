@@ -1,6 +1,7 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
 import org.usfirst.frc.team4908.robot.SubSystems.*;
 
 /**
@@ -14,12 +15,14 @@ public abstract class ICommand {
 
     public RobotOutput ro;
     public SensorInput si;
+    public VisionInput vi;
 
 
-    public ICommand(String type, RobotOutput ro, SensorInput si) {
+    public ICommand(String type, RobotOutput ro, SensorInput si, VisionInput vi) {
         this.type = type;
         this.ro = ro;
         this.si = si;
+        this.vi = vi;
         this.isFinished = false;
         this.isFirstRun = true;
 

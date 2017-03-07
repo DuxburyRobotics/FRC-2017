@@ -1,9 +1,12 @@
 package org.usfirst.frc.team4908.robot.Autonomous.Commands;
 
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
 import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
 import org.usfirst.frc.team4908.robot.Util.DuxPID;
 import org.usfirst.frc.team4908.robot.Util.SetPoint;
+
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * Created by kyleknobloch on 1/26/17,
@@ -30,10 +33,13 @@ public class AutoDrive extends ICommand {
     DuxPID PID;
     
     private double time;
+    
+    private double rotationCorrection;
+    private double rotateFactor;
 
-    public AutoDrive(RobotOutput ro, SensorInput si, double distance)
+    public AutoDrive(RobotOutput ro, SensorInput si, VisionInput vi, double distance)
     {
-        super("Drive", ro, si);
+        super("Drive", ro, si, vi);
         this.distance = distance;
         setpoint = new SetPoint();
     
@@ -61,7 +67,14 @@ public class AutoDrive extends ICommand {
         setpoint.velocity = 0;
         setpoint.position = 0;
 
-        //ro.setLowGear();
+        ro.setLowGear();
+
+        PID.setP(SmartDashboard.getNumber("AUTOP", 0.0));
+        PID.setI(SmartDashboard.getNumber("AUTOI", 0.0));
+        PID.setD(SmartDashboard.getNumber("AUTOD", 0.0));
+
+        kA = SmartDashboard.getNumber("kA", 0.0);
+        rotateFactor = SmartDashboard.getNumber("Rotate Factor", 0.0);
     }
 
     public void update(double time)
@@ -83,7 +96,9 @@ public class AutoDrive extends ICommand {
         
         setSpeed = kV * setpoint.velocity + kA * setpoint.acceleration;
         
-        //ro.setDriveMotors(setSpeed, 0.0);
+        rotationCorrection = si.getYaw() * rotateFactor;
+        
+        ro.setDriveMotors(setSpeed, rotationCorrection);
     
         System.out.println(setSpeed);
         //System.out.println(setpoint.velocity + " \t" + kV*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));

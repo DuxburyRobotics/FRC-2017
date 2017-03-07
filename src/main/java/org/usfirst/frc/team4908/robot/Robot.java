@@ -53,21 +53,12 @@ public class Robot extends IterativeRobot {
         sensorOutput = new SensorOutput(sensorInput);
 
         robotComponents = new RobotComponents(robotOutput, sensorInput, driverInput, visionInput);
-        autoCommand = new AutoCommand(robotOutput, sensorInput);
+        autoCommand = new AutoCommand(robotOutput, sensorInput, visionInput);
         duxDash = new DuxDash();
 
         sd = new SmartDashboard();
 
-        try
-        {
-        	Compressor c = new Compressor();
-        
-        	c.start();
-        }
-        catch(Exception e)
-        {
-        	System.out.println("no compressor");
-        }
+     
     }
 
 
@@ -76,7 +67,10 @@ public class Robot extends IterativeRobot {
     /**
      * This function is called to init the autonomous code
      */
-    public void autonomousInit() {
+    public void autonomousInit() 
+    {
+    	visionInput.setAutotargeting(true);
+    	sensorInput.resetRotation();
         autoCommand.init();
     }
 
@@ -96,7 +90,9 @@ public class Robot extends IterativeRobot {
      *
      */
     @Override
-    public void teleopInit() {
+    public void teleopInit() 
+    {
+    	visionInput.setAutotargeting(false);
         sensorInput.resetRotation();
     }
 
@@ -106,11 +102,12 @@ public class Robot extends IterativeRobot {
      */
     @Override
 
-    public void teleopPeriodic() {
+    public void teleopPeriodic() 
+    {
         robotComponents.update();
 
-        System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int) visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
-        System.out.println("Rotation: " + (int) sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches() / 12.0)));
+        //System.out.println("Angle: \t" + visionInput.getTargetRotation() + "\t\t\t Distance: \t" + (int) visionInput.getTargetDistanceInches() + "\t\t\tWidth: \t" + visionInput.getWidth());
+        //System.out.println("Rotation: " + (int) sensorInput.getYaw() + "\tSpeed: " + visionInput.getTargetSpeed((visionInput.getTargetDistanceInches() / 12.0)));
 
 
 //        sensorOutput.update();

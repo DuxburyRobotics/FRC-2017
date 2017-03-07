@@ -71,7 +71,7 @@ public class SensorInput
 
     public boolean getShakerSwitch()
     {
-        return shakerSwitch.get();
+    	return shakerSwitch.get();
     }
 
     public double getMaxShooterSpeed()

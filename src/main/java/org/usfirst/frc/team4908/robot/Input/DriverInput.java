@@ -31,14 +31,29 @@ public class DriverInput
     	return operatorJoystick.getRawButton(6);
     }
 
-    public boolean getIntakeButton()
+    public boolean getVisionButton()
     {
     	return operatorJoystick.getRawButton(5);
     }
 
-    public boolean getIntakeReverseButton()
+    public double getIntakeValue()
+    {
+        return (operatorJoystick.getRawAxis(2) - operatorJoystick.getRawAxis(3));
+    }
+
+    public boolean getRunIntake()
+    {
+        return (Math.abs(getIntakeValue()) >= 0.1);
+    }
+    
+    public boolean getShooterReverseButton()
     {
     	return operatorJoystick.getRawButton(7);
+    }
+
+    public boolean getIntakeReverseButton()
+    {
+    	return operatorJoystick.getRawButton(8);
     }
     
     public boolean getIntakeDeployButton()

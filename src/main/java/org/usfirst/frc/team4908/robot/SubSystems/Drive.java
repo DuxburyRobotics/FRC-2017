@@ -47,12 +47,6 @@ public class Drive implements ISubSystem
         driveX = -di.getDriveX();
         driveRot = -di.getDriveRot();
     
-        if(di.getShifterButton())
-        {
-        	ro.setHighGear();
-        }
-        else
-        	ro.setLowGear();
         
         
         // set high gear
@@ -61,7 +55,7 @@ public class Drive implements ISubSystem
             shifterWasPressed = true;
             isLow = false;
 
-//            ro.setHighGear();
+            ro.setHighGear();
         }
         else if(!di.getShifterButton())
         {
@@ -74,7 +68,7 @@ public class Drive implements ISubSystem
             shifterWasPressed = true;
             isLow = true;
 
-  //          ro.setLowGear();
+            ro.setLowGear();
         }
         else if(!di.getShifterButton())
         {

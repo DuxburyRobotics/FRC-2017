@@ -2,6 +2,7 @@ package org.usfirst.frc.team4908.robot.Autonomous;
 
 import org.usfirst.frc.team4908.robot.Autonomous.Commands.*;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
+import org.usfirst.frc.team4908.robot.Input.VisionInput;
 import org.usfirst.frc.team4908.robot.SubSystems.*;
 import java.util.ArrayList;
 
@@ -12,13 +13,16 @@ public class AutoCommand {
 
     private RobotOutput ro;
     private SensorInput si;
-
+    private VisionInput vi;
+    
     private int instructionSequence;
     private int commandIndex;
     private boolean firstRun;
     private boolean isFinished;
     private ArrayList<Sequence> autoInstructionList;
     private Sequence sequence;
+    
+    private final int default_auto = 2;
 
     private double startTime;
     private double time;
@@ -32,12 +36,13 @@ public class AutoCommand {
      * You must ALWAYS pass in the rc or else nothing will move. Make sure it's the one from the Robot class
      * so that you don't anciently have two in the Robot (because that would be weird).
      */
-    public AutoCommand(RobotOutput ro, SensorInput si) {
+    public AutoCommand(RobotOutput ro, SensorInput si, VisionInput vi) {
         this.instructionSequence = -1;
         this.commandIndex = 0;
         this.firstRun = true;
         this.ro = ro;
         this.si = si;
+        this.vi = vi;
         this.autoInstructionList = new ArrayList<Sequence>();
         sequence = null;
         isFinished = false;
@@ -81,7 +86,7 @@ public class AutoCommand {
                     System.out.println("\nAUTOCOMMAND:: We are using the Sequence: " + sequence + " for auto today!!! \n");
 
                 } else {
-                    sequence = autoInstructionList.get(0); //just get the default one that does nothing since there was nothing set to use
+                    sequence = autoInstructionList.get(default_auto); //just get the default one that does nothing since there was nothing set to use
                     //This means that Auto did not know what to run and is using default one.
                     System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
                             "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n");
@@ -125,7 +130,7 @@ public class AutoCommand {
          */
         Sequence default0 = new Sequence();
 
-        default0.addInstruction(new ICommand("do_Nothing", ro, si) {
+        default0.addInstruction(new ICommand("do_Nothing", ro, si, vi) {
             @Override
             public void firstRun() {
                 //do nothing
@@ -136,92 +141,35 @@ public class AutoCommand {
 
 
         /**
-         * index: 1 Cross Baseline
+         * index: 1 center gear + baseline
          *
          * Actions:
          * low gear
          * drive 8 feet // OL
          * Drop intake
          */
-        Sequence crossBaseline = new Sequence();
-        crossBaseline.addInstruction(new AutoDrive(ro, si, 5)); //TODO: Check distences
-        crossBaseline.addInstruction(new AutoGearDeposit(ro, si));
-        crossBaseline.addInstruction(new AutoDrive(ro, si, -1)); //TODO: CHECK THIS
-        crossBaseline.addInstruction(new AutoDrive(ro, si, 8));
-        crossBaseline.addInstruction(new AutoIntake(ro, si)); //only drop
-
-
-        /**
-         * index: 2 center gear
-         *
-         * Actions:
-         * SETUP: Lined up perfectly straight with gear peg, bumpers against wall
-         * Low gear
-         * Drive backwards 5 ft 2in // CL
-         * Deposit gear
-         * Drive forward 2 feet // OL
-         * Deploy intake
-         */
-        Sequence centerGear = new Sequence();
-        centerGear.addInstruction(new AutoDrive(ro, si, 3));
-        centerGear.addInstruction(new AutoGearDeposit(ro, si));
-        centerGear.addInstruction(new AutoDrive(ro, si, 5.16)); //5f + 2/12
-        centerGear.addInstruction(new AutoDrive(ro, si, 2));
-        centerGear.addInstruction(new AutoIntake(ro, si)); //deploy only
-
-
-        /**
-         * index: 3 Deliver center gear and cross baseline
-         *
-         * Actions:
-         * SETUP: Lined up perfectly straight with gear peg, bumpers against wall
-         * //Same as standard center gear
-         * Turn 90 degrees left or right
-         * Drive forward 5 //OL
-         * Rotate to 0 angle
-         * Drive forward 5 // OL
-         */
         Sequence centerGearBaseline = new Sequence();
-        //centerGear
-        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 3));
-        centerGearBaseline.addInstruction(new AutoGearDeposit(ro, si));
-        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 5.16)); //5f + 2/12
-        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 2));
-        centerGearBaseline.addInstruction(new AutoIntake(ro, si)); //deploy only
-        centerGearBaseline.addInstruction(new AutoRotate(ro, si, 90));
-        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 5));
-        centerGearBaseline.addInstruction(new AutoRotate(ro, si, -90)); //TODO: Negative values okay?
-        centerGearBaseline.addInstruction(new AutoDrive(ro, si, 5));
-
+        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 255, -0.5)); //TODO: Check distences
+        centerGearBaseline.addInstruction(new AutoGearDeposit(ro, si, vi));
+        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 150, 0.5));
+        centerGearBaseline.addInstruction(new AutoOpenRotate(ro, si, vi, 62, 0.5));
+        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 150, -1.0));
+        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 1000.0, 0.0));
+        
 
         /**
-         * index 4: Center gear + 10 kpa + baseline
-         *
+         * Index x
+         * 
          * Actions:
-         * SETUP: Lined up perfectly straight with gear peg, bumpers against wall
-         * Center gear
-         * Rotate 80 degrees right (BLUE) or left (RED)
-         * Drop intake
-         * Drive forward x feet depending on where shooter performs best
-         * Vision track, shoot
-         * Rotate back to 0 angle
-         * Drive forward 8 ft at full speed
+         * OpenDrive 150, .75
+         * OpenDrive 1000, 0
          */
-        Sequence centerGearShootBaseline = new Sequence();
-        Sequence CGSB = centerGearShootBaseline;
-        //centerGear
-        CGSB.addInstruction(new AutoDrive(ro, si, 3));
-        CGSB.addInstruction(new AutoGearDeposit(ro, si));
-        CGSB.addInstruction(new AutoDrive(ro, si, 5.16)); //5f + 2/12
-        CGSB.addInstruction(new AutoDrive(ro, si, 2));
-        CGSB.addInstruction(new AutoRotate(ro, si, 80));
-        CGSB.addInstruction(new AutoIntake(ro, si)); //deploy only
-        CGSB.addInstruction(new AutoDrive(ro, si, 999)); //check distance
-        CGSB.addInstruction(new AutoShooter(ro, si));
-        CGSB.addInstruction(new AutoRotate(ro, si, -80)); //TODO: Neg okay?
-        CGSB.addInstruction(new AutoDrive(ro, si, 8)); //@100% speed
-
-
+        Sequence openBaseLine = new Sequence();
+        
+        openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 150.0, 0.75));
+        openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 700.0, 0.0));
+        
+        
         /**
          * Autonomous 5: 10 kpa and baseline
 
@@ -245,16 +193,21 @@ public class AutoCommand {
 
          SETUP: bumpers against wall with intake forward
          */
-
-
+        
+        Sequence tenKpaBaseline = new Sequence();
+        tenKpaBaseline.addInstruction(new AutoIntake(ro, si, vi));
+        tenKpaBaseline.addInstruction(new AutoRemoveBalls(ro, si, vi));
+        tenKpaBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 25, 0.5));
+        tenKpaBaseline.addInstruction(new AutoRotate(ro, si, vi, 90.0));
+        tenKpaBaseline.addInstruction(new AutoShooter(ro, si, vi));
+        
         /**
          * Add the Sequences into the array
          */
         autoInstructionList.add(default0);
-        autoInstructionList.add(crossBaseline);
-        autoInstructionList.add(centerGear);
         autoInstructionList.add(centerGearBaseline);
-        autoInstructionList.add(centerGearShootBaseline);
+        autoInstructionList.add(openBaseLine);
+        autoInstructionList.add(tenKpaBaseline);
     }
 
 
