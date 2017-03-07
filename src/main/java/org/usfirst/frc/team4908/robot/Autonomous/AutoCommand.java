@@ -25,7 +25,7 @@ public class AutoCommand {
 
 
     //TODO: Figure out a way to set sequence from the DuxDash
-    public string[] instructionList = {"Nothing","Cross BL","CG","CG and BL","CG, shoot and BL","shot and BL"};
+    public String[] instructionList = {"Nothing","Cross BL","CG","CG and BL","CG, shoot and BL","shot and BL"};
 
     //region Constructors
 
