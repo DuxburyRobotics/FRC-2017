@@ -29,6 +29,9 @@ public class AutoCommand {
 
 
     //TODO: Figure out a way to set sequence from the DuxDash
+    //private String[] autoList = {"Nothing", "Cross BL", "CG", "CG and BL", "CG, shoot and BL", "shot and BL"};
+
+    private ArrayList<String> autoSequ;
 
     //region Constructors
 
@@ -88,7 +91,7 @@ public class AutoCommand {
                 } else {
                     sequence = autoInstructionList.get(default_auto); //just get the default one that does nothing since there was nothing set to use
                     //This means that Auto did not know what to run and is using default one.
-                    System.out.println("AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n" +
+                    System.out.println("AUTOCOMMAND:: There was no instructionSet defined. Will use default one that does nothing (index 0)\n" +
                             "AUTOCOMMAND:: There was no instrctionSet defined. Will use default one that does nothing (index 0)\n");
 
                 } //else
@@ -129,6 +132,7 @@ public class AutoCommand {
          * None.
          */
         Sequence default0 = new Sequence();
+        autoSequ.add("NOTHING (default)");
 
         default0.addInstruction(new ICommand("do_Nothing", ro, si, vi) {
             @Override
@@ -149,6 +153,8 @@ public class AutoCommand {
          * Drop intake
          */
         Sequence centerGearBaseline = new Sequence();
+        autoSequ.add("Center Gear with Baseline");
+
         centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 255, -0.5)); //TODO: Check distences
         centerGearBaseline.addInstruction(new AutoGearDeposit(ro, si, vi));
         centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 150, 0.5));
@@ -165,6 +171,7 @@ public class AutoCommand {
          * OpenDrive 1000, 0
          */
         Sequence openBaseLine = new Sequence();
+        autoSequ.add("Open Baseline");
         
         openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 150.0, 0.75));
         openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 700.0, 0.0));
@@ -195,6 +202,7 @@ public class AutoCommand {
          */
         
         Sequence tenKpaBaseline = new Sequence();
+        autoSequ.add("Ten kpa Baseline");
         tenKpaBaseline.addInstruction(new AutoIntake(ro, si, vi));
         tenKpaBaseline.addInstruction(new AutoRemoveBalls(ro, si, vi));
         tenKpaBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 25, 0.5));
@@ -208,6 +216,9 @@ public class AutoCommand {
         autoInstructionList.add(centerGearBaseline);
         autoInstructionList.add(openBaseLine);
         autoInstructionList.add(tenKpaBaseline);
+
+
+
     }
 
 
@@ -226,6 +237,9 @@ public class AutoCommand {
 
     }
 
+    public ArrayList<String> getAutoSequ() {
+        return autoSequ;
+    }
 
     //region depreciated
 
