@@ -5,6 +5,9 @@ import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.Input.VisionInput;
 import org.usfirst.frc.team4908.robot.SubSystems.*;
 import java.util.ArrayList;
+import static java.nio.file.StandardOpenOption.*;
+import java.nio.file.*;
+import java.io.*;
 
 /**
  * Created by kyleknobloch
@@ -290,6 +293,22 @@ public class AutoCommand {
         }
     }
      */
+    
+    public void fileDriveAuto(String filename)
+    {
+        Charset charset = Charset.forName("US-ASCII");
+        try (BufferedReader reader = Files.newBufferedReader(filename, charset)) {
+            String line = null;
+            while ((line = reader.readLine()) != null) {
+                String[] vars = line.split(":");
+                ro.drive(vars[0], vars[1]); //not sure which function we should be calling here
+            }
+        } catch (IOException e) {
+            System.err.println("File read error in fileDriveAuto():" + e);
+        }
+        
+        
+    } // end fileDriveAuto()
 
 
     /**
