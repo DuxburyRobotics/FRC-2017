@@ -107,12 +107,12 @@ public class Drive implements ISubSystem
                 driveRot = Math.pow(driveRot, 2.0);
             }
             ro.setDriveMotors(driveX, driveRot);
-            if(SmartDashboard.getBoolean("Write Drive File")) { this.out.write(driveX + ":" + driveRot); }
+            if(SmartDashboard.getBoolean("Write Drive Data")) { this.out.write(driveX + ":" + driveRot); }
         }
         else
         {
             ro.setDriveMotors(0.0, 0.0);
-            if(SmartDashboard.getBoolean("Write Drive File")) { this.out.write("0:0"); }
+            if(SmartDashboard.getBoolean("Write Drive Data")) { this.out.write("0:0"); }
         }
         
         //System.out.println(si.getLeftDriveSpeed() + "\t\t\t\t" + si.getRightDriveSpeed());
