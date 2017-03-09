@@ -301,12 +301,11 @@ public class AutoCommand {
             String line = null;
             while ((line = reader.readLine()) != null) {
                 String[] vars = line.split(":");
-                ro.drive(vars[0], vars[1]); //not sure which function we should be calling here
+                ro.setDriveMotors(vars[0], vars[1]); //not sure which function we should be calling here
             }
         } catch (IOException e) {
             System.err.println("File read error in fileDriveAuto():" + e);
         }
-        
         
     } // end fileDriveAuto()
 
