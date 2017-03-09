@@ -29,6 +29,7 @@ public class AutoCommand {
 
     private double startTime;
     private double time;
+    private String[] lines = new String[100];
 
 
     //TODO: Figure out a way to set sequence from the DuxDash
@@ -73,7 +74,7 @@ public class AutoCommand {
      *
      * NOTE: This is designed to change thc command when the first command has decided to call finish() and move to the
      * next command. Until then this will keep calling update() in ICommand.
-     */
+    **/
     public void periodic() {
         if(!isFinished) {
             if (firstRun) {      //this is the first time init() is called
@@ -82,7 +83,7 @@ public class AutoCommand {
 
                 /**
                  * This is where the code to get the auto Index to run would be
-                 */
+                **/
 
 
                 if (sequence == null && instructionSequence >= 0) //if sequence was empty and there is a instructionSequence we want to use
@@ -299,9 +300,10 @@ public class AutoCommand {
         Charset charset = Charset.forName("US-ASCII");
         try (BufferedReader reader = Files.newBufferedReader(filename, charset)) {
             String line = null;
+            int lineNum = 0;            
             while ((line = reader.readLine()) != null) {
-                String[] vars = line.split(":");
-                ro.setDriveMotors(vars[0], vars[1]); //not sure which function we should be calling here
+                lines[lineNum] = line;
+                lineNum++;
             }
         } catch (IOException e) {
             System.err.println("File read error in fileDriveAuto():" + e);
