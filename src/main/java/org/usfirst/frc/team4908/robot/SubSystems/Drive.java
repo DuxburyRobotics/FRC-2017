@@ -1,6 +1,5 @@
 package org.usfirst.frc.team4908.robot.SubSystems;
 
-
 import org.usfirst.frc.team4908.robot.Input.DriverInput;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.Input.VisionInput;
@@ -24,7 +23,17 @@ public class Drive implements ISubSystem
 
     private boolean shifterWasPressed = false;
     private boolean isLow = true;
-
+    private String driveFile = "driveFile_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMdd_HHmm"));
+    try  
+    {
+        FileWriter fstream = new FileWriter(driveFile, true); //true tells to append data.
+        out = new BufferedWriter(fstream);
+        out.write("New drive record--" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("MMdd_HHmm")));
+    }
+    catch (IOException e)
+    {
+        System.err.println("Error: " + e.getMessage());
+    }
 
     public Drive(DriverInput di, SensorInput si, RobotOutput ro, VisionInput vi)
     {
@@ -97,12 +106,13 @@ public class Drive implements ISubSystem
             {
                 driveRot = Math.pow(driveRot, 2.0);
             }
-
             ro.setDriveMotors(driveX, driveRot);
+            if(SmartDashboard.getBoolean("Write Drive File")) { this.out.write(driveX + ":" + driveRot); }
         }
         else
         {
             ro.setDriveMotors(0.0, 0.0);
+            if(SmartDashboard.getBoolean("Write Drive File")) { this.out.write("0:0"); }
         }
         
         //System.out.println(si.getLeftDriveSpeed() + "\t\t\t\t" + si.getRightDriveSpeed());
