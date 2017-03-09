@@ -32,7 +32,6 @@ public class Robot extends IterativeRobot {
 
     private SmartDashboard sd;
     private SendableChooser autoChooser;
-    private SendableChooser writeDrive;
 
     /**
      * This function is run when the robot is first started up and should be
@@ -68,10 +67,8 @@ public class Robot extends IterativeRobot {
             autoChooser.addObject(str, count);
         }
 
-        writeDrive.addDefault("False" , robotComponents.setWriteDrive(false));
-        writeDrive.addObject("True" , robotComponets.setWriteDrive(true));
         sd.putData("Auto Selector", autoChooser);
-
+        sd.putBoolean("Write Drive Data", false);
      
     }
 
