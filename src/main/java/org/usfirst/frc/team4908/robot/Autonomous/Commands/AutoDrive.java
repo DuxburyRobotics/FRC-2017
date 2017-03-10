@@ -6,6 +6,7 @@ import org.usfirst.frc.team4908.robot.SubSystems.RobotOutput;
 import org.usfirst.frc.team4908.robot.Util.DuxPID;
 import org.usfirst.frc.team4908.robot.Util.SetPoint;
 
+import edu.wpi.first.wpilibj.Preferences;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
@@ -23,14 +24,16 @@ public class AutoDrive extends ICommand {
     private double k2;
     private double k3;
 
-    private double kV = 1.0/7.0;
-    private double kA = 1.0/50.0;
+    private double kV = 1.0/6.0;
+    private double kA;
 
     private SetPoint setpoint;
     
     private double setSpeed;
     
     DuxPID PID;
+    
+    private double yawwsssssss;
     
     private double time;
     
@@ -44,7 +47,7 @@ public class AutoDrive extends ICommand {
         setpoint = new SetPoint();
     
         PID = new DuxPID(0.5, 0.0, 0.0, 0.1, 7.0);
-    
+            
         setSpeed =0.0;
         
         System.out.println("construct");
@@ -54,6 +57,7 @@ public class AutoDrive extends ICommand {
 
     public void init()
     {
+    	
     	
     	System.out.println("init");
     	this.time = 0.0;
@@ -66,6 +70,8 @@ public class AutoDrive extends ICommand {
         setpoint.acceleration = 0;
         setpoint.velocity = 0;
         setpoint.position = 0;
+        
+        yawwsssssss = si.getYaw();
 
         ro.setLowGear();
 
@@ -73,15 +79,14 @@ public class AutoDrive extends ICommand {
         PID.setI(SmartDashboard.getNumber("AUTOI", 0.0));
         PID.setD(SmartDashboard.getNumber("AUTOD", 0.0));
 
-        kA = SmartDashboard.getNumber("kA", 0.0);
-        rotateFactor = SmartDashboard.getNumber("Rotate Factor", 0.0);
+        kA = 0.05;//Preferences.getInstance().getDouble("kA", 0.0);
+        rotateFactor = 0.07;//Preferences.getInstance().getDouble("Rotate Factor", 0.0);
     }
 
     public void update(double time)
     {
     	
-    	
-    	System.out.println("periodic");
+    	System.out.println("periodic + " + kA);
     	
     	this.time = time;
     	
@@ -94,11 +99,13 @@ public class AutoDrive extends ICommand {
         //PID.calc should intake from the SI.encoder for distance. 
         //tune Ka (higher or lower) then tune PID
         
-        setSpeed = kV * setpoint.velocity + kA * setpoint.acceleration;
+        setSpeed = kV * setpoint.velocity + kA * setpoint.acceleration + PID.calculate(si.getLeftDriveSpeed());
         
-        rotationCorrection = si.getYaw() * rotateFactor;
+        System.out.println(si.getLeftDriveSpeed() + "\t\t\t" + si.getRightDriveSpeed());
         
-        ro.setDriveMotors(setSpeed, rotationCorrection);
+        rotationCorrection = (si.getYaw()-yawwsssssss) * rotateFactor;
+        
+        ro.setDriveMotors(setSpeed, 0.0); //rotationCorrection);
     
         System.out.println(setSpeed);
         //System.out.println(setpoint.velocity + " \t" + kV*setpoint.velocity + " \t" + setpoint.acceleration + " \t" + setpoint.acceleration*(kA));

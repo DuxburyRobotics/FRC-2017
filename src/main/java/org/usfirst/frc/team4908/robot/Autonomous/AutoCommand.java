@@ -49,6 +49,7 @@ public class AutoCommand {
         this.autoInstructionList = new ArrayList<Sequence>();
         sequence = null;
         isFinished = false;
+        autoSequ = new ArrayList<String>(); 
 
         generateDefaultAuto();
     }
@@ -173,7 +174,7 @@ public class AutoCommand {
         Sequence openBaseLine = new Sequence();
         autoSequ.add("Open Baseline");
         
-        openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 150.0, 0.75));
+        openBaseLine.addInstruction(new AutoRotate(ro, si, vi, -90.0));
         openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 700.0, 0.0));
         
         
@@ -227,7 +228,7 @@ public class AutoCommand {
      */
     public void setInstructionSequence(int instructionSequence) {
         this.instructionSequence = instructionSequence;
-        this.sequence = autoInstructionList.get(instructionSequence);
+        //this.sequence = autoInstructionList.get(instructionSequence);
 
     }
 

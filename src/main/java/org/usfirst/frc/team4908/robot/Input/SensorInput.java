@@ -87,7 +87,9 @@ public class SensorInput
 
     public double getYaw()
     {
-        return navX.getYaw();
+   
+    	
+    	return navX.getYaw();
     }
 
 

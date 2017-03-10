@@ -21,7 +21,7 @@ public class AutoRotate extends ICommand
 
         this.target = target;
 
-        PID = new DuxPID(12.5, 0.5, 0.0, 1.0, 180);
+        PID = new DuxPID(1.0, 0.04, 1.0, 1.0, 180.0);
     }
 
     public void init()
@@ -32,6 +32,9 @@ public class AutoRotate extends ICommand
 
     public void update(double time)
     {
+    	System.out.println(si.getYaw());
+    	
+    
        ro.setDriveMotors(0.0, -PID.calculate(si.getYaw()));
     }
 
