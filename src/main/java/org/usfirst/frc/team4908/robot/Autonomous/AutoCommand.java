@@ -4,6 +4,10 @@ import org.usfirst.frc.team4908.robot.Autonomous.Commands.*;
 import org.usfirst.frc.team4908.robot.Input.SensorInput;
 import org.usfirst.frc.team4908.robot.Input.VisionInput;
 import org.usfirst.frc.team4908.robot.SubSystems.*;
+
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
 import java.util.ArrayList;
 
 /**
@@ -22,7 +26,7 @@ public class AutoCommand {
     private ArrayList<Sequence> autoInstructionList;
     private Sequence sequence;
     
-    private final int default_auto = 2;
+    private final int default_auto = 1;
 
     private double startTime;
     private double time;
@@ -156,12 +160,9 @@ public class AutoCommand {
         Sequence centerGearBaseline = new Sequence();
         autoSequ.add("Center Gear with Baseline");
 
-        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 255, -0.5)); //TODO: Check distences
+        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 165, -0.6, true)); //TODO: Check distences
         centerGearBaseline.addInstruction(new AutoGearDeposit(ro, si, vi));
-        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 150, 0.5));
-        centerGearBaseline.addInstruction(new AutoOpenRotate(ro, si, vi, 62, 0.5));
-        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 150, -1.0));
-        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 1000.0, 0.0));
+        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 1500, 0.0));
         
 
         /**
@@ -174,7 +175,7 @@ public class AutoCommand {
         Sequence openBaseLine = new Sequence();
         autoSequ.add("Open Baseline");
         
-        openBaseLine.addInstruction(new AutoRotate(ro, si, vi, -90.0));
+        openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 250.0, 1.0));
         openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 700.0, 0.0));
         
         
@@ -210,6 +211,17 @@ public class AutoCommand {
         tenKpaBaseline.addInstruction(new AutoRotate(ro, si, vi, 90.0));
         tenKpaBaseline.addInstruction(new AutoShooter(ro, si, vi));
         
+
+        Sequence sideGear = new Sequence();
+        
+        sideGear.addInstruction(new AutoOpenDrive(ro, si, vi, 125, -0.75, true));
+        //if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red)
+        	centerGearBaseline.addInstruction(new AutoOpenRotate(ro, si, vi, 62, 0.5));
+        //else if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Blue)
+        	//centerGearBaseline.addInstruction(new AutoOpenRotate(ro, si, vi, 62, -0.5));
+        sideGear.addInstruction(new AutoOpenDrive(ro, si, vi, 100, -0.5, true));
+        sideGear.addInstruction(new AutoGearDeposit(ro, si, vi));
+        
         /**
          * Add the Sequences into the array
          */
@@ -217,7 +229,7 @@ public class AutoCommand {
         autoInstructionList.add(centerGearBaseline);
         autoInstructionList.add(openBaseLine);
         autoInstructionList.add(tenKpaBaseline);
-
+        autoInstructionList.add(sideGear);
 
 
     }

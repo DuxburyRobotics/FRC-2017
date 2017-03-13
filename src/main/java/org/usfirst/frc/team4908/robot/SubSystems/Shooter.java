@@ -168,7 +168,6 @@ public class Shooter implements ISubSystem
         // region SHAKER RESET
         if(!isShooterDown && !isVisionDown && si.getShakerSwitch())
         {
-        	System.out.println("here");
             shakerVal = 0.5;
         }
         else if(!isShooterDown && !isVisionDown && !si.getShakerSwitch())

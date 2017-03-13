@@ -27,9 +27,9 @@ public class AutoGearDeposit extends ICommand
     public void update(double time)
     {
         count++;
-        if(count >= 17 && count <= 33)
+        if(count >= 25 && count <= 75)
         {
-        	ro.setDriveMotors(0.5, 0.0);
+        	ro.setDriveMotors(0.75, 0.0);
         }
         else
         	ro.setDriveMotors(0.0, 0.0);
@@ -42,7 +42,7 @@ public class AutoGearDeposit extends ICommand
 
     public boolean isFinished()
     {
-        if(count >= 50)
+        if(count >= 100)
             return true;
         else
             return false;
