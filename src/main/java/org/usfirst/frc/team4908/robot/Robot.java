@@ -67,7 +67,7 @@ public class Robot extends IterativeRobot {
         }
 
         sd.putData("Auto Selector", autoChooser);
-
+        sd.putBoolean("Write Drive Data", false);
      
     }
 
