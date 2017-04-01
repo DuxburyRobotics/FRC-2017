@@ -157,81 +157,13 @@ public class AutoCommand {
          * drive 8 feet // OL
          * Drop intake
          */
-        Sequence centerGearBaseline = new Sequence();
-        autoSequ.add("Center Gear with Baseline");
+        Sequence test = new Sequence();
+        //test.addInstruction();
 
-        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 165, -0.6, true)); //TODO: Check distences
-        centerGearBaseline.addInstruction(new AutoGearDeposit(ro, si, vi));
-        centerGearBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 1500, 0.0));
-        
-
-        /**
-         * Index x
-         * 
-         * Actions:
-         * OpenDrive 150, .75
-         * OpenDrive 1000, 0
-         */
-        Sequence openBaseLine = new Sequence();
-        autoSequ.add("Open Baseline");
-        
-        openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 250.0, 1.0));
-        openBaseLine.addInstruction(new AutoOpenDrive(ro, si, vi, 700.0, 0.0));
-        
-        
-        /**
-         * Autonomous 5: 10 kpa and baseline
-
-         SETUP: bumpers against wall with intake forward, back of bumper aligned with alliance station near boiler
-
-         Low gear
-
-         Drop intake
-
-         Drive forward 2ft
-
-         Rotate 90 degrees left (BLUE) or right (RED)
-
-         Vision track, shoot
-
-         Rotate to angle 0
-
-         Drive forward 10 ft
-
-         Autonomous 6/7: Gear at left/right positions
-
-         SETUP: bumpers against wall with intake forward
-         */
-        
-        Sequence tenKpaBaseline = new Sequence();
-        autoSequ.add("Ten kpa Baseline");
-        tenKpaBaseline.addInstruction(new AutoIntake(ro, si, vi));
-        tenKpaBaseline.addInstruction(new AutoRemoveBalls(ro, si, vi));
-        tenKpaBaseline.addInstruction(new AutoOpenDrive(ro, si, vi, 25, 0.5));
-        tenKpaBaseline.addInstruction(new AutoRotate(ro, si, vi, 90.0));
-        tenKpaBaseline.addInstruction(new AutoShooter(ro, si, vi));
-        
-
-        Sequence sideGear = new Sequence();
-        
-        sideGear.addInstruction(new AutoOpenDrive(ro, si, vi, 125, -0.75, true));
-        //if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Red)
-        	centerGearBaseline.addInstruction(new AutoOpenRotate(ro, si, vi, 62, 0.5));
-        //else if(DriverStation.getInstance().getAlliance() == DriverStation.Alliance.Blue)
-        	//centerGearBaseline.addInstruction(new AutoOpenRotate(ro, si, vi, 62, -0.5));
-        sideGear.addInstruction(new AutoOpenDrive(ro, si, vi, 100, -0.5, true));
-        sideGear.addInstruction(new AutoGearDeposit(ro, si, vi));
-        
         /**
          * Add the Sequences into the array
          */
         autoInstructionList.add(default0);
-        autoInstructionList.add(centerGearBaseline);
-        autoInstructionList.add(openBaseLine);
-        autoInstructionList.add(tenKpaBaseline);
-        autoInstructionList.add(sideGear);
-
-
     }
 
 

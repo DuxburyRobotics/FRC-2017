@@ -19,11 +19,8 @@ public class RobotComponents
         /**
          * DO NOT CHANGE THIS ORDER
          */
-        subsystems.add(new Drive(di, si, ro, vi));
-        subsystems.add(new Climb(di, si, ro, vi));
-        subsystems.add(new Intake(di, si, ro, vi));
-        subsystems.add(new Shooter(di, si, ro, vi));
-        subsystems.add(new Gear(di, si, ro, vi));
+
+
         /**
          * DO NOT CHANGE THIS ORDER
          */
@@ -75,11 +72,4 @@ public class RobotComponents
     public void disableShooter() {
         subsystems.get(3).disable();
     }
-
-    public Drive getDrive() { return (Drive) subsystems.get(0); }
-    public Climb getClimb() { return (Climb) subsystems.get(1); }
-    public Intake getIntake() { return (Intake) subsystems.get(2); }
-    public Shooter getShooter() { return (Shooter) subsystems.get(3); }
-    public Gear getGear() {return (Gear) subsystems.get(4); }
-
 }

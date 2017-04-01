@@ -23,25 +23,15 @@ public class SensorOutput
 	
 	public void update()
 	{
-		// drive speed
-		//System.out.println(df.format(si.getLeftDriveSpeed()) + "\t\t\t\t\t" + df.format(si.getRightDriveSpeed()));
-		
 		// max drive speed
 		if(maxLeft <= si.getLeftDriveSpeed())
 		{
 			maxLeft = si.getLeftDriveSpeed();
-			
-			//System.out.println(df.format(maxLeft) + "\t\t\t\t\t" + df.format(maxRight));
 		}
 		
 		if(maxRight <= si.getRightDriveSpeed())
 		{
 			maxRight = si.getRightDriveSpeed();
-		
-			//System.out.println(df.format(maxLeft) + "\t\t\t\t\t" + df.format(maxRight));
 		}
-		
-		// shooter speed and count
-		// System.out.println(df.format(si.getShooterSpeed()) + "\t\t\t\t\t" + si.getShooterCount());
 	}
 }
